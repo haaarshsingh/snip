@@ -1,26 +1,24 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input::placeholder {
+  @apply text-gray-300 dark:text-gray-600;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+::selection {
+  @apply bg-emerald-400 text-white;
 }
 
-* {
-  box-sizing: border-box;
+#main {
+  @apply text-white !outline-none text-sm;
+  font-family: 'Iosevka' !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+.cm-theme {
+  @apply p-4 !rounded-xl;
+}
+
+.ͼ1.cm-editor {
+  @apply !border-none !outline-none;
 }
