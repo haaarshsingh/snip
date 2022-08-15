@@ -10,15 +10,14 @@ input::placeholder {
   @apply bg-emerald-400 text-white;
 }
 
-#main {
-  @apply text-white !outline-none text-sm;
-  font-family: 'Iosevka' !important;
-}
-
 .cm-theme {
   @apply p-4 !rounded-xl;
 }
 
 .ͼ1.cm-editor {
   @apply !border-none !outline-none;
+}
+
+button {
+  @apply select-none;
 }

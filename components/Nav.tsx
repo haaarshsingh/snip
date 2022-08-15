@@ -9,13 +9,15 @@ const Nav: FC = () => {
   return (
     <div className='flex items-center justify-between w-full'>
       <Link href='/'>
-        <h1 className='text-black dark:text-white text-3xl font-bold'>snip</h1>
+        <h1 className='text-black dark:text-white text-3xl font-bold'>
+          snip.au
+        </h1>
       </Link>
       <button
-        className='bg-white shadow-2xl text-black dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white w-12 h-12 rounded-lg flex justify-center text-xl items-center'
+        className='bg-white shadow-2xl text-black dark:bg-gray-800 transition dark:hover:bg-gray-700 dark:text-white w-12 h-12 rounded-lg flex justify-center text-xl items-center'
         onClick={() => setOpen(1)}
       >
-        <FiCommand size={25} />
+        <FiCommand size={25} strokeWidth={1.5} />
       </button>
     </div>
   )
