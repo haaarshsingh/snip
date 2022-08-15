@@ -2,6 +2,7 @@
 
 # rust serverless
 api/target
+api/.env
 
 # dependencies
 /node_modules
