@@ -22,5 +22,5 @@ serde_json = "1.0"
 rstest = "0.15.0"
 
 [[bin]]
-name = "user"
-path = "P:\\Websites\\snip\\api\\user.rs"
+name = "snips"
+path = "P:\\Websites\\snip\\api\\users\\snips.rs"
