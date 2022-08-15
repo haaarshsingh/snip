@@ -1,6 +1,7 @@
 import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
-import { Dispatch, FC, SetStateAction } from 'react'
+import { Dispatch, FC, SetStateAction, useCallback } from 'react'
 import {
+  FiArrowLeft,
   FiClock,
   FiCode,
   FiCopy,
@@ -8,6 +9,7 @@ import {
   FiGithub,
   FiGitlab,
   FiLock,
+  FiX,
 } from 'react-icons/fi'
 import { BiPaintRoll } from 'react-icons/bi'
 import { useTheme } from 'next-themes'
@@ -58,6 +60,7 @@ const Palette: FC<{
         {
           icon: <FiEdit2 />,
           text: 'Edit Slug...',
+          perform: () => setOpen(3),
         },
       ],
     },
@@ -67,19 +70,22 @@ const Palette: FC<{
         {
           icon: <BiPaintRoll />,
           text: 'Theme...',
-          shortcuts: { keys: ['t', 'g'] },
         },
         {
           icon: <FiCopy />,
           text: 'Copy URL',
+          perform: () => navigator.clipboard.writeText('https://snip.hxrsh.in'),
         },
         {
           icon: <FiCode />,
           text: 'API',
+          href: '/api',
         },
         {
           icon: <FiGithub />,
           text: 'Source',
+          href: 'https://github.com/harshhhdev/snip',
+          newTab: true,
         },
       ],
     },
@@ -822,14 +828,47 @@ const Palette: FC<{
     },
   ]
 
+  const editSlug: Command[] = [
+    {
+      category: 'Options',
+      commands: [
+        {
+          text: 'Cancel',
+          icon: <FiX />,
+          perform: () => setOpen(0),
+        },
+        {
+          text: 'Back',
+          icon: <FiArrowLeft />,
+          perform: () => setOpen(2),
+        },
+      ],
+    },
+  ]
+
+  useEffect(() => {
+    if (open === 3) console.log(input)
+  }, [open, input])
+
   const [mainCommands] = useCommands(main)
   const [languageCommands] = useCommands(langs)
+  const [editSlugCommands] = useCommands(editSlug)
 
   if (!mounted) return null
   return (
     <>
       <CommandMenu commands={mainCommands} index={1} main />
-      <CommandMenu commands={languageCommands} index={2} />
+      <CommandMenu
+        commands={languageCommands}
+        index={2}
+        placeholder='Search Languages...'
+      />
+      <CommandMenu
+        commands={editSlugCommands}
+        index={3}
+        placeholder='Custom slug...'
+        preventSearch
+      />
     </>
   )
 }

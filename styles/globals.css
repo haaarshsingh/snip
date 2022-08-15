@@ -17,3 +17,7 @@ input::placeholder {
 .ͼ1.cm-editor {
   @apply !border-none !outline-none;
 }
+
+button {
+  @apply select-none;
+}

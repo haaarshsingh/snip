@@ -4,14 +4,14 @@ import { tags as t } from '@lezer/highlight'
 export const theme = createTheme({
   theme: 'dark',
   settings: {
-    background: '#111111',
+    background: '#222222',
     foreground: '#FFF',
     caret: '#FFF',
     selection: '#FF797E',
     selectionMatch: '#FFF',
-    gutterBackground: '#111111',
+    gutterBackground: '#222222',
     gutterForeground: '#999999',
-    lineHighlight: '#111111',
+    lineHighlight: '#222222',
   },
   styles: [
     { tag: [t.comment, t.bracket], color: '#8b949e' },
