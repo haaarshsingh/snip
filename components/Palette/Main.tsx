@@ -16,11 +16,12 @@ import { useTheme } from 'next-themes'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import langs from '@lib/languages'
+import { expires } from '@typings/expires'
 
 const Palette: FC<{
-  language: string
   setLanguage: Dispatch<SetStateAction<keyof typeof langs>>
-}> = ({ language, setLanguage }) => {
+  setExpires: Dispatch<SetStateAction<expires>>
+}> = ({ setLanguage, setExpires }) => {
   const [input, setInput, open, setOpen] = useKmenu()
 
   const [mounted, setMounted] = useState(false)
@@ -52,6 +53,7 @@ const Palette: FC<{
         {
           icon: <FiClock />,
           text: 'Expires...',
+          perform: () => setOpen(3),
         },
         {
           icon: <FiLock />,
@@ -60,7 +62,7 @@ const Palette: FC<{
         {
           icon: <FiEdit2 />,
           text: 'Edit Slug...',
-          perform: () => setOpen(3),
+          perform: () => setOpen(5),
         },
       ],
     },
@@ -828,6 +830,59 @@ const Palette: FC<{
     },
   ]
 
+  const expiresIn: Command[] = [
+    {
+      category: 'Options',
+      commands: [
+        {
+          text: 'Never',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.NEVER),
+        },
+        {
+          text: 'One Hour',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.ONE_HOUR),
+        },
+        {
+          text: 'Two Hours',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.TWO_DAYS),
+        },
+        {
+          text: 'Ten Hours',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.TEN_HOURS),
+        },
+        {
+          text: 'One Day',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.ONE_DAY),
+        },
+        {
+          text: 'Two Days',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.TWO_DAYS),
+        },
+        {
+          text: 'One Week',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.ONE_WEEK),
+        },
+        {
+          text: 'One Month',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.ONE_MONTH),
+        },
+        {
+          text: 'One Year',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.ONE_YEAR),
+        },
+      ],
+    },
+  ]
+
   const editSlug: Command[] = [
     {
       category: 'Options',
@@ -840,7 +895,7 @@ const Palette: FC<{
         {
           text: 'Back',
           icon: <FiArrowLeft />,
-          perform: () => setOpen(2),
+          perform: () => setOpen(1),
         },
       ],
     },
@@ -852,6 +907,7 @@ const Palette: FC<{
 
   const [mainCommands] = useCommands(main)
   const [languageCommands] = useCommands(langs)
+  const [expiresCommands] = useCommands(expiresIn)
   const [editSlugCommands] = useCommands(editSlug)
 
   if (!mounted) return null
@@ -861,11 +917,16 @@ const Palette: FC<{
       <CommandMenu
         commands={languageCommands}
         index={2}
-        placeholder='Search Languages...'
+        placeholder='Language...'
+      />
+      <CommandMenu
+        commands={expiresCommands}
+        index={3}
+        placeholder='Expires In...'
       />
       <CommandMenu
         commands={editSlugCommands}
-        index={3}
+        index={5}
         placeholder='Custom slug...'
         preventSearch
       />
