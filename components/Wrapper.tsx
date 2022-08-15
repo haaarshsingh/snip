@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import Navbar from './Nav'
 import Footer from './Footer'
 import { MenuConfig, MenuProvider } from 'kmenu'
-import Palette from './Palette'
 import { useTheme } from 'next-themes'
 
 export const meta = {
@@ -79,7 +78,6 @@ const Wrapper: FC<{
         config={theme === 'dark' ? darkConfig : lightConfig}
         dimensions={{ sectionHeight: 36 }}
       >
-        <Palette />
         <div className='flex flex-col items-center'>
           <div className='w-40 mt-10'>
             <Navbar />

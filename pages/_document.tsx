@@ -5,7 +5,7 @@ export default class PortfolioDocument extends Document {
     return (
       <Html lang='en'>
         <Head />
-        <body className='bg-[#F6F6F6] dark:bg-black'>
+        <body className='bg-[#F6F6F6] dark:bg-gray-900'>
           {/* <link
             rel='preload'
             href='/IosevkaRegular.ttf'
@@ -14,7 +14,7 @@ export default class PortfolioDocument extends Document {
           /> */}
           <link
             rel='stylesheet'
-            href='https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap'
+            href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap'
             as='font'
             crossOrigin=''
           />

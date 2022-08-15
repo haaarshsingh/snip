@@ -1,6 +1,7 @@
 import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
-import { FC } from 'react'
+import { Dispatch, FC, SetStateAction, useCallback } from 'react'
 import {
+  FiArrowLeft,
   FiClock,
   FiCode,
   FiCopy,
@@ -8,19 +9,24 @@ import {
   FiGithub,
   FiGitlab,
   FiLock,
+  FiX,
 } from 'react-icons/fi'
 import { BiPaintRoll } from 'react-icons/bi'
 import { useTheme } from 'next-themes'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import langs from '@lib/languages'
+import { expires } from '@typings/expires'
 
-const Palette: FC = () => {
+const Palette: FC<{
+  setLanguage: Dispatch<SetStateAction<keyof typeof langs>>
+  setExpires: Dispatch<SetStateAction<expires>>
+}> = ({ setLanguage, setExpires }) => {
   const [input, setInput, open, setOpen] = useKmenu()
 
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   const { theme, setTheme } = useTheme()
-  const [language, setLanguage] = useState('plain')
 
   const main: Command[] = [
     {
@@ -47,6 +53,7 @@ const Palette: FC = () => {
         {
           icon: <FiClock />,
           text: 'Expires...',
+          perform: () => setOpen(3),
         },
         {
           icon: <FiLock />,
@@ -55,6 +62,7 @@ const Palette: FC = () => {
         {
           icon: <FiEdit2 />,
           text: 'Edit Slug...',
+          perform: () => setOpen(5),
         },
       ],
     },
@@ -64,19 +72,22 @@ const Palette: FC = () => {
         {
           icon: <BiPaintRoll />,
           text: 'Theme...',
-          shortcuts: { keys: ['t', 'g'] },
         },
         {
           icon: <FiCopy />,
           text: 'Copy URL',
+          perform: () => navigator.clipboard.writeText('https://snip.hxrsh.in'),
         },
         {
           icon: <FiCode />,
           text: 'API',
+          href: '/api',
         },
         {
           icon: <FiGithub />,
           text: 'Source',
+          href: 'https://github.com/harshhhdev/snip',
+          newTab: true,
         },
       ],
     },
@@ -93,107 +104,107 @@ const Palette: FC = () => {
         {
           icon: <FiCode />,
           text: 'APL',
-          perform: () => setLanguage('apl'),
+          perform: () => setLanguage('APL'),
         },
         {
           icon: <FiCode />,
           text: 'ASCII Armor',
-          perform: () => setLanguage('asciiArmor'),
+          perform: () => setLanguage('ASCII Armor'),
         },
         {
           icon: <FiCode />,
           text: 'Asterisk',
-          perform: () => setLanguage('asterisk'),
+          perform: () => setLanguage('Asterisk'),
         },
         {
           icon: <FiCode />,
           text: 'Brainfuck',
-          perform: () => setLanguage('brainfuck'),
+          perform: () => setLanguage('Brainfuck'),
         },
         {
           icon: <FiCode />,
           text: 'C',
-          perform: () => setLanguage('c'),
+          perform: () => setLanguage('C'),
         },
         {
           icon: <FiCode />,
           text: 'C++',
-          perform: () => setLanguage('cpp'),
+          perform: () => setLanguage('C++'),
         },
         {
           icon: <FiCode />,
           text: 'C#',
-          perform: () => setLanguage('csharp'),
+          perform: () => setLanguage('C#'),
         },
         {
           icon: <FiCode />,
           text: 'Cassandra',
-          perform: () => setLanguage('cassandra'),
+          perform: () => setLanguage('Cassandra'),
         },
         {
           icon: <FiCode />,
           text: 'Ceylon',
-          perform: () => setLanguage('ceylon'),
+          perform: () => setLanguage('Ceylon'),
         },
         {
           icon: <FiCode />,
           text: 'Clojure',
-          perform: () => setLanguage('clojure'),
+          perform: () => setLanguage('Clojure'),
         },
         {
           icon: <FiCode />,
           text: 'Closure Stylesheets (GSS)',
-          perform: () => setLanguage('gss'),
+          perform: () => setLanguage('Closure Stylesheets (GSS)'),
         },
         {
           icon: <FiCode />,
           text: 'CMake',
-          perform: () => setLanguage('cmake'),
+          perform: () => setLanguage('CMake'),
         },
         {
           icon: <FiCode />,
           text: 'Cobol',
-          perform: () => setLanguage('cobol'),
+          perform: () => setLanguage('Cobol'),
         },
         {
           icon: <FiCode />,
           text: 'CoffeeScript',
-          perform: () => setLanguage('coffeescript'),
+          perform: () => setLanguage('CoffeeScript'),
         },
         {
           icon: <FiCode />,
           text: 'Common Lisp',
-          perform: () => setLanguage('commonLisp'),
+          perform: () => setLanguage('CommonLisp'),
         },
         {
           icon: <FiCode />,
           text: 'Crystal',
-          perform: () => setLanguage('crystal'),
+          perform: () => setLanguage('Crystal'),
         },
         {
           icon: <FiCode />,
           text: 'CSS',
-          perform: () => setLanguage('css'),
+          perform: () => setLanguage('CSS'),
         },
         {
           icon: <FiCode />,
           text: 'Cypher',
-          perform: () => setLanguage('cypher'),
+          perform: () => setLanguage('Cypher'),
         },
         {
           icon: <FiCode />,
           text: 'Cython',
-          perform: () => setLanguage('cython'),
+          perform: () => setLanguage('Cython'),
         },
         {
           icon: <FiCode />,
           text: 'D',
-          perform: () => setLanguage('d'),
+          perform: () => setLanguage('D'),
         },
         {
           icon: <FiCode />,
           text: 'Dart',
-          perform: () => setLanguage('dart'),
+          perform: () => setLanguage('Dart'),
         },
         {
           icon: <FiCode />,
@@ -203,217 +214,217 @@ const Palette: FC = () => {
         {
           icon: <FiCode />,
           text: 'Dockerfile',
-          perform: () => setLanguage('dockerfile'),
+          perform: () => setLanguage('Dockerfile'),
         },
         {
           icon: <FiCode />,
           text: 'DTD',
-          perform: () => setLanguage('dtd'),
+          perform: () => setLanguage('DTD'),
         },
         {
           icon: <FiCode />,
           text: 'Dylan',
-          perform: () => setLanguage('dylan'),
+          perform: () => setLanguage('Dylan'),
         },
         {
           icon: <FiCode />,
           text: 'EBNF',
-          perform: () => setLanguage('ebnf'),
+          perform: () => setLanguage('EBNF'),
         },
         {
           icon: <FiCode />,
           text: 'ECL',
-          perform: () => setLanguage('ecl'),
+          perform: () => setLanguage('ECL'),
         },
         {
           icon: <FiCode />,
           text: 'Eiffel',
-          perform: () => setLanguage('eiffel'),
+          perform: () => setLanguage('Eiffel'),
         },
         {
           icon: <FiCode />,
           text: 'Elm',
-          perform: () => setLanguage('elm'),
+          perform: () => setLanguage('Elm'),
         },
         {
           icon: <FiCode />,
           text: 'Erlang',
-          perform: () => setLanguage('erlang'),
+          perform: () => setLanguage('Erlang'),
         },
         {
           icon: <FiCode />,
           text: 'Esper',
-          perform: () => setLanguage('esper'),
+          perform: () => setLanguage('Esper'),
         },
         {
           icon: <FiCode />,
           text: 'eZ80',
-          perform: () => setLanguage('ez80'),
+          perform: () => setLanguage('eZ80'),
         },
         {
           icon: <FiCode />,
           text: 'F#',
-          perform: () => setLanguage('fSharp'),
+          perform: () => setLanguage('F#'),
         },
         {
           icon: <FiCode />,
           text: 'Factor',
-          perform: () => setLanguage('factor'),
+          perform: () => setLanguage('Factor'),
         },
         {
           icon: <FiCode />,
           text: 'FCL',
-          perform: () => setLanguage('fcl'),
+          perform: () => setLanguage('FCL'),
         },
         {
           icon: <FiCode />,
           text: 'Forth',
-          perform: () => setLanguage('forth'),
+          perform: () => setLanguage('Forth'),
         },
         {
           icon: <FiCode />,
           text: 'Fortran',
-          perform: () => setLanguage('fortran'),
+          perform: () => setLanguage('Fortran'),
         },
         {
           icon: <FiCode />,
           text: 'Gas',
-          perform: () => setLanguage('gas'),
+          perform: () => setLanguage('Gas'),
         },
         {
           icon: <FiCode />,
           text: 'Gas ARM',
-          perform: () => setLanguage('gasArm'),
+          perform: () => setLanguage('Gas ARM'),
         },
         {
           icon: <FiCode />,
           text: 'Gherkin',
-          perform: () => setLanguage('gherkin'),
+          perform: () => setLanguage('Gherkin'),
         },
         {
           icon: <FiCode />,
           text: 'Go',
-          perform: () => setLanguage('go'),
+          perform: () => setLanguage('Go'),
         },
         {
           icon: <FiCode />,
           text: 'GraphQL (gql)',
-          perform: () => setLanguage('gql'),
+          perform: () => setLanguage('GraphQL (gql)'),
         },
         {
           icon: <FiCode />,
           text: 'Groovy',
-          perform: () => setLanguage('groovy'),
+          perform: () => setLanguage('Groovy'),
         },
         {
           icon: <FiCode />,
           text: 'GPSQL',
-          perform: () => setLanguage('gpsql'),
+          perform: () => setLanguage('GPSQL'),
         },
         {
           icon: <FiCode />,
           text: 'Haskell',
-          perform: () => setLanguage('haskell'),
+          perform: () => setLanguage('Haskell'),
         },
         {
           icon: <FiCode />,
           text: 'Haxe',
-          perform: () => setLanguage('haxe'),
+          perform: () => setLanguage('Haxe'),
         },
         {
           icon: <FiCode />,
           text: 'Hive',
-          perform: () => setLanguage('hive'),
+          perform: () => setLanguage('Hive'),
         },
         {
           icon: <FiCode />,
           text: 'HXML',
-          perform: () => setLanguage('hxml'),
+          perform: () => setLanguage('HXML'),
         },
         {
           icon: <FiCode />,
           text: 'HTML',
-          perform: () => setLanguage('html'),
+          perform: () => setLanguage('HTML'),
         },
         {
           icon: <FiCode />,
           text: 'HTTP',
-          perform: () => setLanguage('http'),
+          perform: () => setLanguage('HTTP'),
         },
         {
           icon: <FiCode />,
           text: 'IDL',
-          perform: () => setLanguage('idl'),
+          perform: () => setLanguage('IDL'),
         },
         {
           icon: <FiCode />,
           text: 'Java',
-          perform: () => setLanguage('java'),
+          perform: () => setLanguage('Java'),
         },
         {
           icon: <FiCode />,
           text: 'JavaScript',
-          perform: () => setLanguage('javascript'),
+          perform: () => setLanguage('JavaScript'),
         },
         {
           icon: <FiCode />,
           text: 'Jinja2',
-          perform: () => setLanguage('jinja2'),
+          perform: () => setLanguage('Jinja2'),
         },
         {
           icon: <FiCode />,
           text: 'JSON',
-          perform: () => setLanguage('json'),
+          perform: () => setLanguage('JSON'),
         },
         {
           icon: <FiCode />,
           text: 'JSON-LD',
-          perform: () => setLanguage('jsonld'),
+          perform: () => setLanguage('JSON-LD'),
         },
         {
           icon: <FiCode />,
           text: 'JSX',
-          perform: () => setLanguage('jsx'),
+          perform: () => setLanguage('JSX'),
         },
         {
           icon: <FiCode />,
           text: 'Julia',
-          perform: () => setLanguage('julia'),
+          perform: () => setLanguage('Julia'),
         },
         {
           icon: <FiCode />,
           text: 'Kotlin',
-          perform: () => setLanguage('kotlin'),
+          perform: () => setLanguage('Kotlin'),
         },
         {
           icon: <FiCode />,
           text: 'LESS',
-          perform: () => setLanguage('less'),
+          perform: () => setLanguage('LESS'),
         },
         {
           icon: <FiCode />,
           text: 'LiveScript',
-          perform: () => setLanguage('livescript'),
+          perform: () => setLanguage('LiveScript'),
         },
         {
           icon: <FiCode />,
           text: 'Lua',
-          perform: () => setLanguage('lua'),
+          perform: () => setLanguage('Lua'),
         },
         {
           icon: <FiCode />,
           text: 'MariaDB SQL',
-          perform: () => setLanguage('mariasql'),
+          perform: () => setLanguage('MariaDB SQL'),
         },
         {
           icon: <FiCode />,
           text: 'Markdown',
-          perform: () => setLanguage('markdown'),
+          perform: () => setLanguage('Markdown'),
         },
         {
           icon: <FiCode />,
           text: 'Mathematica',
-          perform: () => setLanguage('mathematica'),
+          perform: () => setLanguage('Mathematica'),
         },
         {
           icon: <FiCode />,
@@ -423,37 +434,37 @@ const Palette: FC = () => {
         {
           icon: <FiCode />,
           text: 'mIRC',
-          perform: () => setLanguage('mirc'),
+          perform: () => setLanguage('mIRC'),
         },
         {
           icon: <FiCode />,
           text: 'Modelica',
-          perform: () => setLanguage('modelica'),
+          perform: () => setLanguage('Modelica'),
         },
         {
           icon: <FiCode />,
           text: 'MscGen',
-          perform: () => setLanguage('mscgen'),
+          perform: () => setLanguage('MscGen'),
         },
         {
           icon: <FiCode />,
           text: 'MsGenny',
-          perform: () => setLanguage('msgenny'),
+          perform: () => setLanguage('MsGenny'),
         },
         {
           icon: <FiCode />,
           text: 'MSSQL',
-          perform: () => setLanguage('mssql'),
+          perform: () => setLanguage('MSSQL'),
         },
         {
           icon: <FiCode />,
           text: 'MUMPS',
-          perform: () => setLanguage('mumps'),
+          perform: () => setLanguage('Mumps'),
         },
         {
           icon: <FiCode />,
           text: 'MySQL',
-          perform: () => setLanguage('mysql'),
+          perform: () => setLanguage('MySQL'),
         },
         {
           icon: <FiCode />,
@@ -468,22 +479,22 @@ const Palette: FC = () => {
         {
           icon: <FiCode />,
           text: 'NSIS',
-          perform: () => setLanguage('nsis'),
+          perform: () => setLanguage('NSIS'),
         },
         {
           icon: <FiCode />,
           text: 'NTriples',
-          perform: () => setLanguage('ntriples'),
+          perform: () => setLanguage('NTriples'),
         },
         {
           icon: <FiCode />,
           text: 'Objective-C',
-          perform: () => setLanguage('objectiveC'),
+          perform: () => setLanguage('Objective-C'),
         },
         {
           icon: <FiCode />,
           text: 'Objective-C++',
-          perform: () => setLanguage('objectiveCpp'),
+          perform: () => setLanguage('Objective C++'),
         },
         {
           icon: <FiCode />,
@@ -493,112 +504,112 @@ const Palette: FC = () => {
         {
           icon: <FiCode />,
           text: 'Octave',
-          perform: () => setLanguage('octave'),
+          perform: () => setLanguage('Octave'),
         },
         {
           icon: <FiCode />,
           text: 'Oz',
-          perform: () => setLanguage('oz'),
+          perform: () => setLanguage('Oz'),
         },
         {
           icon: <FiCode />,
           text: 'Pascal',
-          perform: () => setLanguage('pascal'),
+          perform: () => setLanguage('Pascal'),
         },
         {
           icon: <FiCode />,
           text: 'Perl',
-          perform: () => setLanguage('perl'),
+          perform: () => setLanguage('Perl'),
         },
         {
           icon: <FiCode />,
           text: 'PostgreSQL',
-          perform: () => setLanguage('pgsql'),
+          perform: () => setLanguage('PostgreSQL'),
         },
         {
           icon: <FiCode />,
           text: 'PHP',
-          perform: () => setLanguage('php'),
+          perform: () => setLanguage('PHP'),
         },
         {
           icon: <FiCode />,
           text: 'Pig',
-          perform: () => setLanguage('pig'),
+          perform: () => setLanguage('Pig'),
         },
         {
           icon: <FiCode />,
           text: 'PLSQL',
-          perform: () => setLanguage('plsql'),
+          perform: () => setLanguage('PLSQL'),
         },
         {
           icon: <FiCode />,
           text: 'PowerShell',
-          perform: () => setLanguage('powershell'),
+          perform: () => setLanguage('PowerShell'),
         },
         {
           icon: <FiCode />,
           text: 'Properties Files',
-          perform: () => setLanguage('properties'),
+          perform: () => setLanguage('Properties'),
         },
         {
           icon: <FiCode />,
           text: 'ProtoBuf',
-          perform: () => setLanguage('protobuf'),
+          perform: () => setLanguage('Protobuf'),
         },
         {
           icon: <FiCode />,
           text: 'Python',
-          perform: () => setLanguage('python'),
+          perform: () => setLanguage('Python'),
         },
         {
           icon: <FiCode />,
           text: 'Q',
-          perform: () => setLanguage('q'),
+          perform: () => setLanguage('Q'),
         },
         {
           icon: <FiCode />,
           text: 'R',
-          perform: () => setLanguage('r'),
+          perform: () => setLanguage('R'),
         },
         {
           icon: <FiCode />,
           text: 'RPM Changes',
-          perform: () => setLanguage('rpmChanges'),
+          perform: () => setLanguage('RPM Changes'),
         },
         {
           icon: <FiCode />,
-          text: 'RPM Spec',
-          perform: () => setLanguage('rpmSpec'),
+          text: 'RPM',
+          perform: () => setLanguage('RPM'),
         },
         {
           icon: <FiCode />,
           text: 'Ruby',
-          perform: () => setLanguage('ruby'),
+          perform: () => setLanguage('Ruby'),
         },
         {
           icon: <FiCode />,
           text: 'Rust',
-          perform: () => setLanguage('rust'),
+          perform: () => setLanguage('Rust'),
         },
         {
           icon: <FiCode />,
           text: 'SAS',
-          perform: () => setLanguage('sas'),
+          perform: () => setLanguage('Sas'),
         },
         {
           icon: <FiCode />,
           text: 'Sass',
-          perform: () => setLanguage('sass'),
+          perform: () => setLanguage('Sass'),
         },
         {
           icon: <FiCode />,
           text: 'Scala',
-          perform: () => setLanguage('scala'),
+          perform: () => setLanguage('Scala'),
         },
         {
           icon: <FiCode />,
           text: 'Scheme',
-          perform: () => setLanguage('scheme'),
+          perform: () => setLanguage('Scheme'),
         },
         {
           icon: <FiCode />,
@@ -613,182 +624,182 @@ const Palette: FC = () => {
         {
           icon: <FiCode />,
           text: 'Shell',
-          perform: () => setLanguage('shell'),
+          perform: () => setLanguage('Shell'),
         },
         {
           icon: <FiCode />,
           text: 'Sieve',
-          perform: () => setLanguage('sieve'),
+          perform: () => setLanguage('Sieve'),
         },
         {
           icon: <FiCode />,
           text: 'Smalltalk',
-          perform: () => setLanguage('smalltalk'),
+          perform: () => setLanguage('Smalltalk'),
         },
         {
           icon: <FiCode />,
           text: 'SML',
-          perform: () => setLanguage('sml'),
+          perform: () => setLanguage('SML'),
         },
         {
           icon: <FiCode />,
           text: 'Solr',
-          perform: () => setLanguage('solr'),
+          perform: () => setLanguage('Solr'),
         },
         {
           icon: <FiCode />,
           text: 'SparkSQL',
-          perform: () => setLanguage('sparkSQL'),
+          perform: () => setLanguage('SparkSQL'),
         },
         {
           icon: <FiCode />,
           text: 'SPARQL',
-          perform: () => setLanguage('sparql'),
+          perform: () => setLanguage('SPARQL'),
         },
         {
           icon: <FiCode />,
           text: 'Spreadsheet',
-          perform: () => setLanguage('spreadsheet'),
+          perform: () => setLanguage('Spreadsheet'),
         },
         {
           icon: <FiCode />,
           text: 'Stylus',
-          perform: () => setLanguage('stylus'),
+          perform: () => setLanguage('Stylus'),
         },
         {
           icon: <FiCode />,
           text: 'SQL',
-          perform: () => setLanguage('sql'),
+          perform: () => setLanguage('SQL'),
         },
         {
           icon: <FiCode />,
           text: 'SQLite',
-          perform: () => setLanguage('sqlite'),
+          perform: () => setLanguage('SQLite'),
         },
         {
           icon: <FiCode />,
           text: 'Squirrel',
-          perform: () => setLanguage('squirrel'),
+          perform: () => setLanguage('Squirrel'),
         },
         {
           icon: <FiCode />,
           text: 'sTeX',
-          perform: () => setLanguage('stex'),
+          perform: () => setLanguage('sTeX'),
         },
         {
           icon: <FiCode />,
           text: 'sTeX Math',
-          perform: () => setLanguage('stexMath'),
+          perform: () => setLanguage('sTeX Math'),
         },
         {
           icon: <FiCode />,
           text: 'Swift',
-          perform: () => setLanguage('swift'),
+          perform: () => setLanguage('Swift'),
         },
         {
           icon: <FiCode />,
           text: 'Tcl',
-          perform: () => setLanguage('tcl'),
+          perform: () => setLanguage('Tcl'),
         },
         {
           icon: <FiCode />,
           text: 'Textile',
-          perform: () => setLanguage('textile'),
+          perform: () => setLanguage('Textile'),
         },
         {
           icon: <FiCode />,
           text: 'TiddlyWiki',
-          perform: () => setLanguage('tiddlyWiki'),
+          perform: () => setLanguage('TiddlyWiki'),
         },
         {
           icon: <FiCode />,
           text: 'Tiki',
-          perform: () => setLanguage('tiki'),
+          perform: () => setLanguage('Tiki'),
         },
         {
           icon: <FiCode />,
           text: 'TLV',
-          perform: () => setLanguage('tlv'),
+          perform: () => setLanguage('TLV'),
         },
         {
           icon: <FiCode />,
           text: 'TOML',
-          perform: () => setLanguage('toml'),
+          perform: () => setLanguage('TOML'),
         },
         {
           icon: <FiCode />,
           text: 'troff',
-          perform: () => setLanguage('troff'),
+          perform: () => setLanguage('Troff'),
         },
         {
           icon: <FiCode />,
           text: 'TSX',
-          perform: () => setLanguage('tsx'),
+          perform: () => setLanguage('TSX'),
         },
         {
           icon: <FiCode />,
           text: 'TTCN',
-          perform: () => setLanguage('ttcn'),
+          perform: () => setLanguage('TTCN'),
         },
         {
           icon: <FiCode />,
           text: 'TTCN_CFG',
-          perform: () => setLanguage('ttcnCfg'),
+          perform: () => setLanguage('TTCN_CFG'),
         },
         {
           icon: <FiCode />,
           text: 'Turtle',
-          perform: () => setLanguage('turtle'),
+          perform: () => setLanguage('Turtle'),
         },
         {
           icon: <FiCode />,
           text: 'TypeScript',
-          perform: () => setLanguage('typescript'),
+          perform: () => setLanguage('TypeScript'),
         },
         {
           icon: <FiCode />,
           text: 'Visual Basic',
-          perform: () => setLanguage('vb'),
+          perform: () => setLanguage('Visual Basic'),
         },
         {
           icon: <FiCode />,
           text: 'VB.NET',
-          perform: () => setLanguage('vbScriptASP'),
+          perform: () => setLanguage('VB.NET'),
         },
         {
           icon: <FiCode />,
           text: 'VBScript',
-          perform: () => setLanguage('vbscript'),
+          perform: () => setLanguage('VBScript'),
         },
         {
           icon: <FiCode />,
           text: 'Velocity',
-          perform: () => setLanguage('velocity'),
+          perform: () => setLanguage('Velocity'),
         },
         {
           icon: <FiCode />,
           text: 'Verilog',
-          perform: () => setLanguage('verilog'),
+          perform: () => setLanguage('Verilog'),
         },
         {
           icon: <FiCode />,
           text: 'VHDL',
-          perform: () => setLanguage('vhdl'),
+          perform: () => setLanguage('VHDL'),
         },
         {
           icon: <FiCode />,
           text: 'Wast',
-          perform: () => setLanguage('wast'),
+          perform: () => setLanguage('WAST'),
         },
         {
           icon: <FiCode />,
           text: 'Web IDL',
-          perform: () => setLanguage('webIDL'),
+          perform: () => setLanguage('Web IDL'),
         },
         {
           icon: <FiCode />,
           text: 'XML',
-          perform: () => setLanguage('xml'),
+          perform: () => setLanguage('XML'),
         },
         {
           icon: <FiCode />,
@@ -798,35 +809,127 @@ const Palette: FC = () => {
         {
           icon: <FiCode />,
           text: 'Xu',
-          perform: () => setLanguage('xu'),
+          perform: () => setLanguage('Xu'),
         },
         {
           icon: <FiCode />,
           text: 'Yacas',
-          perform: () => setLanguage('yacas'),
+          perform: () => setLanguage('Yacas'),
         },
         {
           icon: <FiCode />,
           text: 'YAML',
-          perform: () => setLanguage('yaml'),
+          perform: () => setLanguage('YAML'),
         },
         {
           icon: <FiCode />,
           text: 'Z80',
-          perform: () => setLanguage('z80'),
+          perform: () => setLanguage('Z80'),
         },
       ],
     },
   ]
 
+  const expiresIn: Command[] = [
+    {
+      category: 'Options',
+      commands: [
+        {
+          text: 'Never',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.NEVER),
+        },
+        {
+          text: 'One Hour',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.ONE_HOUR),
+        },
+        {
+          text: 'Two Hours',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.TWO_DAYS),
+        },
+        {
+          text: 'Ten Hours',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.TEN_HOURS),
+        },
+        {
+          text: 'One Day',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.ONE_DAY),
+        },
+        {
+          text: 'Two Days',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.TWO_DAYS),
+        },
+        {
+          text: 'One Week',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.ONE_WEEK),
+        },
+        {
+          text: 'One Month',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.ONE_MONTH),
+        },
+        {
+          text: 'One Year',
+          icon: <FiClock />,
+          perform: () => setExpires(expires.ONE_YEAR),
+        },
+      ],
+    },
+  ]
+
+  const editSlug: Command[] = [
+    {
+      category: 'Options',
+      commands: [
+        {
+          text: 'Cancel',
+          icon: <FiX />,
+          perform: () => setOpen(0),
+        },
+        {
+          text: 'Back',
+          icon: <FiArrowLeft />,
+          perform: () => setOpen(1),
+        },
+      ],
+    },
+  ]
+
+  useEffect(() => {
+    if (open === 3) console.log(input)
+  }, [open, input])
+
   const [mainCommands] = useCommands(main)
   const [languageCommands] = useCommands(langs)
+  const [expiresCommands] = useCommands(expiresIn)
+  const [editSlugCommands] = useCommands(editSlug)
 
   if (!mounted) return null
   return (
     <>
       <CommandMenu commands={mainCommands} index={1} main />
-      <CommandMenu commands={languageCommands} index={2} />
+      <CommandMenu
+        commands={languageCommands}
+        index={2}
+        placeholder='Language...'
+      />
+      <CommandMenu
+        commands={expiresCommands}
+        index={3}
+        placeholder='Expires In...'
+      />
+      <CommandMenu
+        commands={editSlugCommands}
+        index={5}
+        placeholder='Custom slug...'
+        preventSearch
+      />
     </>
   )
 }
