@@ -9,7 +9,7 @@ import { useTheme } from 'next-themes'
 export const meta = {
   root: 'https://snip.au',
   title: 'snip',
-  description: '🚀 A new kind of Pastebin',
+  description: '🌀 The gamma variant of Pastebin',
   image: 'https://snip.au/banner.png',
   type: 'website',
 }
