@@ -14,7 +14,7 @@ const Nav: FC = () => {
         </h1>
       </Link>
       <button
-        className='bg-white shadow-2xl text-black dark:bg-gray-800 transition dark:hover:bg-gray-700 dark:text-white w-12 h-12 rounded-lg flex justify-center text-xl items-center'
+        className='bg-white shadow-2xl dark:shadow-none text-black dark:bg-gray-800 transition hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white w-12 h-12 rounded-lg flex justify-center text-xl items-center'
         onClick={() => setOpen(1)}
       >
         <FiCommand size={25} strokeWidth={1.5} />

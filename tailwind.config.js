@@ -30,6 +30,9 @@ module.exports = {
           900: '#111111',
         },
       },
+      boxShadow: {
+        custom: '0px 10px 50px 0px #00000010',
+      },
       width: {
         40: '40vw',
         60: '60vw',

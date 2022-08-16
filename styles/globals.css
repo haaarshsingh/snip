@@ -27,5 +27,5 @@ button {
 }
 
 .interactive {
-  @apply hover:bg-gray-700 transition cursor-pointer;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-700 transition cursor-pointer;
 }
