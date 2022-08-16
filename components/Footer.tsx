@@ -5,13 +5,13 @@ import { motion } from 'framer-motion'
 const Footer: FC = () => {
   return (
     <footer className='w-full flex justify-center my-24'>
-      <p className='text-sm text-gray-600 flex items-center'>
+      <p className='text-sm text-gray-300 dark:text-gray-600 flex items-center'>
         Built by
         <motion.a
           href='https://hxrsh.in'
           target='_blank'
           rel='noreferrer'
-          className='text-white flex items-center mx-[0px] bg-transparent hover:bg-gray-800 p-[6px] rounded-full transition-colors'
+          className='text-black dark:text-white flex items-center mx-[0px] bg-transparent hover:bg-gray-200 dark:hover:bg-gray p-[6px] rounded-full transition-colors'
           whileTap={{ scale: 0.9 }}
         >
           <Image
@@ -28,7 +28,7 @@ const Footer: FC = () => {
           href='https://ibra.github.io'
           target='_blank'
           rel='noreferrer'
-          className='text-white flex items-center mx-[0px] bg-transparent hover:bg-gray-800 p-[6px] rounded-full transition-colors'
+          className='text-black dark:text-white flex items-center mx-[0px] bg-transparent hover:bg-gray-200 dark:hover:bg-gray-800 p-[6px] rounded-full transition-colors'
           whileTap={{ scale: 0.9 }}
         >
           <Image

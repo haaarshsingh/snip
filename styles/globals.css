@@ -21,3 +21,11 @@ input::placeholder {
 button {
   @apply select-none;
 }
+
+.readonly .cm-cursorLayer {
+  @apply hidden;
+}
+
+.interactive {
+  @apply hover:bg-gray-700 transition cursor-pointer;
+}

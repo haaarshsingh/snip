@@ -9,6 +9,9 @@ import {
   FiGithub,
   FiGitlab,
   FiLock,
+  FiMoon,
+  FiRefreshCcw,
+  FiSun,
   FiX,
 } from 'react-icons/fi'
 import { BiPaintRoll } from 'react-icons/bi'
@@ -17,6 +20,7 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import langs from '@lib/languages'
 import { expires } from '@typings/expires'
+import { nanoid } from 'nanoid'
 
 const Palette: FC<{
   setLanguage: Dispatch<SetStateAction<keyof typeof langs>>
@@ -58,6 +62,8 @@ const Palette: FC<{
         {
           icon: <FiLock />,
           text: 'Encrypt...',
+          perform: () => setOpen(4),
+          keywords: 'password',
         },
         {
           icon: <FiEdit2 />,
@@ -72,6 +78,8 @@ const Palette: FC<{
         {
           icon: <BiPaintRoll />,
           text: 'Theme...',
+          keywords: 'dark light mode themes',
+          perform: () => setOpen(6),
         },
         {
           icon: <FiCopy />,
@@ -901,16 +909,60 @@ const Palette: FC<{
     },
   ]
 
+  const editPassword: Command[] = [
+    {
+      category: 'Options',
+      commands: [
+        {
+          text: 'Generate Password',
+          icon: <FiRefreshCcw />,
+          perform: () => console.log(nanoid(20)),
+        },
+        {
+          text: 'Cancel',
+          icon: <FiX />,
+          perform: () => setOpen(0),
+        },
+        {
+          text: 'Back',
+          icon: <FiArrowLeft />,
+          perform: () => setOpen(1),
+        },
+      ],
+    },
+  ]
+
+  const themes: Command[] = [
+    {
+      category: 'Themes',
+      commands: [
+        {
+          icon: <FiSun />,
+          text: 'Light',
+          perform: () => setTheme('light'),
+        },
+        {
+          icon: <FiMoon />,
+          text: 'Dark',
+          perform: () => setTheme('dark'),
+        },
+      ],
+    },
+  ]
+
   useEffect(() => {
-    if (open === 3) console.log(input)
+    if (open === 3 || open === 4) console.log(input)
   }, [open, input])
 
   const [mainCommands] = useCommands(main)
   const [languageCommands] = useCommands(langs)
   const [expiresCommands] = useCommands(expiresIn)
   const [editSlugCommands] = useCommands(editSlug)
+  const [editPasswordCommands] = useCommands(editPassword)
+  const [themeCommands] = useCommands(themes)
 
   if (!mounted) return null
+
   return (
     <>
       <CommandMenu commands={mainCommands} index={1} main />
@@ -925,9 +977,21 @@ const Palette: FC<{
         placeholder='Expires In...'
       />
       <CommandMenu
+        commands={editPasswordCommands}
+        index={4}
+        placeholder='Password...'
+        preventSearch
+      />
+      <CommandMenu
         commands={editSlugCommands}
         index={5}
         placeholder='Custom slug...'
+        preventSearch
+      />
+      <CommandMenu
+        commands={themeCommands}
+        index={6}
+        placeholder='Theme...'
         preventSearch
       />
     </>
