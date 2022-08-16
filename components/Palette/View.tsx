@@ -3,11 +3,13 @@ import { FC } from 'react'
 import {
   FiCode,
   FiCopy,
+  FiDownloadCloud,
   FiGithub,
   FiGitlab,
   FiMoon,
   FiPlus,
   FiShare,
+  FiShare2,
   FiSun,
 } from 'react-icons/fi'
 import { BiPaintRoll } from 'react-icons/bi'
@@ -43,16 +45,25 @@ const Palette: FC<{ snip: Snip }> = ({ snip }) => {
         {
           icon: <FiPlus />,
           text: 'New Snip',
-          perform: () => setOpen(2),
+          href: 'https://snip.au/',
         },
         {
           icon: <FiCopy />,
           text: 'Copy Snip',
-          perform: () => setOpen(3),
+          perform: () => navigator.clipboard.writeText(snip.code),
         },
         {
-          icon: <FiShare />,
+          icon: <FiShare2 />,
           text: 'Copy URL',
+          perform: () =>
+            navigator.clipboard.writeText(`https://snip.au/${snip.slug}`),
+        },
+        {
+          icon: <FiDownloadCloud />,
+          text: 'Download Snip',
+          href: `data:application/octet-stream,${encodeURIComponent(
+            snip.code
+          )}`,
         },
       ],
     },
