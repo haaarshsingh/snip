@@ -9,7 +9,7 @@ import { useTheme } from 'next-themes'
 export const meta = {
   root: 'https://snip.au',
   title: 'snip',
-  description: '🌀 The gamma variant of Pastebin',
+  description: 'A free and open-source tool for sharing online code snippets.',
   image: 'https://snip.au/banner.png',
   type: 'website',
 }
@@ -47,7 +47,7 @@ const Wrapper: FC<{
         <title>{title ? title : meta.title}</title>
         <link
           rel='icon'
-          href='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>'
+          href='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌀</text></svg>'
         />
         <meta name='robots' content='follow, index' />
         <meta

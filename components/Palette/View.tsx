@@ -6,17 +6,19 @@ import {
   FiDownloadCloud,
   FiGithub,
   FiGitlab,
+  FiLogOut,
   FiMoon,
   FiPlus,
-  FiShare,
   FiShare2,
   FiSun,
+  FiUser,
 } from 'react-icons/fi'
 import { BiPaintRoll } from 'react-icons/bi'
 import { useTheme } from 'next-themes'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import type { Snip } from '@typings/snip'
+import supabase from '@lib/supabase'
 
 const Palette: FC<{ snip: Snip }> = ({ snip }) => {
   const [input, setInput, open, setOpen] = useKmenu()
@@ -25,17 +27,32 @@ const Palette: FC<{ snip: Snip }> = ({ snip }) => {
   useEffect(() => setMounted(true), [])
   const { setTheme } = useTheme()
 
+  const user = supabase.auth.user()
+
   const main: Command[] = [
     {
       category: 'Account',
       commands: [
         {
-          icon: <FiGithub />,
-          text: 'Continue With GitHub',
+          icon: user ? <FiUser /> : <FiGithub />,
+          text: user ? 'View Snips' : 'Continue With GitHub',
+          perform: user
+            ? undefined
+            : async () =>
+                await supabase.auth.signIn({
+                  provider: 'github',
+                }),
+          href: user ? `/user/${user?.id}` : undefined,
         },
         {
-          icon: <FiGitlab />,
-          text: 'Continue With GitLab',
+          icon: user ? <FiLogOut /> : <FiGitlab />,
+          text: user ? 'Logout' : 'Continue With GitLab',
+          perform: user
+            ? () => supabase.auth.signOut()
+            : async () =>
+                await supabase.auth.signIn({
+                  provider: 'gitlab',
+                }),
         },
       ],
     },

@@ -9,9 +9,11 @@ import {
   FiGithub,
   FiGitlab,
   FiLock,
+  FiLogOut,
   FiMoon,
   FiRefreshCcw,
   FiSun,
+  FiUser,
   FiX,
 } from 'react-icons/fi'
 import { BiPaintRoll } from 'react-icons/bi'
@@ -21,6 +23,7 @@ import { useState } from 'react'
 import langs from '@lib/languages'
 import { expires } from '@typings/expires'
 import { nanoid } from 'nanoid'
+import supabase from '@lib/supabase'
 
 const Palette: FC<{
   setLanguage: Dispatch<SetStateAction<keyof typeof langs>>
@@ -32,17 +35,32 @@ const Palette: FC<{
   useEffect(() => setMounted(true), [])
   const { theme, setTheme } = useTheme()
 
+  const user = supabase.auth.user()
+
   const main: Command[] = [
     {
       category: 'Account',
       commands: [
         {
-          icon: <FiGithub />,
-          text: 'Continue With GitHub',
+          icon: user ? <FiUser /> : <FiGithub />,
+          text: user ? 'View Snips' : 'Continue With GitHub',
+          perform: user
+            ? undefined
+            : async () =>
+                await supabase.auth.signIn({
+                  provider: 'github',
+                }),
+          href: user ? `/user/${user?.id}` : undefined,
         },
         {
-          icon: <FiGitlab />,
-          text: 'Continue With GitLab',
+          icon: user ? <FiLogOut /> : <FiGitlab />,
+          text: user ? 'Logout' : 'Continue With GitLab',
+          perform: user
+            ? () => supabase.auth.signOut()
+            : async () =>
+                await supabase.auth.signIn({
+                  provider: 'gitlab',
+                }),
         },
       ],
     },
