@@ -11,7 +11,7 @@ const Footer: FC = () => {
           href='https://hxrsh.in'
           target='_blank'
           rel='noreferrer'
-          className='text-black dark:text-white flex items-center mx-[0px] bg-transparent hover:bg-gray-200 dark:hover:bg-gray p-[6px] rounded-full transition-colors'
+          className='text-black dark:text-white flex items-center mx-[0px] bg-transparent hover:bg-gray-200 dark:hover:bg-gray-800 p-[6px] rounded-full transition-colors'
           whileTap={{ scale: 0.9 }}
         >
           <Image
