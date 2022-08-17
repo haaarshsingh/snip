@@ -11,6 +11,7 @@ import {
   FiLock,
   FiLogOut,
   FiMoon,
+  FiPlus,
   FiRefreshCcw,
   FiSun,
   FiUser,
@@ -19,22 +20,20 @@ import {
 import { BiPaintRoll } from 'react-icons/bi'
 import { useTheme } from 'next-themes'
 import { useEffect } from 'react'
-import { useState } from 'react'
 import langs from '@lib/languages'
 import { expires } from '@typings/expires'
 import { nanoid } from 'nanoid'
 import supabase from '@lib/supabase'
 
 const Palette: FC<{
+  create: () => void
+  setPassword: Dispatch<SetStateAction<string | undefined>>
+  setSlug: Dispatch<SetStateAction<string>>
   setLanguage: Dispatch<SetStateAction<keyof typeof langs>>
   setExpires: Dispatch<SetStateAction<expires>>
-}> = ({ setLanguage, setExpires }) => {
+}> = ({ create, setPassword, setSlug, setLanguage, setExpires }) => {
   const [input, setInput, open, setOpen] = useKmenu()
-
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
   const { theme, setTheme } = useTheme()
-
   const user = supabase.auth.user()
 
   const main: Command[] = [
@@ -67,6 +66,11 @@ const Palette: FC<{
     {
       category: 'Utility',
       commands: [
+        {
+          icon: <FiPlus />,
+          text: 'Create Snip',
+          perform: create,
+        },
         {
           icon: <FiCode />,
           text: 'Language...',
@@ -914,14 +918,14 @@ const Palette: FC<{
       category: 'Options',
       commands: [
         {
-          text: 'Cancel',
-          icon: <FiX />,
-          perform: () => setOpen(0),
-        },
-        {
           text: 'Back',
           icon: <FiArrowLeft />,
           perform: () => setOpen(1),
+        },
+        {
+          text: 'Cancel',
+          icon: <FiX />,
+          perform: () => setOpen(0),
         },
       ],
     },
@@ -932,19 +936,19 @@ const Palette: FC<{
       category: 'Options',
       commands: [
         {
+          text: 'Back',
+          icon: <FiArrowLeft />,
+          perform: () => setOpen(1),
+        },
+        {
           text: 'Generate Password',
           icon: <FiRefreshCcw />,
-          perform: () => console.log(nanoid(20)),
+          perform: () => setPassword(nanoid(20)),
         },
         {
           text: 'Cancel',
           icon: <FiX />,
           perform: () => setOpen(0),
-        },
-        {
-          text: 'Back',
-          icon: <FiArrowLeft />,
-          perform: () => setOpen(1),
         },
       ],
     },
@@ -969,8 +973,12 @@ const Palette: FC<{
   ]
 
   useEffect(() => {
-    if (open === 3 || open === 4) console.log(input)
-  }, [open, input])
+    if (open === 4) setPassword(input)
+  }, [open, input, setPassword])
+
+  useEffect(() => {
+    if (open === 5) setSlug(input)
+  }, [open, input, setSlug])
 
   const [mainCommands] = useCommands(main)
   const [languageCommands] = useCommands(langs)
@@ -978,8 +986,6 @@ const Palette: FC<{
   const [editSlugCommands] = useCommands(editSlug)
   const [editPasswordCommands] = useCommands(editPassword)
   const [themeCommands] = useCommands(themes)
-
-  if (!mounted) return null
 
   return (
     <>
@@ -997,13 +1003,13 @@ const Palette: FC<{
       <CommandMenu
         commands={editPasswordCommands}
         index={4}
-        placeholder='Password...'
+        placeholder='New Password...'
         preventSearch
       />
       <CommandMenu
         commands={editSlugCommands}
         index={5}
-        placeholder='Custom slug...'
+        placeholder='New slug...'
         preventSearch
       />
       <CommandMenu

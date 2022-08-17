@@ -79,7 +79,7 @@ const Wrapper: FC<{
         dimensions={{ sectionHeight: 36 }}
       >
         <div className='flex flex-col items-center'>
-          <div className='w-40 mt-10'>
+          <div className='max-w-800 w-90 lg:w-70 xl:w-60 2xl:w-40 mt-10'>
             <Navbar />
             <main id='main'>{children}</main>
             <Footer />

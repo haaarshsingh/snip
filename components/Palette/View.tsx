@@ -15,18 +15,12 @@ import {
 } from 'react-icons/fi'
 import { BiPaintRoll } from 'react-icons/bi'
 import { useTheme } from 'next-themes'
-import { useEffect } from 'react'
-import { useState } from 'react'
 import supabase from '@lib/supabase'
 import { definitions } from '@typings/supabase'
 
 const Palette: FC<{ snip: definitions['snips'] }> = ({ snip }) => {
   const [input, setInput, open, setOpen] = useKmenu()
-
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
   const { setTheme } = useTheme()
-
   const user = supabase.auth.user()
 
   const main: Command[] = [
@@ -126,8 +120,6 @@ const Palette: FC<{ snip: definitions['snips'] }> = ({ snip }) => {
 
   const [mainCommands] = useCommands(main)
   const [themeCommands] = useCommands(themes)
-
-  if (!mounted) return null
 
   return (
     <>

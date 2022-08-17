@@ -3,7 +3,7 @@ import { FiEdit2, FiLock } from 'react-icons/fi'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useKmenu } from 'kmenu'
 
-const Options: FC = () => {
+const Options: FC<{ create: () => void }> = ({ create }) => {
   const options = [
     { text: 'Encrypt Snip', icon: <FiLock />, index: 4 },
     { text: 'Edit Slug', icon: <FiEdit2 />, index: 5 },
@@ -17,7 +17,10 @@ const Options: FC = () => {
         ))}
       </div>
       <div>
-        <button className='text-base bg-gray-200 dark:bg-gray-700 hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'>
+        <button
+          className='text-base bg-gray-200 dark:bg-gray-700 hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'
+          onClick={create}
+        >
           Create Snip
         </button>
       </div>
