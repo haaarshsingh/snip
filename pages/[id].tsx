@@ -2,10 +2,10 @@ import Editor from '@components/Editor'
 import Palette from '@components/Palette/View'
 import Wrapper from '@components/Wrapper'
 import { expires } from '@typings/expires'
-import { Snip } from '@typings/snip'
+import { definitions } from '@typings/supabase'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 
-const Home: NextPage<{ snip: Snip }> = ({ snip }) => {
+const Home: NextPage<{ snip: definitions['snips'] }> = ({ snip }) => {
   return (
     <Wrapper>
       <Palette snip={snip} />

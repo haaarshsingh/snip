@@ -5,14 +5,14 @@ import langs from '@lib/languages'
 import { useKmenu } from 'kmenu'
 import { FiClock, FiCode } from 'react-icons/fi'
 import { expires as ExpiresEnum } from '@typings/expires'
-import { Snip } from '@typings/snip'
 import { useTheme } from 'next-themes'
+import { definitions } from '@typings/supabase'
 
 const Form: FC<{
   language?: keyof typeof langs
   expires?: ExpiresEnum
   readOnly?: boolean
-  snip?: Snip
+  snip?: definitions['snips']
 }> = ({ language, expires, readOnly, snip }) => {
   const inputRef = useRef<ReactCodeMirrorRef>(null)
   const [input, setInput, open, setOpen] = useKmenu()
@@ -37,7 +37,9 @@ const Form: FC<{
               !readOnly && 'interactive'
             }`}
           >
-            {readOnly ? `Expires in ${snip?.expiresIn.toLowerCase()}` : expires}
+            {readOnly
+              ? `Expires in ${snip?.expires_in?.toLowerCase()}`
+              : expires}
             <FiClock className='ml-2' />
           </button>
         )}

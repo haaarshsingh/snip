@@ -17,10 +17,10 @@ import { BiPaintRoll } from 'react-icons/bi'
 import { useTheme } from 'next-themes'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import type { Snip } from '@typings/snip'
 import supabase from '@lib/supabase'
+import { definitions } from '@typings/supabase'
 
-const Palette: FC<{ snip: Snip }> = ({ snip }) => {
+const Palette: FC<{ snip: definitions['snips'] }> = ({ snip }) => {
   const [input, setInput, open, setOpen] = useKmenu()
 
   const [mounted, setMounted] = useState(false)
@@ -73,7 +73,7 @@ const Palette: FC<{ snip: Snip }> = ({ snip }) => {
           icon: <FiShare2 />,
           text: 'Copy URL',
           perform: () =>
-            navigator.clipboard.writeText(`https://snip.au/${snip.slug}`),
+            navigator.clipboard.writeText(`https://snip.au/${snip.id}`),
         },
         {
           icon: <FiDownloadCloud />,
