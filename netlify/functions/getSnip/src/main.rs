@@ -30,9 +30,10 @@ pub(crate) async fn my_handler(
     let client = Postgrest::new("https://araasnleificjyjflqml.supabase.co/rest/v1/")
     .insert_header("apikey", &env::var("SUPABASE_PUBLIC_ANON_KEY").unwrap());
 
-    let resp = client.from("snips")
-    .select("*")
+    let resp = client
+    .from("snips")
     .eq("id", event.query_string_parameters.first("id").unwrap())
+    .select("*")
     .execute().await?;
 
     let body = resp.text().await?;
