@@ -1,6 +1,6 @@
 [package]
 edition = "2018"
-name = "getSnip"
+name = "createSnip"
 version = "0.1.0"
 
 
