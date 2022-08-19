@@ -39,7 +39,6 @@ pub(crate) async fn my_handler(
                 body: Some(Body::Text("Missing required field [id]".to_owned())),
                 is_base64_encoded: Some(false),
             };
-    
             return Ok(resp)
         }
     }
