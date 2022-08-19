@@ -86,6 +86,7 @@ pub(crate) async fn my_handler(
         let resp = client.from("snips")
         .select("*")
         .eq("id", paste_id)
+        .delete()
         .execute().await?;
     }
 
