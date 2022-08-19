@@ -27,16 +27,17 @@ pub(crate) async fn my_handler(
     _ctx: Context,
 ) -> Result<ApiGatewayProxyResponse, Error> {
 
-    let paste_id ;
+    let paste_id: &str;
+    let user_id : &str;
 
     match event.query_string_parameters.first("id") {
-        Some(value) => {  paste_id = value }
+        Some(value) => { paste_id = value }
         None => {
             let resp = ApiGatewayProxyResponse {
                 status_code: 400,
                 headers: HeaderMap::new(),
                 multi_value_headers: HeaderMap::new(),
-                body: Some(Body::Text(r#"{ "statusCode": 400, "message": "Missing required query parameter [id]!" }"#.to_owned())),
+                body: Some(Body::Text("Missing required field [id]".to_owned())),
                 is_base64_encoded: Some(false),
             };
             return Ok(resp)
@@ -50,7 +51,14 @@ pub(crate) async fn my_handler(
     .select("*")
     .eq("id", paste_id)
     .execute().await?;
+
+    if event.headers["Auth"] == "sus" {
+        
+    }
+
     let body = resp.text().await?;
+
+    println!("{}",body);
 
     let resp = ApiGatewayProxyResponse {
             status_code: 200,

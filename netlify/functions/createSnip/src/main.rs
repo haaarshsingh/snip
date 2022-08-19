@@ -11,6 +11,7 @@ use std::env;
 #[tokio::main]
 async fn main() -> Result<(), Error> {
     SimpleLogger::new().with_level(LevelFilter::Info).init().unwrap();
+    dotenv().ok();
 
     let func = handler_fn(my_handler);
     lambda_runtime::run(func).await?;
@@ -23,7 +24,7 @@ pub(crate) async fn my_handler(event: ApiGatewayProxyRequest, _ctx: Context) -> 
 
     let resp = client
     .from("snips")
-    .insert(r#"[{"id":"blabla","code":"println!(\"hello world!\");"}]"#)
+    .insert(r#"[{"code":"println!(\"hello world!\");"}]"#)
     .execute().await?;
 
     let body = resp.text().await?;

@@ -1,6 +1,6 @@
 [package]
 edition = "2018"
-name = "getSnip"
+name = "deleteSnip"
 version = "0.1.0"
 
 [dependencies]
@@ -12,3 +12,4 @@ lambda_runtime = "0.6.0"
 log = "0.4.17"
 simple_logger = "1.16.0"
 tokio = "1.20.1"
+
