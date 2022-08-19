@@ -4,6 +4,7 @@ use http::header::HeaderMap;
 use lambda_runtime::{handler_fn, Context, Error};
 use postgrest::Postgrest;
 use dotenv::dotenv;
+use serde_json::Value;
 use std::env;
 
 use log::LevelFilter;
@@ -27,8 +28,10 @@ pub(crate) async fn my_handler(
     _ctx: Context,
 ) -> Result<ApiGatewayProxyResponse, Error> {
 
-    let paste_id: &str;
-    let user_id : &str;
+    let paste_id;
+
+    let mut request_user_id : &str = "empty";
+    let mut paste_user_id : &str = "empty";
 
     match event.query_string_parameters.first("id") {
         Some(value) => { paste_id = value }
@@ -37,7 +40,7 @@ pub(crate) async fn my_handler(
                 status_code: 400,
                 headers: HeaderMap::new(),
                 multi_value_headers: HeaderMap::new(),
-                body: Some(Body::Text("Missing required field [id]".to_owned())),
+                body: Some(Body::Text(r#"{ "statusCode": 400, "message": "Missing required query parameter [id]!" }"#.to_owned())),
                 is_base64_encoded: Some(false),
             };
             return Ok(resp)
@@ -52,13 +55,39 @@ pub(crate) async fn my_handler(
     .eq("id", paste_id)
     .execute().await?;
 
-    if event.headers["Auth"] == "sus" {
-        
+    let body = resp.text().await?;
+    let body_json: Value = serde_json::from_str(&body)?;
+    
+    if event.headers.contains_key("Authorization")
+    {
+        match event.headers["Authorization"].to_str() {
+            Ok(value) => { request_user_id = value }
+            Err(error) => { 
+                println!("{}", error)
+        } 
+    }
+    } else {
+        let resp = ApiGatewayProxyResponse {
+            status_code: 401,
+            headers: HeaderMap::new(),
+            multi_value_headers: HeaderMap::new(),
+            body: Some(Body::Text(r#"{ "statusCode": 401, "message": "No authorization header provided!" }"#.to_owned())),
+            is_base64_encoded: Some(false),
+        };
+        return Ok(resp)
+    }
+       
+    match body_json[0]["userId"].as_str() {
+        Some(_) => { paste_user_id = "" },
+        None => {},
     }
 
-    let body = resp.text().await?;
-
-    println!("{}",body);
+    if paste_user_id == request_user_id {
+        let resp = client.from("snips")
+        .select("*")
+        .eq("id", paste_id)
+        .execute().await?;
+    }
 
     let resp = ApiGatewayProxyResponse {
             status_code: 200,
