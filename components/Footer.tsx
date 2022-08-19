@@ -25,7 +25,7 @@ const Footer: FC = () => {
         </motion.a>
         and
         <motion.a
-          href='https://ibra.github.io'
+          href='https://github.com/ibra'
           target='_blank'
           rel='noreferrer'
           className='text-black dark:text-white flex items-center mx-[0px] bg-transparent hover:bg-gray-200 dark:hover:bg-gray-800 p-[6px] rounded-full transition-colors'
