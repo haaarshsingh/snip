@@ -27,23 +27,39 @@ pub(crate) async fn my_handler(
     _ctx: Context,
 ) -> Result<ApiGatewayProxyResponse, Error> {
 
+    let paste_id ;
+
+    match event.query_string_parameters.first("id") {
+        Some(value) => { paste_id = value }
+        None => {
+            let resp = ApiGatewayProxyResponse {
+                status_code: 400,
+                headers: HeaderMap::new(),
+                multi_value_headers: HeaderMap::new(),
+                body: Some(Body::Text("Missing required field [id]".to_owned())),
+                is_base64_encoded: Some(false),
+            };
+    
+            return Ok(resp)
+        }
+    }
+
     let client = Postgrest::new("https://araasnleificjyjflqml.supabase.co/rest/v1/")
     .insert_header("apikey", &env::var("SUPABASE_PUBLIC_ANON_KEY").unwrap());
 
     let resp = client.from("snips")
     .select("*")
-    .eq("id", event.query_string_parameters.first("id").unwrap())
+    .eq("id", paste_id)
     .execute().await?;
-
     let body = resp.text().await?;
 
     let resp = ApiGatewayProxyResponse {
-        status_code: 200,
-        headers: HeaderMap::new(),
-        multi_value_headers: HeaderMap::new(),
-        body: Some(Body::Text(body)),
-        is_base64_encoded: Some(false),
-    };
+            status_code: 200,
+            headers: HeaderMap::new(),
+            multi_value_headers: HeaderMap::new(),
+            body: Some(Body::Text(body)),
+            is_base64_encoded: Some(false),
+        };
 
     Ok(resp)
 }
