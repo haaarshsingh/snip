@@ -82,6 +82,9 @@ pub(crate) async fn my_handler(
         None => {},
     }
 
+    //todo: [VERY DANGEROUS] still need to handle if both snip_user_id and request_user_id are value "empty", 
+    // the case will still go through and delete the snip.
+    
     if snip_user_id == request_user_id {
         let resp = client.from("snips")
         .select("*")
