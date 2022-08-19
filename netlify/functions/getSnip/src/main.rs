@@ -27,10 +27,10 @@ pub(crate) async fn my_handler(
     _ctx: Context,
 ) -> Result<ApiGatewayProxyResponse, Error> {
 
-    let paste_id ;
+    let snip_id ;
 
     match event.query_string_parameters.first("id") {
-        Some(value) => {  paste_id = value }
+        Some(value) => {  snip_id = value }
         None => {
             let resp = ApiGatewayProxyResponse {
                 status_code: 400,
@@ -48,7 +48,7 @@ pub(crate) async fn my_handler(
 
     let resp = client.from("snips")
     .select("*")
-    .eq("id", paste_id)
+    .eq("id", snip_id)
     .execute().await?;
     let body = resp.text().await?;
 

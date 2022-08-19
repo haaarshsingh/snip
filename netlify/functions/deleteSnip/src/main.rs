@@ -28,13 +28,13 @@ pub(crate) async fn my_handler(
     _ctx: Context,
 ) -> Result<ApiGatewayProxyResponse, Error> {
 
-    let paste_id;
+    let snip_id;
 
     let mut request_user_id : &str = "empty";
-    let mut paste_user_id : &str = "empty";
+    let mut snip_user_id : &str = "empty";
 
     match event.query_string_parameters.first("id") {
-        Some(value) => { paste_id = value }
+        Some(value) => { snip_id = value }
         None => {
             let resp = ApiGatewayProxyResponse {
                 status_code: 400,
@@ -52,7 +52,7 @@ pub(crate) async fn my_handler(
 
     let resp = client.from("snips")
     .select("*")
-    .eq("id", paste_id)
+    .eq("id", snip_id)
     .execute().await?;
 
     let body = resp.text().await?;
@@ -78,14 +78,14 @@ pub(crate) async fn my_handler(
     }
        
     match body_json[0]["userId"].as_str() {
-        Some(_) => { paste_user_id = "" },
+        Some(_) => { snip_user_id = "" },
         None => {},
     }
 
-    if paste_user_id == request_user_id {
+    if snip_user_id == request_user_id {
         let resp = client.from("snips")
         .select("*")
-        .eq("id", paste_id)
+        .eq("id", snip_id)
         .delete()
         .execute().await?;
     }
