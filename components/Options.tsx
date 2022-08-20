@@ -1,7 +1,16 @@
-import { FC, ReactNode, useState } from 'react'
-import { FiEdit2, FiLock } from 'react-icons/fi'
+import { FC, ReactNode, useEffect, useState } from 'react'
+import {
+  FiCopy,
+  FiDownloadCloud,
+  FiEdit,
+  FiEdit2,
+  FiLock,
+  FiShare,
+  FiTrash,
+} from 'react-icons/fi'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useKmenu } from 'kmenu'
+import { definitions } from '@typings/supabase'
 
 const Options: FC<{ create: () => void }> = ({ create }) => {
   const options = [
@@ -28,8 +37,96 @@ const Options: FC<{ create: () => void }> = ({ create }) => {
   )
 }
 
+export const ViewOptions: FC<{
+  snip: definitions['snips']
+  owner: boolean
+}> = ({ snip, owner }) => {
+  // Avoid SVG hydration errors with Next.js
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return null
+
+  const options = [
+    {
+      text: 'Copy Snip',
+      icon: <FiCopy />,
+      perform: () => navigator.clipboard.writeText(snip.code),
+    },
+    {
+      text: 'Copy URL',
+      icon: <FiShare />,
+      perform: () =>
+        navigator.clipboard.writeText(`https://snip.place/${snip.id}`),
+    },
+    {
+      text: 'Download Snip',
+      icon: <FiDownloadCloud />,
+      perform: () =>
+        window.open(
+          `data:application/octet-stream,${encodeURIComponent(snip.code)}`
+        ),
+    },
+  ]
+
+  const ownerOptions = [
+    {
+      text: 'Edit Snip',
+      icon: <FiEdit />,
+      perform: () => window.open(`https://snip.place/edit/${snip.id}`),
+    },
+    {
+      text: 'Delete Snip',
+      icon: <FiTrash />,
+      index: 3,
+    },
+    {
+      text: 'Copy Snip',
+      icon: <FiCopy />,
+      perform: () => navigator.clipboard.writeText(snip.code),
+    },
+    {
+      text: 'Copy URL',
+      icon: <FiShare />,
+      perform: () =>
+        navigator.clipboard.writeText(`https://snip.place/${snip.id}`),
+    },
+    {
+      text: 'Download Snip',
+      icon: <FiDownloadCloud />,
+      perform: () =>
+        window.open(
+          `data:application/octet-stream,${encodeURIComponent(snip.code)}`
+        ),
+    },
+  ]
+
+  return (
+    <div className='mt-10 bg-white shadow-custom dark:bg-gray-800 flex items-center justify-between p-5 rounded-lg text-xl'>
+      <div className='flex items-center'>
+        {owner
+          ? ownerOptions.map((command, index) => (
+              <Option command={command} key={index} />
+            ))
+          : options.map((command, index) => (
+              <Option command={command} key={index} />
+            ))}
+      </div>
+      <div>
+        <button className='text-base bg-gray-200 dark:bg-gray-700 hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'>
+          New Snip
+        </button>
+      </div>
+    </div>
+  )
+}
+
 const Option: FC<{
-  command: { icon: ReactNode; text: string; index: number }
+  command: {
+    icon: ReactNode
+    text: string
+    index?: number
+    perform?: () => void
+  }
 }> = ({ command }) => {
   const [input, setInput, kmenu, setKmenu] = useKmenu()
   const [open, setOpen] = useState(false)
@@ -39,7 +136,11 @@ const Option: FC<{
       className='mx-2 text-gray-300 dark:text-gray-500 dark:hover:text-white hover:text-black transition-colors flex justify-center'
       onMouseOver={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
-      onClick={() => setKmenu(command.index)}
+      onClick={
+        typeof command.index === 'undefined'
+          ? command.perform
+          : () => setKmenu(command.index!)
+      }
     >
       <AnimatePresence>
         {open && (

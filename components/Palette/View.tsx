@@ -1,9 +1,11 @@
 import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
 import { FC } from 'react'
 import {
+  FiCheck,
   FiCode,
   FiCopy,
   FiDownloadCloud,
+  FiEdit,
   FiGithub,
   FiGitlab,
   FiLogOut,
@@ -11,17 +13,80 @@ import {
   FiPlus,
   FiShare2,
   FiSun,
+  FiTrash,
   FiUser,
+  FiX,
 } from 'react-icons/fi'
 import { BiPaintRoll } from 'react-icons/bi'
 import { useTheme } from 'next-themes'
 import supabase from '@lib/supabase'
 import { definitions } from '@typings/supabase'
+import { User } from '@supabase/supabase-js'
 
-const Palette: FC<{ snip: definitions['snips'] }> = ({ snip }) => {
+const Palette: FC<{ snip: definitions['snips']; user: User | null }> = ({
+  snip,
+  user,
+}) => {
   const [input, setInput, open, setOpen] = useKmenu()
   const { setTheme } = useTheme()
-  const user = supabase.auth.user()
+
+  const utilityCommands = [
+    {
+      icon: <FiPlus />,
+      text: 'New Snip',
+      href: 'https://snip.au/',
+    },
+    {
+      icon: <FiCopy />,
+      text: 'Copy Snip',
+      perform: () => navigator.clipboard.writeText(snip.code),
+    },
+    {
+      icon: <FiShare2 />,
+      text: 'Copy URL',
+      perform: () =>
+        navigator.clipboard.writeText(`https://snip.au/${snip.id}`),
+    },
+    {
+      icon: <FiDownloadCloud />,
+      text: 'Download Snip',
+      href: `data:application/octet-stream,${encodeURIComponent(snip.code)}`,
+    },
+  ]
+
+  const utilityCommandsOwner = [
+    {
+      icon: <FiEdit />,
+      text: 'Edit Snip',
+      href: `https://snip.place/edit/${snip.id}`,
+    },
+    {
+      icon: <FiTrash />,
+      text: 'Delete Snip',
+      perform: () => setOpen(3),
+    },
+    {
+      icon: <FiPlus />,
+      text: 'New Snip',
+      href: 'https://snip.place/',
+    },
+    {
+      icon: <FiCopy />,
+      text: 'Copy Snip',
+      perform: () => navigator.clipboard.writeText(snip.code),
+    },
+    {
+      icon: <FiShare2 />,
+      text: 'Copy URL',
+      perform: () =>
+        navigator.clipboard.writeText(`https://snip.au/${snip.id}`),
+    },
+    {
+      icon: <FiDownloadCloud />,
+      text: 'Download Snip',
+      href: `data:application/octet-stream,${encodeURIComponent(snip.code)}`,
+    },
+  ]
 
   const main: Command[] = [
     {
@@ -52,31 +117,8 @@ const Palette: FC<{ snip: definitions['snips'] }> = ({ snip }) => {
     },
     {
       category: 'Utility',
-      commands: [
-        {
-          icon: <FiPlus />,
-          text: 'New Snip',
-          href: 'https://snip.au/',
-        },
-        {
-          icon: <FiCopy />,
-          text: 'Copy Snip',
-          perform: () => navigator.clipboard.writeText(snip.code),
-        },
-        {
-          icon: <FiShare2 />,
-          text: 'Copy URL',
-          perform: () =>
-            navigator.clipboard.writeText(`https://snip.au/${snip.id}`),
-        },
-        {
-          icon: <FiDownloadCloud />,
-          text: 'Download Snip',
-          href: `data:application/octet-stream,${encodeURIComponent(
-            snip.code
-          )}`,
-        },
-      ],
+      commands:
+        user?.id === snip.user_id ? utilityCommandsOwner : utilityCommands,
     },
     {
       category: 'General',
@@ -118,13 +160,42 @@ const Palette: FC<{ snip: definitions['snips'] }> = ({ snip }) => {
     },
   ]
 
+  const confirm: Command[] = [
+    {
+      category: 'Options',
+      commands: [
+        {
+          icon: <FiCheck />,
+          text: 'Confirm',
+          perform: async () => {
+            const response = await fetch(`/api/snip_delete?id=${snip.id}`, {
+              method: 'DELETE',
+              headers: { Authorization: snip.user_id! },
+            })
+          },
+        },
+        {
+          icon: <FiX />,
+          text: 'Cancel',
+          perform: () => setOpen(0),
+        },
+      ],
+    },
+  ]
+
   const [mainCommands] = useCommands(main)
   const [themeCommands] = useCommands(themes)
+  const [confirmCommands] = useCommands(confirm)
 
   return (
     <>
       <CommandMenu commands={mainCommands} index={1} main />
       <CommandMenu commands={themeCommands} index={2} placeholder='Theme...' />
+      <CommandMenu
+        commands={confirmCommands}
+        index={3}
+        placeholder='Delete snip..?'
+      />
     </>
   )
 }
