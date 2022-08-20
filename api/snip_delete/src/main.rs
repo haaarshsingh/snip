@@ -61,8 +61,7 @@ pub(crate) async fn my_handler(
     let body = resp.text().await?;
     let body_json: Value = serde_json::from_str(&body)?;
     
-    if event.headers.contains_key("Authorization")
-    {
+    if event.headers.contains_key("Authorization") {
         match event.headers["Authorization"].to_str() {
             Ok(value) => { request_user_id = value.to_owned() }
             Err(error) => { 
@@ -102,13 +101,12 @@ pub(crate) async fn my_handler(
     // the case will still go through and delete the snip.
 
 
-    if snip_user_id.trim().is_empty()
-    {
+    if snip_user_id.trim().is_empty() {
         let resp = ApiGatewayProxyResponse {
             status_code: 403,
             headers: response_headers,
             multi_value_headers: HeaderMap::new(),
-            body: Some(Body::Text(r#"{ "statusCode": 403, "message": "Paste is not deleteable as it is not associated with an account!" }"#.to_owned())),
+            body: Some(Body::Text(r#"{ "statusCode": 403, "message": "Snip is not deleteable as it is not associated with an account!" }"#.to_owned())),
             is_base64_encoded: Some(false),
         };
 

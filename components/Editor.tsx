@@ -29,7 +29,10 @@ const Form: FC<{
           }`}
         >
           <FiCode className='mr-2' />
-          {language || snip?.language}
+          {typeof snip?.language === 'undefined' ||
+          typeof language === 'undefined'
+            ? 'Plain Text'
+            : language || snip?.language}
         </button>
         {!readOnly && (
           <button
@@ -50,7 +53,12 @@ const Form: FC<{
         height='700px'
         spellCheck='false'
         theme={theme === 'dark' ? dark : light}
-        extensions={[langs[language! || snip?.language]()]}
+        extensions={
+          typeof language === 'undefined' ||
+          typeof snip?.language === 'undefined'
+            ? undefined
+            : [langs[language || snip.language]()]
+        }
         basicSetup={{
           autocompletion: false,
           searchKeymap: false,
