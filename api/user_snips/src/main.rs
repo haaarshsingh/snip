@@ -29,12 +29,13 @@ pub(crate) async fn my_handler(
     let mut response_headers: HeaderMap = HeaderMap::new();
     response_headers.insert("Content-Type", "application/json".parse().unwrap());
 
-    let mut user_id: &str = "";
+    let mut user_id: String = "".to_owned();
 
     if event.headers.contains_key("Authorization") {
         match event.headers["Authorization"].to_str() {
             Ok(value) => {
-                user_id = value;
+                user_id = value.to_owned();
+                user_id = user_id.chars().skip("Bearer ".len()).collect();
             }
             Err(error) => {
                 println!("{}", error)
