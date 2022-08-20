@@ -11,6 +11,7 @@ import {
 import { AnimatePresence, motion } from 'framer-motion'
 import { useKmenu } from 'kmenu'
 import { definitions } from '@typings/supabase'
+import Link from 'next/link'
 
 const Options: FC<{ create: () => void }> = ({ create }) => {
   const options = [
@@ -112,9 +113,11 @@ export const ViewOptions: FC<{
             ))}
       </div>
       <div>
-        <button className='text-base bg-gray-200 dark:bg-gray-700 hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'>
-          New Snip
-        </button>
+        <Link href='/' passHref>
+          <a className='text-base bg-gray-200 dark:bg-gray-700 hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'>
+            New Snip
+          </a>
+        </Link>
       </div>
     </div>
   )
