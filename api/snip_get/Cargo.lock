@@ -188,20 +188,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "getSnip"
-version = "0.1.0"
-dependencies = [
- "aws_lambda_events",
- "dotenv",
- "http",
- "lambda_runtime",
- "log",
- "postgrest",
- "simple_logger",
- "tokio",
-]
-
-[[package]]
 name = "h2"
 version = "0.3.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -717,6 +703,20 @@ name = "slab"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f173ac3d1a7e3b28003f40de0b5ce7fe2710f9b9dc3fc38664cebee46b3b6527"
+
+[[package]]
+name = "snip_get"
+version = "0.1.0"
+dependencies = [
+ "aws_lambda_events",
+ "dotenv",
+ "http",
+ "lambda_runtime",
+ "log",
+ "postgrest",
+ "simple_logger",
+ "tokio",
+]
 
 [[package]]
 name = "socket2"
