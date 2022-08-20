@@ -77,7 +77,7 @@ pub(crate) async fn my_handler(
         return Ok(resp)
     }
        
-    match body_json[0]["userId"].as_str() {
+    match body_json[0]["user_id"].as_str() {
         Some(_) => { snip_user_id = "" },
         None => {},
     }
