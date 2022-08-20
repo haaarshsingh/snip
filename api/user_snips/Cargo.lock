@@ -117,20 +117,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "createSnip"
-version = "0.1.0"
-dependencies = [
- "aws_lambda_events",
- "dotenv",
- "http",
- "lambda_runtime",
- "log",
- "postgrest",
- "simple_logger",
- "tokio",
-]
-
-[[package]]
 name = "dotenv"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -178,9 +164,9 @@ checksum = "0402f765d8a89a26043b889b26ce3c4679d268fa6bb22cd7c6aad98340e179d1"
 
 [[package]]
 name = "futures-sink"
-version = "0.3.23"
+version = "0.3.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ca0bae1fe9752cf7fd9b0064c674ae63f97b37bc714d745cbde0afb7ec4e6765"
+checksum = "a57bead0ceff0d6dde8f465ecd96c9338121bb7717d3e7b108059531870c4282"
 
 [[package]]
 name = "futures-task"
@@ -714,12 +700,9 @@ dependencies = [
 
 [[package]]
 name = "slab"
-version = "0.4.7"
+version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4614a76b2a8be0058caa9dbbaf66d988527d86d003c11a94fbd335d7661edcef"
-dependencies = [
- "autocfg",
-]
+checksum = "f173ac3d1a7e3b28003f40de0b5ce7fe2710f9b9dc3fc38664cebee46b3b6527"
 
 [[package]]
 name = "socket2"
@@ -961,6 +944,20 @@ dependencies = [
  "idna",
  "matches",
  "percent-encoding",
+]
+
+[[package]]
+name = "user_snips"
+version = "0.1.0"
+dependencies = [
+ "aws_lambda_events",
+ "dotenv",
+ "http",
+ "lambda_runtime",
+ "log",
+ "postgrest",
+ "simple_logger",
+ "tokio",
 ]
 
 [[package]]

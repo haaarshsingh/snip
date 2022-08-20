@@ -1,8 +1,13 @@
 # example netlify.toml
 [build]
   command = "next build"
-  functions = "netlify/functions"
+  functions = "api"
   publish = ".next"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
 
   ## Uncomment to use this redirect for Single Page Applications like create-react-app.
   ## Not needed for static site generators.
