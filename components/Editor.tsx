@@ -9,7 +9,7 @@ import { useTheme } from 'next-themes'
 import { definitions } from '@typings/supabase'
 
 const Form: FC<{
-  setCode: Dispatch<SetStateAction<string>>
+  setCode?: Dispatch<SetStateAction<string>>
   language?: keyof typeof langs
   expires?: ExpiresEnum
   readOnly?: boolean
@@ -60,7 +60,9 @@ const Form: FC<{
         value={snip?.code || ''}
         autoFocus
         ref={inputRef}
-        onChange={(value) => setCode(value)}
+        onChange={
+          typeof setCode === 'undefined' ? undefined : (value) => setCode(value)
+        }
       />
     </div>
   )

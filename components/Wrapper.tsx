@@ -19,7 +19,8 @@ const Wrapper: FC<{
   title?: string
   description?: string
   image?: string
-}> = ({ children, title, description, image }) => {
+  nav?: string
+}> = ({ children, title, description, image, nav }) => {
   const router = useRouter()
   const { theme } = useTheme()
 
@@ -80,7 +81,7 @@ const Wrapper: FC<{
       >
         <div className='flex flex-col items-center'>
           <div className='max-w-800 w-90 lg:w-70 xl:w-60 2xl:w-40 mt-10'>
-            <Navbar />
+            <Navbar header={nav} />
             <main id='main'>{children}</main>
             <Footer />
             {/* <BackToTop /> */}
