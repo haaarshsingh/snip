@@ -34,7 +34,7 @@ pub(crate) async fn my_handler(
     let snip_id;
 
     let mut request_user_id : String = "".to_owned();
-    let mut snip_user_id : String = "";
+    let mut snip_user_id : String = "".to_owned();
 
     match event.query_string_parameters.first("id") {
         Some(value) => { snip_id = value }
@@ -90,7 +90,7 @@ pub(crate) async fn my_handler(
         };
         return Ok(resp)
     } else {
-        request_user_id = request_user_id.chars().take("Bearer ".len()).collect();
+        request_user_id = request_user_id.chars().skip("Bearer ".len()).collect();
     }
        
     match body_json[0]["user_id"].as_str() {
