@@ -10,7 +10,7 @@ const Nav: FC<{ header?: string }> = ({ header }) => {
     <div className='flex items-center justify-between w-full'>
       <Link href={header ? '/snips' : '/'}>
         <h1 className='text-black dark:text-white text-3xl font-bold cursor-pointer'>
-          {header || 'snip.place'}
+          {header || '🌀 snip.place'}
         </h1>
       </Link>
       <button
