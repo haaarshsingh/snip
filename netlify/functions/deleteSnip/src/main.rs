@@ -30,8 +30,8 @@ pub(crate) async fn my_handler(
 
     let snip_id;
 
-    let mut request_user_id : &str = "empty";
-    let mut snip_user_id : &str = "empty";
+    let mut request_user_id : &str = "";
+    let mut snip_user_id : &str = "";
 
     match event.query_string_parameters.first("id") {
         Some(value) => { snip_id = value }
@@ -68,23 +68,35 @@ pub(crate) async fn my_handler(
     }
     } else {
         let resp = ApiGatewayProxyResponse {
-            status_code: 401,
+            status_code: 400,
             headers: HeaderMap::new(),
             multi_value_headers: HeaderMap::new(),
-            body: Some(Body::Text(r#"{ "statusCode": 401, "message": "No authorization header provided!" }"#.to_owned())),
+            body: Some(Body::Text(r#"{ "statusCode": 400, "message": "Missing required header [Authorization]!" }"#.to_owned())),
             is_base64_encoded: Some(false),
         };
         return Ok(resp)
     }
        
     match body_json[0]["user_id"].as_str() {
-        Some(_) => { snip_user_id = "" },
+        Some(value) => { snip_user_id = value; },
         None => {},
     }
 
     //todo: [VERY DANGEROUS] still need to handle if both snip_user_id and request_user_id are value "empty", 
     // the case will still go through and delete the snip.
-    
+    if snip_user_id.is_empty()
+    {
+        let resp = ApiGatewayProxyResponse {
+            status_code: 403,
+            headers: HeaderMap::new(),
+            multi_value_headers: HeaderMap::new(),
+            body: Some(Body::Text(r#"{ "statusCode": 403, "message": "Paste is not deleteable as it is not associated with an account!" }"#.to_owned())),
+            is_base64_encoded: Some(false),
+        };
+
+        return Ok(resp)
+    }    
+
     if snip_user_id == request_user_id {
         let resp = client.from("snips")
         .select("*")
@@ -99,7 +111,7 @@ pub(crate) async fn my_handler(
             multi_value_headers: HeaderMap::new(),
             body: Some(Body::Text(body)),
             is_base64_encoded: Some(false),
-        };
+    };
 
     Ok(resp)
 }
