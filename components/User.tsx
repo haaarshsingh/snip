@@ -31,13 +31,17 @@ const User: FC<{ snips: definitions['snips'][] }> = ({ snips }) => {
           autoFocus
           placeholder='Search snips...'
           ref={inputRef}
-          onChange={(event) =>
-            setResults(
+          spellCheck='false'
+          autoComplete='false'
+          autoCapitalize='false'
+          onChange={(event) => {
+            setSelected(0)
+            return setResults(
               snips.filter((snip) =>
                 snip.id.includes(event.currentTarget.value.toLowerCase())
               )
             )
-          }
+          }}
         />
       </div>
       <AnimateSharedLayout>
@@ -68,8 +72,11 @@ const Snip: FC<{
   return (
     <Link href={`/${snip.id}`} passHref>
       <a
-        className='w-full select-none text-xl h-16 flex items-center rounded-lg transition-colors relative'
+        className='w-full select-none text-base h-16 flex items-center rounded-lg transition-colors relative'
         onMouseMove={onMouseMove}
+        style={{
+          color: selected ? '#FFFFFF' : '#444444',
+        }}
       >
         {selected && (
           <motion.div
@@ -82,7 +89,7 @@ const Snip: FC<{
             }}
           />
         )}
-        <h3 className='mx-5'>{snip.id}</h3>
+        <p className='mx-5'>/{snip.id}</p>
       </a>
     </Link>
   )

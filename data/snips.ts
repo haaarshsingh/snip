@@ -2,49 +2,49 @@ import { definitions } from '@typings/supabase'
 
 export const snips: definitions['snips'][] = [
   {
-    id: 'test',
+    id: 'netlify.toml',
     code: 'console.log("Harsh")',
     language: 'JavaScript',
     created_at: '',
   },
   {
-    id: 'test',
+    id: 'nextjs-homepage',
     code: 'console.log("Harsh")',
     language: 'JavaScript',
     created_at: '',
   },
   {
-    id: 'test',
+    id: 'rust-serverless-config',
     code: 'console.log("Harsh")',
     language: 'JavaScript',
     created_at: '',
   },
   {
-    id: 'qweqwe',
+    id: 'reactfc',
     code: 'console.log("Harsh")',
     language: 'JavaScript',
     created_at: '',
   },
   {
-    id: 'qweqweqweqwe',
+    id: 'bun-experiment',
     code: 'console.log("Harsh")',
     language: 'JavaScript',
     created_at: '',
   },
   {
-    id: 'tesqweqwet',
+    id: 'verceljson-config',
     code: 'console.log("Harsh")',
     language: 'JavaScript',
     created_at: '',
   },
   {
-    id: 'testqweqwe',
+    id: 'env-dasdjoaid',
     code: 'console.log("Harsh")',
     language: 'JavaScript',
     created_at: '',
   },
   {
-    id: 'teckjnst',
+    id: 'edge-function-example',
     code: 'console.log("Harsh")',
     language: 'JavaScript',
     created_at: '',

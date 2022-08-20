@@ -1,3 +1,4 @@
+import Palette from '@components/Palette/User'
 import User from '@components/User'
 import Wrapper from '@components/Wrapper'
 import { expires } from '@typings/expires'
@@ -8,6 +9,7 @@ import type { GetStaticProps, NextPage } from 'next'
 const Snips: NextPage /* <{ snips: definitions['snips'][] }> */ = () => {
   return (
     <Wrapper nav='Your Snips'>
+      <Palette />
       <User snips={snips} />
     </Wrapper>
   )

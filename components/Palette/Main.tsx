@@ -49,7 +49,7 @@ const Palette: FC<{
                 await supabase.auth.signIn({
                   provider: 'github',
                 }),
-          href: user ? `/user/${user?.id}` : undefined,
+          href: user ? '/snips' : undefined,
         },
         {
           icon: user ? <FiLogOut /> : <FiGitlab />,
