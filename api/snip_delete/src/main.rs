@@ -33,8 +33,8 @@ pub(crate) async fn my_handler(
 
     let snip_id;
 
-    let mut request_user_id : &str = "";
-    let mut snip_user_id : &str = "";
+    let mut request_user_id : String = "".to_owned();
+    let mut snip_user_id : String = "";
 
     match event.query_string_parameters.first("id") {
         Some(value) => { snip_id = value }
@@ -64,7 +64,7 @@ pub(crate) async fn my_handler(
     if event.headers.contains_key("Authorization")
     {
         match event.headers["Authorization"].to_str() {
-            Ok(value) => { request_user_id = value }
+            Ok(value) => { request_user_id = value.to_owned() }
             Err(error) => { 
                 println!("{}", error)
         } 
@@ -79,9 +79,22 @@ pub(crate) async fn my_handler(
         };
         return Ok(resp)
     }
+
+    if !request_user_id.contains("Bearer") {
+        let resp = ApiGatewayProxyResponse {
+            status_code: 401,
+            headers: response_headers,
+            multi_value_headers: HeaderMap::new(),
+            body: Some(Body::Text(r#"{ "statusCode": 401, "message": "Wrong authorization scheme" }"#.to_owned())),
+            is_base64_encoded: Some(false),
+        };
+        return Ok(resp)
+    } else {
+        request_user_id = request_user_id.chars().take("Bearer ".len()).collect();
+    }
        
     match body_json[0]["user_id"].as_str() {
-        Some(value) => { snip_user_id = value; },
+        Some(value) => { snip_user_id = value.to_owned(); },
         None => {},
     }
 
@@ -103,18 +116,31 @@ pub(crate) async fn my_handler(
     }    
 
     if snip_user_id == request_user_id {
-        let resp = client.from("snips")
+        client.from("snips")
         .select("*")
         .eq("id", snip_id)
         .delete()
         .execute().await?;
+    } else {
+        println!("{}", snip_user_id);
+        println!("{}", request_user_id);
+
+        let resp = ApiGatewayProxyResponse {
+            status_code: 401,
+            headers: response_headers,
+            multi_value_headers: HeaderMap::new(),
+            body: Some(Body::Text(r#"{ "statusCode": 401, "message": "Authorization token invalid!" }"#.to_owned())),
+            is_base64_encoded: Some(false),
+        };
+
+        return Ok(resp)
     }
 
     let resp = ApiGatewayProxyResponse {
             status_code: 200,
             headers: response_headers,
             multi_value_headers: HeaderMap::new(),
-            body: Some(Body::Text(body)),
+            body: Some(Body::Text(r#"{ "statusCode": 200, "message": "Snip deleted successfully.}""#.to_owned())),
             is_base64_encoded: Some(false),
     };
 
