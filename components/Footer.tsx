@@ -56,7 +56,7 @@ const Footer: FC = () => {
           >
             Supabase
           </a>{' '}
-          <SiSupabase className='ml-1' />
+          <SiSupabase className='mx-1' />
         </span>{' '}
         and{' '}
         <span className='ml-1 flex items-center text-black dark:text-gray-100'>

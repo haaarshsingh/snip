@@ -8,8 +8,8 @@ const Nav: FC<{ header?: string }> = ({ header }) => {
 
   return (
     <div className='flex items-center justify-between w-full'>
-      <Link href='/'>
-        <h1 className='text-black dark:text-white text-3xl font-bold'>
+      <Link href={header ? '/snips' : '/'}>
+        <h1 className='text-black dark:text-white text-3xl font-bold cursor-pointer'>
           {header || 'snip.place'}
         </h1>
       </Link>
