@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { FC } from 'react'
-import { SiSupabase } from 'react-icons/si'
+import { SiRust, SiSupabase } from 'react-icons/si'
 import { TbBrandNextjs } from 'react-icons/tb'
 import { motion } from 'framer-motion'
 
@@ -58,7 +58,7 @@ const Footer: FC = () => {
           </a>
           <SiSupabase className='ml-1' />
         </span>
-        ,
+        ,  
         <span className='mx-1 flex items-center text-orange-400'>
           <a
             href='https://www.rust-lang.org/'
@@ -68,6 +68,7 @@ const Footer: FC = () => {
           >
             Rust
           </a>
+          <SiRust className='ml-1' />
         </span>
         and
         <span className='ml-1 flex items-center text-black dark:text-gray-100'>
