@@ -28,6 +28,9 @@ pub(crate) async fn my_handler(
     _ctx: Context,
 ) -> Result<ApiGatewayProxyResponse, Error> {
 
+    let mut response_headers: HeaderMap = HeaderMap::new();
+    response_headers.insert("Content-Type", "application/json".parse().unwrap());
+
     let snip_id;
 
     let mut request_user_id : &str = "";
@@ -38,7 +41,7 @@ pub(crate) async fn my_handler(
         None => {
             let resp = ApiGatewayProxyResponse {
                 status_code: 400,
-                headers: HeaderMap::new(),
+                headers: response_headers,
                 multi_value_headers: HeaderMap::new(),
                 body: Some(Body::Text(r#"{ "statusCode": 400, "message": "Missing required query parameter [id]!" }"#.to_owned())),
                 is_base64_encoded: Some(false),
@@ -69,7 +72,7 @@ pub(crate) async fn my_handler(
     } else {
         let resp = ApiGatewayProxyResponse {
             status_code: 400,
-            headers: HeaderMap::new(),
+            headers: response_headers,
             multi_value_headers: HeaderMap::new(),
             body: Some(Body::Text(r#"{ "statusCode": 400, "message": "Missing required header [Authorization]!" }"#.to_owned())),
             is_base64_encoded: Some(false),
@@ -84,11 +87,13 @@ pub(crate) async fn my_handler(
 
     //todo: [VERY DANGEROUS] still need to handle if both snip_user_id and request_user_id are value "empty", 
     // the case will still go through and delete the snip.
+
+
     if snip_user_id.trim().is_empty()
     {
         let resp = ApiGatewayProxyResponse {
             status_code: 403,
-            headers: HeaderMap::new(),
+            headers: response_headers,
             multi_value_headers: HeaderMap::new(),
             body: Some(Body::Text(r#"{ "statusCode": 403, "message": "Paste is not deleteable as it is not associated with an account!" }"#.to_owned())),
             is_base64_encoded: Some(false),
@@ -107,7 +112,7 @@ pub(crate) async fn my_handler(
 
     let resp = ApiGatewayProxyResponse {
             status_code: 200,
-            headers: HeaderMap::new(),
+            headers: response_headers,
             multi_value_headers: HeaderMap::new(),
             body: Some(Body::Text(body)),
             is_base64_encoded: Some(false),
