@@ -59,6 +59,7 @@ netlify dev
 # 🔧 Tools Used
 
 - [Supabase](https://supabase.com)
+- [postgrest-rs](https://github.com/supabase-community/postgrest-rs)
 - [kmenu](https://kmenu.hxrsh.in)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Rust](https://rust-lang.org) (deployed to [Netlify](https://netlify.com) serverless functions)
