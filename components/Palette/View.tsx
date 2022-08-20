@@ -22,6 +22,7 @@ import { useTheme } from 'next-themes'
 import supabase from '@lib/supabase'
 import { definitions } from '@typings/supabase'
 import { User } from '@supabase/supabase-js'
+import { useRouter } from 'next/router'
 
 const Palette: FC<{ snip: definitions['snips']; user: User | null }> = ({
   snip,
@@ -29,6 +30,7 @@ const Palette: FC<{ snip: definitions['snips']; user: User | null }> = ({
 }) => {
   const [input, setInput, open, setOpen] = useKmenu()
   const { setTheme } = useTheme()
+  const router = useRouter()
 
   const utilityCommands = [
     {
@@ -168,9 +170,11 @@ const Palette: FC<{ snip: definitions['snips']; user: User | null }> = ({
           icon: <FiCheck />,
           text: 'Confirm',
           perform: async () => {
-            const response = await fetch(`/api/snip_delete?id=${snip.id}`, {
-              method: 'DELETE',
-              headers: { Authorization: snip.user_id! },
+            fetch(`/api/snip_delete?id=${snip.id}`, {
+              headers: { Authorization: `Bearer ${snip.user_id!}` },
+            }).then((res) => {
+              if (res.status === 200) router.push('/')
+              console.log('failed')
             })
           },
         },
