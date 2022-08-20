@@ -1,34 +1,83 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align="center">
+  <img src="https://raw.githubusercontent.com/harshhhdev/snip/main/public/Banner.png?token=GHSAT0AAAAAABWYU2PTC3MS2DCQMO2GAWNUYYATIBQ" />
+  <a href="https://snip.place">
+    <h2 align="center">snip</h2>
+  </a>
+</p> 
+<p align="center">:cyclone: The gamma variant of Pastebin</p>
+<p align="center">
+  <a href="https://supabase.com/blog/launch-week-5-hackathon">Supabase Hackathon</a>
+    ·
+  <a href="https://snip.place/">Demo</a>
+ </p>
 
-## Getting Started
+# 🚀 Quickstart
 
-First, run the development server:
+Run the website locally
+
+```
+git clone https://github.com/harshhhdev/snip.git
+```
+
+## Setting up the development environment
 
 ```bash
-npm run dev
-# or
+cd snip
+
+# Install deps
+yarn
+```
+
+## Setting up the database
+
+NOTE: This project uses [PostgreSQL](https://www.postgresql.org/) on [Supabase](https://supabase.com/database) to store data. Things like authentication are handled by Supabase.
+
+Currently, according to the [Supabase documentation](https://supabase.com/blog/supabase-cli), there isn't any 'right' way to do migrations, however you can initialise your database with the `initdb.sql` file located at the root of the project.
+
+## Authentication 
+
+This application uses [Supabase's Authentication](https://supabase.com/auth) with the [GitHub](https://supabase.com/docs/guides/auth/auth-github) and [GitLab](https://supabase.com/docs/guides/auth/auth-gitlab). Refer to the linked guides for how to create an OAuth application and connect it with your account.
+
+## Starting server
+
+```bash
+# Start the server
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Server should now be running on [localhost](https://localhost:3000)
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+If you would also like to run the [Netlify serverless functions](https://www.netlify.com/blog/2021/10/14/write-netlify-functions-in-rust/), you can start with the [netlify dev](https://www.netlify.com/products/cli/) command.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```bash
+# Start the Netlify server
+netlify dev
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+...and your local development server should now be running on [localhost:8080](https://localhost:8080).
 
-## Learn More
+# 🔧 Tools Used
 
-To learn more about Next.js, take a look at the following resources:
+- [Supabase](https://supabase.com)
+- [kmenu](https://kmenu.hxrsh.in)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Rust](https://rust-lang.org) (deployed to [Netlify](https://netlify.com) serverless functions)
+- [Next.js](https://nextjs.org/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Framer Motion](https://framer.com/motion)
+- [react-icons](https://react-icons.github.io/react-icons/)
+- [next-themes](https://github.com/pacocoursey/next-themes)
+- [nanoid](https://zelark.github.io/nano-id-cc/)
+- [Prettier](https://prettier.io/)
+- [ESLint](https://eslint.org/)
+- [Figma](https://www.figma.com/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 🤞 Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+After setting up the project, and making changes:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```git
+git add .
+git commit -m "commit message"
+git push YOUR_REPO_URL YOUR_BRANCH
+```
