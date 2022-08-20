@@ -55,19 +55,30 @@ const Footer: FC = () => {
             className='underline underline-offset-8 decoration-emerald-300 dark:decoration-emerald-900 hover:decoration-emerald-400 hover:dark:decoration-emerald-400 transition-colors'
           >
             Supabase
-          </a>{' '}
-          <SiSupabase className='mx-1' />
-        </span>{' '}
-        and{' '}
+          </a>
+          <SiSupabase className='ml-1' />
+        </span>
+        ,
+        <span className='mx-1 flex items-center text-orange-400'>
+          <a
+            href='https://www.rust-lang.org/'
+            target='_blank'
+            rel='noreferrer'
+            className='underline underline-offset-8 decoration-orange-300 dark:decoration-orange-900 hover:decoration-orange-400 hover:dark:decoration-orange-400 transition-colors'
+          >
+            Rust
+          </a>
+        </span>
+        and
         <span className='ml-1 flex items-center text-black dark:text-gray-100'>
           <a
-            href='https://supabase.com'
+            href='https://nextjs.orgf'
             target='_blank'
             rel='noreferrer'
             className='underline underline-offset-8 decoration-gray-300 dark:decoration-gray-700 hover:decoration-black hover:dark:decoration-gray-100 transition-colors'
           >
             Next.js
-          </a>{' '}
+          </a>
           <TbBrandNextjs className='ml-1 text-lg' />
         </span>
       </div>
