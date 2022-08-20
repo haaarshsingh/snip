@@ -25,6 +25,9 @@ pub(crate) async fn my_handler(
     event: ApiGatewayProxyRequest,
     _ctx: Context,
 ) -> Result<ApiGatewayProxyResponse, Error> {
+    let mut response_headers: HeaderMap = HeaderMap::new();
+    response_headers.insert("Content-Type", "application/json".parse().unwrap());
+
     let client = Postgrest::new("https://araasnleificjyjflqml.supabase.co/rest/v1/")
         .insert_header("apikey", &env::var("SUPABASE_PUBLIC_ANON_KEY").unwrap());
 
@@ -38,7 +41,7 @@ pub(crate) async fn my_handler(
 
     let resp = ApiGatewayProxyResponse {
         status_code: 200,
-        headers: HeaderMap::new(),
+        headers: response_headers,
         multi_value_headers: HeaderMap::new(),
         body: Some(Body::Text(body)),
         is_base64_encoded: Some(false),

@@ -26,6 +26,9 @@ pub(crate) async fn my_handler(
     event: ApiGatewayProxyRequest,
     _ctx: Context,
 ) -> Result<ApiGatewayProxyResponse, Error> {
+    let mut response_headers: HeaderMap = HeaderMap::new();
+    response_headers.insert("Content-Type", "application/json".parse().unwrap());
+
     let snip_id;
 
     match event.query_string_parameters.first("id") {
@@ -33,7 +36,7 @@ pub(crate) async fn my_handler(
         None => {
             let resp = ApiGatewayProxyResponse {
                 status_code: 400,
-                headers: HeaderMap::new(),
+                headers: response_headers,
                 multi_value_headers: HeaderMap::new(),
                 body: Some(Body::Text(
                     r#"{ "statusCode": 400, "message": "Missing required query parameter [id]!" }"#
@@ -58,7 +61,7 @@ pub(crate) async fn my_handler(
 
     let resp = ApiGatewayProxyResponse {
         status_code: 200,
-        headers: HeaderMap::new(),
+        headers: response_headers,
         multi_value_headers: HeaderMap::new(),
         body: Some(Body::Text(body)),
         is_base64_encoded: Some(false),
