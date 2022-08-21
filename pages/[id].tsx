@@ -5,17 +5,28 @@ import Wrapper from '@components/Wrapper'
 import supabase from '@lib/supabase'
 import { definitions } from '@typings/supabase'
 import type { GetServerSideProps, NextPage } from 'next'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 const View: NextPage<{ snip: definitions['snips'] }> = ({ snip }) => {
   const user = supabase.auth.user()
 
-  return (
-    <Wrapper>
-      <Palette snip={snip} user={user} />
-      <Editor snip={snip} readOnly />
-      <ViewOptions snip={snip} owner={user?.id === snip.user_id} />
-    </Wrapper>
-  )
+  const router = useRouter()
+  useEffect(() => {
+    if (snip.id === undefined) router.push('/')
+  }, [])
+
+  if (snip.id !== undefined) {
+    return (
+      <Wrapper>
+        <Palette snip={snip} user={user} />
+        <Editor snip={snip} readOnly />
+        <ViewOptions snip={snip} owner={user?.id === snip.user_id} />
+      </Wrapper>
+    )
+  }
+
+  return <></>
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -27,11 +38,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     }/api/snip_get?id=${params?.id?.toString()}`
   ).then((res) => res.json())
 
-  const snip = (await response)[0]
-
   return {
     props: {
-      snip: snip,
+      snip: (await response)[0] || [],
     },
   }
 }
