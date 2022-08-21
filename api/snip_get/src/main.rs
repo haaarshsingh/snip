@@ -62,11 +62,11 @@ pub(crate) async fn my_handler(
     let body = resp.text().await?;
     let body_json: Value = serde_json::from_str(&body)?;
 
-    if !body_json["password"].is_null() {
+    if !body_json[0]["password"].is_null() {
         if event.headers.contains_key("Password") {
             match event.headers["Password"].to_str() {
                 Ok(value) => {
-                    if value != body_json["password"] {
+                    if value != body_json[0]["password"] {
                         let resp = ApiGatewayProxyResponse {
                             status_code: 401,
                             headers: response_headers,
