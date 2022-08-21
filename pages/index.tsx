@@ -38,7 +38,7 @@ const Home: NextPage = () => {
       }),
     })
       .then((res) => res.json())
-      .then((res) => console.log(res))
+      .then((res) => router.push(`/${res[0].id}`))
       .catch((err) => console.log(err))
   }
 
