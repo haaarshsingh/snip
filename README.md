@@ -64,7 +64,7 @@ netlify dev
 
 # 🔧 Tools Used
 
-## Frontend
+### Frontend
 
 - [TypeScript](https://www.typescriptlang.org/)
 - [Next.js](https://nextjs.org/)
@@ -73,16 +73,18 @@ netlify dev
 - [next-themes](https://github.com/pacocoursey/next-themes)
 - [kmenu](https://kmenu.hxrsh.in)
 - [Framer Motion](https://framer.com/motion)
+- [react-hot-toast](https://react-hot-toast.com/)
 
-## Backend
+### Backend
 
 - [Rust](https://rust-lang.org)
 - [Netlify Serverless Functions](https://www.netlify.com/products/functions/)
 - [Supabase](https://supabase.com)
 - [postgrest-rs](https://github.com/supabase-community/postgrest-rs)
 - [serde_json](https://docs.rs/serde_json/latest/serde_json/)
+- [nanoid](https://zelark.github.io/nano-id-cc/)
 
-## Miscellaneous
+### Miscellaneous
 
 - [Figma](https://www.figma.com/)
 - [nanoid](https://zelark.github.io/nano-id-cc/)
