@@ -80,6 +80,8 @@ const Home: NextPage = () => {
       <Palette
         user={user}
         create={create}
+        slug={slug}
+        password={password}
         setPassword={setPassword}
         setSlug={setSlug}
         setLanguage={setLanguage}

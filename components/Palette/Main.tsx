@@ -1,5 +1,5 @@
 import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
-import { Dispatch, FC, SetStateAction, useCallback } from 'react'
+import { Dispatch, FC, SetStateAction } from 'react'
 import {
   FiArrowLeft,
   FiCheck,
@@ -30,11 +30,22 @@ import { User } from '@supabase/supabase-js'
 const Palette: FC<{
   user: User | null
   create: () => void
+  password: string | undefined
+  slug: string | undefined
   setPassword: Dispatch<SetStateAction<string | undefined>>
   setSlug: Dispatch<SetStateAction<string | undefined>>
   setLanguage: Dispatch<SetStateAction<keyof typeof langs | undefined>>
   setExpires: Dispatch<SetStateAction<expires>>
-}> = ({ user, create, setPassword, setSlug, setLanguage, setExpires }) => {
+}> = ({
+  user,
+  create,
+  password,
+  slug,
+  setPassword,
+  setSlug,
+  setLanguage,
+  setExpires,
+}) => {
   const [input, setInput, open, setOpen] = useKmenu()
   const { theme, setTheme } = useTheme()
 
@@ -1010,12 +1021,14 @@ const Palette: FC<{
         commands={editPasswordCommands}
         index={4}
         placeholder='New Password...'
+        value={password}
         preventSearch
       />
       <CommandMenu
         commands={editSlugCommands}
         index={5}
         placeholder='New slug...'
+        value={slug}
         preventSearch
       />
       <CommandMenu
