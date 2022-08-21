@@ -13,9 +13,8 @@
 
 # ✨ Team
 
-Ibrahim Hisham • [GitHub](https://github.com.com/ibra) • [Twitter](https://twitter.com/IbrahDev)
-
-Harsh Singh • [GitHub](https://github.com.com/harshhhhdev) • [Twitter](https://twitter.com/harshhhdev)
+Harsh Singh • Frontend (TypeScript) • [GitHub](https://github.com.com/harshhhhdev) • [Twitter](https://twitter.com/harshhhdev)
+Ibrahim Hisham • Backend (Rust) • [GitHub](https://github.com.com/ibra) • [Twitter](https://twitter.com/IbrahDev)
 
 # 🚀 Quickstart
 
