@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/harshhhdev/snip/main/public/Banner.png?token=GHSAT0AAAAAABWYU2PTC3MS2DCQMO2GAWNUYYATIBQ" />
+  <img src="https://raw.githubusercontent.com/harshhhdev/snip/main/public/Banner.png?token=GHSAT0AAAAAABXX5WNSA65XAUMK2MAJOKLYYYB4ZJA" />
   <a href="https://snip.place">
     <h2 align="center">snip</h2>
   </a>
@@ -10,6 +10,12 @@
     ·
   <a href="https://snip.place/">Demo</a>
  </p>
+
+# ✨ Team
+
+Ibrahim Hisham • [GitHub](https://github.com.com/ibra) • [Twitter](https://twitter.com/IbrahDev)
+
+Harsh Singh • [GitHub](https://github.com.com/harshhhhdev) • [Twitter](https://twitter.com/harshhhdev)
 
 # 🚀 Quickstart
 
@@ -34,7 +40,7 @@ NOTE: This project uses [PostgreSQL](https://www.postgresql.org/) on [Supabase](
 
 Currently, according to the [Supabase documentation](https://supabase.com/blog/supabase-cli), there isn't any 'right' way to do migrations, however you can initialise your database with the `initdb.sql` file located at the root of the project.
 
-## Authentication 
+## Authentication
 
 This application uses [Supabase's Authentication](https://supabase.com/auth) with the [GitHub](https://supabase.com/docs/guides/auth/auth-github) and [GitLab](https://supabase.com/docs/guides/auth/auth-gitlab). Refer to the linked guides for how to create an OAuth application and connect it with your account.
 
@@ -58,20 +64,30 @@ netlify dev
 
 # 🔧 Tools Used
 
-- [Supabase](https://supabase.com)
-- [postgrest-rs](https://github.com/supabase-community/postgrest-rs)
-- [kmenu](https://kmenu.hxrsh.in)
+## Frontend
+
 - [TypeScript](https://www.typescriptlang.org/)
-- [Rust](https://rust-lang.org) (deployed to [Netlify](https://netlify.com) serverless functions)
 - [Next.js](https://nextjs.org/)
 - [TailwindCSS](https://tailwindcss.com/)
-- [Framer Motion](https://framer.com/motion)
 - [react-icons](https://react-icons.github.io/react-icons/)
 - [next-themes](https://github.com/pacocoursey/next-themes)
+- [kmenu](https://kmenu.hxrsh.in)
+- [Framer Motion](https://framer.com/motion)
+
+## Backend
+
+- [Rust](https://rust-lang.org)
+- [Netlify Serverless Functions](https://www.netlify.com/products/functions/)
+- [Supabase](https://supabase.com)
+- [postgrest-rs](https://github.com/supabase-community/postgrest-rs)
+- [serde_json](https://docs.rs/serde_json/latest/serde_json/)
+
+## Miscellaneous
+
+- [Figma](https://www.figma.com/)
 - [nanoid](https://zelark.github.io/nano-id-cc/)
 - [Prettier](https://prettier.io/)
 - [ESLint](https://eslint.org/)
-- [Figma](https://www.figma.com/)
 
 # 🤞 Contributing
 
