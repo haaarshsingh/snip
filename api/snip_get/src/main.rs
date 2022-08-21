@@ -4,6 +4,7 @@ use dotenv::dotenv;
 use http::header::HeaderMap;
 use lambda_runtime::{handler_fn, Context, Error};
 use postgrest::Postgrest;
+use serde_json::Value;
 use std::env;
 
 use log::LevelFilter;
@@ -30,8 +31,26 @@ pub(crate) async fn my_handler(
     response_headers.insert("Content-Type", "application/json".parse().unwrap());
 
     let snip_id;
+    let request_body: Value;
 
-    match event.query_string_parameters.first("id") {
+    match event.body {
+        Some(value) => request_body = serde_json::from_str(&value)?,
+        None => {
+            let resp = ApiGatewayProxyResponse {
+                status_code: 400,
+                headers: response_headers,
+                multi_value_headers: HeaderMap::new(),
+                body: Some(Body::Text(
+                    r#"{ "statusCode": 400, "message": "No body provided in request." }"#
+                        .to_owned(),
+                )),
+                is_base64_encoded: Some(false),
+            };
+            return Ok(resp);
+        }
+    }
+
+    match request_body["id"].as_str() {
         Some(value) => snip_id = value,
         None => {
             let resp = ApiGatewayProxyResponse {
@@ -39,7 +58,7 @@ pub(crate) async fn my_handler(
                 headers: response_headers,
                 multi_value_headers: HeaderMap::new(),
                 body: Some(Body::Text(
-                    r#"{ "statusCode": 400, "message": "Missing required query parameter [id]!" }"#
+                    r#"{ "statusCode": 400, "message": "Missing required body key [id]!" }"#
                         .to_owned(),
                 )),
                 is_base64_encoded: Some(false),
@@ -57,7 +76,9 @@ pub(crate) async fn my_handler(
         .eq("id", snip_id)
         .execute()
         .await?;
+
     let body = resp.text().await?;
+    let body_json: Value = serde_json::from_str(&body)?;
 
     let resp = ApiGatewayProxyResponse {
         status_code: 200,
