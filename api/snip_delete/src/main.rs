@@ -43,12 +43,31 @@ pub(crate) async fn my_handler(
         return Ok(resp);
     }
 
-    let snip_id;
+    let snip_id: &str;
 
     let mut request_user_id: String = "".to_owned();
     let mut snip_user_id: String = "".to_owned();
 
-    match event.query_string_parameters.first("id") {
+    let request_body: Value;
+
+    match event.body {
+        Some(value) => request_body = serde_json::from_str(&value)?,
+        None => {
+            let resp = ApiGatewayProxyResponse {
+                status_code: 400,
+                headers: response_headers,
+                multi_value_headers: HeaderMap::new(),
+                body: Some(Body::Text(
+                    r#"{ "statusCode": 400, "message": "No body provided in request." }"#
+                        .to_owned(),
+                )),
+                is_base64_encoded: Some(false),
+            };
+            return Ok(resp);
+        }
+    }
+
+    match request_body["id"].as_str() {
         Some(value) => snip_id = value,
         None => {
             let resp = ApiGatewayProxyResponse {
@@ -56,7 +75,7 @@ pub(crate) async fn my_handler(
                 headers: response_headers,
                 multi_value_headers: HeaderMap::new(),
                 body: Some(Body::Text(
-                    r#"{ "statusCode": 400, "message": "Missing required query parameter [id]!" }"#
+                    r#"{ "statusCode": 400, "message": "Missing required body key [id]!" }"#
                         .to_owned(),
                 )),
                 is_base64_encoded: Some(false),
@@ -76,7 +95,7 @@ pub(crate) async fn my_handler(
         .await?;
 
     let body = resp.text().await?;
-    let body_json: Value = serde_json::from_str(&body)?;
+    let reponse_body_json: Value = serde_json::from_str(&body)?;
 
     if event.headers.contains_key("Authorization") {
         match event.headers["Authorization"].to_str() {
@@ -114,7 +133,7 @@ pub(crate) async fn my_handler(
         request_user_id = request_user_id.chars().skip("Bearer ".len()).collect();
     }
 
-    match body_json[0]["user_id"].as_str() {
+    match reponse_body_json[0]["user_id"].as_str() {
         Some(value) => {
             snip_user_id = value.to_owned();
         }
@@ -129,7 +148,9 @@ pub(crate) async fn my_handler(
             status_code: 403,
             headers: response_headers,
             multi_value_headers: HeaderMap::new(),
-            body: Some(Body::Text(r#"{ "statusCode": 403, "message": "Paste is not deleteable as it is not associated with an account!" }"#.to_owned())),
+            body: Some(Body::Text(
+                r#"{ "statusCode": 403, "message": "Paste is not deleteable!" }"#.to_owned(),
+            )),
             is_base64_encoded: Some(false),
         };
 
@@ -166,7 +187,7 @@ pub(crate) async fn my_handler(
         headers: response_headers,
         multi_value_headers: HeaderMap::new(),
         body: Some(Body::Text(
-            r#"{ "statusCode": 200, "message": "Snip deleted successfully!}"#.to_owned(),
+            r#"{ "statusCode": 200, "message": "Snip deleted successfully!" }"#.to_owned(),
         )),
         is_base64_encoded: Some(false),
     };
