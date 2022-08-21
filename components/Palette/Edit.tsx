@@ -1,5 +1,5 @@
 import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
-import { Dispatch, FC, SetStateAction, useCallback } from 'react'
+import { Dispatch, FC, SetStateAction } from 'react'
 import {
   FiArrowLeft,
   FiClock,
@@ -21,7 +21,6 @@ import { BiPaintRoll } from 'react-icons/bi'
 import { useTheme } from 'next-themes'
 import { useEffect } from 'react'
 import langs from '@lib/languages'
-import { expires } from '@typings/expires'
 import { nanoid } from 'nanoid'
 import supabase from '@lib/supabase'
 import { User } from '@supabase/supabase-js'
@@ -29,11 +28,9 @@ import { User } from '@supabase/supabase-js'
 const Palette: FC<{
   user: User | null
   create: () => void
-  setPassword: Dispatch<SetStateAction<string | undefined>>
-  setSlug: Dispatch<SetStateAction<string>>
+  setPassword: Dispatch<SetStateAction<string | null>>
   setLanguage: Dispatch<SetStateAction<keyof typeof langs | undefined>>
-  setExpires: Dispatch<SetStateAction<expires>>
-}> = ({ user, create, setPassword, setSlug, setLanguage, setExpires }) => {
+}> = ({ user, create, setPassword, setLanguage }) => {
   const [input, setInput, open, setOpen] = useKmenu()
   const { theme, setTheme } = useTheme()
 
@@ -862,77 +859,6 @@ const Palette: FC<{
     },
   ]
 
-  const expiresIn: Command[] = [
-    {
-      category: 'Options',
-      commands: [
-        {
-          text: 'Never',
-          icon: <FiClock />,
-          perform: () => setExpires(expires.NEVER),
-        },
-        {
-          text: 'One Hour',
-          icon: <FiClock />,
-          perform: () => setExpires(expires.ONE_HOUR),
-        },
-        {
-          text: 'Two Hours',
-          icon: <FiClock />,
-          perform: () => setExpires(expires.TWO_DAYS),
-        },
-        {
-          text: 'Ten Hours',
-          icon: <FiClock />,
-          perform: () => setExpires(expires.TEN_HOURS),
-        },
-        {
-          text: 'One Day',
-          icon: <FiClock />,
-          perform: () => setExpires(expires.ONE_DAY),
-        },
-        {
-          text: 'Two Days',
-          icon: <FiClock />,
-          perform: () => setExpires(expires.TWO_DAYS),
-        },
-        {
-          text: 'One Week',
-          icon: <FiClock />,
-          perform: () => setExpires(expires.ONE_WEEK),
-        },
-        {
-          text: 'One Month',
-          icon: <FiClock />,
-          perform: () => setExpires(expires.ONE_MONTH),
-        },
-        {
-          text: 'One Year',
-          icon: <FiClock />,
-          perform: () => setExpires(expires.ONE_YEAR),
-        },
-      ],
-    },
-  ]
-
-  const editSlug: Command[] = [
-    {
-      category: 'Options',
-      commands: [
-        {
-          text: 'Back',
-          icon: <FiArrowLeft />,
-          perform: () => setOpen(1),
-        },
-        {
-          text: 'Cancel',
-          icon: <FiX />,
-          perform: () => setOpen(0),
-        },
-      ],
-    },
-  ]
-
   const editPassword: Command[] = [
     {
       category: 'Options',
@@ -978,14 +904,8 @@ const Palette: FC<{
     if (open === 4) setPassword(input)
   }, [open, input, setPassword])
 
-  useEffect(() => {
-    if (open === 5) setSlug(input)
-  }, [open, input, setSlug])
-
   const [mainCommands] = useCommands(main)
   const [languageCommands] = useCommands(langs)
-  const [expiresCommands] = useCommands(expiresIn)
-  const [editSlugCommands] = useCommands(editSlug)
   const [editPasswordCommands] = useCommands(editPassword)
   const [themeCommands] = useCommands(themes)
 
@@ -998,25 +918,14 @@ const Palette: FC<{
         placeholder='Language...'
       />
       <CommandMenu
-        commands={expiresCommands}
-        index={3}
-        placeholder='Expires In...'
-      />
-      <CommandMenu
         commands={editPasswordCommands}
-        index={4}
+        index={3}
         placeholder='New Password...'
         preventSearch
       />
       <CommandMenu
-        commands={editSlugCommands}
-        index={5}
-        placeholder='New slug...'
-        preventSearch
-      />
-      <CommandMenu
         commands={themeCommands}
-        index={6}
+        index={4}
         placeholder='Theme...'
         preventSearch
       />

@@ -13,27 +13,37 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useKmenu } from 'kmenu'
 import { definitions } from '@typings/supabase'
 import Link from 'next/link'
+import toast from 'react-hot-toast'
+import { iconTheme, style } from '@css/toast'
 
-const Options: FC<{ create: () => void }> = ({ create }) => {
+const Options: FC<{ create: () => void; edit?: boolean }> = ({
+  create,
+  edit,
+}) => {
   const options = [
     { text: 'Encrypt Snip', icon: <FiLock />, index: 4 },
     { text: 'Edit Slug', icon: <FiEdit2 />, index: 5 },
   ]
+  const editOptions = [{ text: 'Encrypt Snip', icon: <FiLock />, index: 4 }]
 
   const [loading, setLoading] = useState(false)
 
   return (
     <div className='mt-10 bg-white shadow-custom dark:bg-gray-800 flex items-center justify-between p-5 rounded-lg text-xl'>
       <div className='flex items-center'>
-        {options.map((command, index) => (
-          <Option command={command} key={index} />
-        ))}
+        {edit
+          ? editOptions.map((command, index) => (
+              <Option command={command} key={index} />
+            ))
+          : options.map((command, index) => (
+              <Option command={command} key={index} />
+            ))}
       </div>
       <div>
         {loading ? (
           <button className='flex items-center text-base bg-gray-200 dark:bg-[#272727] border border-gray-500 text-gray-500 cursor-not-allowed py-3 px-4 rounded font-medium transition-colors'>
             <FiLoader className='text-xl mr-2 animate-spin' />
-            Create Snip
+            {edit ? 'Save Snip' : 'Create Snip'}
           </button>
         ) : (
           <button
@@ -42,7 +52,7 @@ const Options: FC<{ create: () => void }> = ({ create }) => {
               setLoading(true)
             }}
           >
-            Create Snip
+            {edit ? 'Save Snip' : 'Create Snip'}
           </button>
         )}
       </div>
@@ -63,13 +73,26 @@ export const ViewOptions: FC<{
     {
       text: 'Copy Snip',
       icon: <FiCopy />,
-      perform: () => navigator.clipboard.writeText(snip.code),
+      perform: () => {
+        toast.success('Copied Snip', {
+          style: style,
+          iconTheme: iconTheme,
+        })
+
+        navigator.clipboard.writeText(snip.code)
+      },
     },
     {
       text: 'Copy URL',
       icon: <FiShare />,
-      perform: () =>
-        navigator.clipboard.writeText(`https://snip.place/${snip.id}`),
+      perform: () => {
+        toast.success('Copied URL', {
+          style: style,
+          iconTheme: iconTheme,
+        })
+
+        navigator.clipboard.writeText(`https://snip.place/${snip.id}`)
+      },
     },
     {
       text: 'Download Snip',
@@ -95,13 +118,26 @@ export const ViewOptions: FC<{
     {
       text: 'Copy Snip',
       icon: <FiCopy />,
-      perform: () => navigator.clipboard.writeText(snip.code),
+      perform: () => {
+        toast.success('Copied Snip', {
+          style: style,
+          iconTheme: iconTheme,
+        })
+
+        navigator.clipboard.writeText(snip.code)
+      },
     },
     {
       text: 'Copy URL',
       icon: <FiShare />,
-      perform: () =>
-        navigator.clipboard.writeText(`https://snip.place/${snip.id}`),
+      perform: () => {
+        toast.success('Copied URL', {
+          style: style,
+          iconTheme: iconTheme,
+        })
+
+        navigator.clipboard.writeText(`https://snip.place/${snip.id}`)
+      },
     },
     {
       text: 'Download Snip',

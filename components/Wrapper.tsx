@@ -8,10 +8,10 @@ import { useTheme } from 'next-themes'
 import { Toaster } from 'react-hot-toast'
 
 export const meta = {
-  root: 'https://snip.au',
+  root: 'https://snip.place',
   title: 'snip',
   description: 'A free and open-source tool for sharing online code snippets.',
-  image: 'https://snip.au/banner.png',
+  image: 'https://snip.place/banner.png',
   type: 'website',
 }
 
@@ -80,6 +80,7 @@ const Wrapper: FC<{
         config={theme === 'dark' ? darkConfig : lightConfig}
         dimensions={{ sectionHeight: 36 }}
       >
+        <Toaster />
         <div className='flex flex-col items-center'>
           <div className='max-w-800 w-90 lg:w-70 xl:w-60 2xl:w-40 mt-10'>
             <Navbar header={nav} />
@@ -88,7 +89,6 @@ const Wrapper: FC<{
             {/* <BackToTop /> */}
           </div>
         </div>
-        <Toaster />
       </MenuProvider>
     </div>
   )

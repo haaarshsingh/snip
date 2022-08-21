@@ -13,7 +13,9 @@ const Home: NextPage = () => {
   const [code, setCode] = useState<string>('')
   const [password, setPassword] = useState<string | undefined>(undefined)
   const [slug, setSlug] = useState<string>(nanoid(10))
-  const [language, setLanguage] = useState<keyof typeof langs>('JavaScript')
+  const [language, setLanguage] = useState<keyof typeof langs | undefined>(
+    'JavaScript'
+  )
   const [expires, setExpires] = useState<ExpiresEnum>(ExpiresEnum.NEVER)
   const user = supabase.auth.user()
 

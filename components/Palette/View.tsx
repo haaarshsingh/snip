@@ -36,7 +36,7 @@ const Palette: FC<{ snip: definitions['snips']; user: User | null }> = ({
     {
       icon: <FiPlus />,
       text: 'New Snip',
-      href: 'https://snip.au/',
+      href: 'https://snip.place/',
     },
     {
       icon: <FiCopy />,
@@ -47,7 +47,7 @@ const Palette: FC<{ snip: definitions['snips']; user: User | null }> = ({
       icon: <FiShare2 />,
       text: 'Copy URL',
       perform: () =>
-        navigator.clipboard.writeText(`https://snip.au/${snip.id}`),
+        navigator.clipboard.writeText(`https://snip.place/${snip.id}`),
     },
     {
       icon: <FiDownloadCloud />,
@@ -81,7 +81,7 @@ const Palette: FC<{ snip: definitions['snips']; user: User | null }> = ({
       icon: <FiShare2 />,
       text: 'Copy URL',
       perform: () =>
-        navigator.clipboard.writeText(`https://snip.au/${snip.id}`),
+        navigator.clipboard.writeText(`https://snip.place/${snip.id}`),
     },
     {
       icon: <FiDownloadCloud />,

@@ -10,11 +10,12 @@ import { definitions } from '@typings/supabase'
 
 const Form: FC<{
   setCode?: Dispatch<SetStateAction<string>>
-  language?: keyof typeof langs
+  language?: keyof typeof langs | undefined
   expires?: ExpiresEnum
   readOnly?: boolean
+  hideExpires?: boolean
   snip?: definitions['snips']
-}> = ({ setCode, language, expires, readOnly, snip }) => {
+}> = ({ setCode, language, expires, readOnly, hideExpires, snip }) => {
   const inputRef = useRef<ReactCodeMirrorRef>(null)
   const [input, setInput, open, setOpen] = useKmenu()
   const { theme } = useTheme()
@@ -29,24 +30,35 @@ const Form: FC<{
           }`}
         >
           <FiCode className='mr-2' />
-          {typeof snip?.language === 'undefined' ||
-          typeof language === 'undefined'
+          {hideExpires
+            ? typeof language === 'undefined'
+              ? 'Plain Text'
+              : language
+            : typeof snip === 'undefined'
+            ? typeof language === 'undefined'
+              ? 'Plain Text'
+              : language
+            : snip.language === null
             ? 'Plain Text'
-            : language || snip?.language}
+            : snip.language}
         </button>
-        {!readOnly && (
+        {!hideExpires || (readOnly && snip?.expires_in !== null) ? (
           <button
             onClick={readOnly ? undefined : () => setOpen(3)}
             className={`flex items-center bg-white shadow-2xl dark:shadow-none dark:bg-gray-800 py-3 px-5 rounded-lg mb-5 z-10 cursor-default ${
               !readOnly && 'interactive'
             }`}
           >
-            {readOnly
-              ? `Expires in ${snip?.expires_in?.toLowerCase()}`
-              : expires}
+            {typeof snip === 'undefined'
+              ? typeof expires === 'undefined'
+                ? 'Never'
+                : expires
+              : snip.expires_in === null
+              ? 'Never'
+              : `Expires in ${snip.expires_in}`}
             <FiClock className='ml-2' />
           </button>
-        )}
+        ) : null}
       </div>
       <CodeMirror
         className={`w-full bg-white dark:bg-gray-800 ${readOnly && 'readonly'}`}
@@ -54,10 +66,17 @@ const Form: FC<{
         spellCheck='false'
         theme={theme === 'dark' ? dark : light}
         extensions={
-          typeof language === 'undefined' ||
-          typeof snip?.language === 'undefined'
+          hideExpires
+            ? typeof language === 'undefined'
+              ? undefined
+              : [langs[language]()]
+            : typeof snip === 'undefined'
+            ? typeof language === 'undefined'
+              ? undefined
+              : [langs[language]()]
+            : snip.language === null
             ? undefined
-            : [langs[language || snip.language]()]
+            : [langs[snip.language as keyof typeof langs]()]
         }
         basicSetup={{
           autocompletion: false,
@@ -71,6 +90,9 @@ const Form: FC<{
         onChange={
           typeof setCode === 'undefined' ? undefined : (value) => setCode(value)
         }
+        data-gramm='false'
+        data-gramm_editor='false'
+        data-enable-grammarly='false'
       />
     </div>
   )
