@@ -114,17 +114,6 @@ pub(crate) async fn my_handler(
             }
             None => println!("id does not have value"),
         }
-    } else {
-        let resp = ApiGatewayProxyResponse {
-            status_code: 400,
-            headers: response_headers,
-            multi_value_headers: HeaderMap::new(),
-            body: Some(Body::Text(
-                r#"{ "statusCode": 400, "message": "Missing required body key [id]!" }"#.to_owned(),
-            )),
-            is_base64_encoded: Some(false),
-        };
-        return Ok(resp);
     }
 
     if let Some(value) = request_body["code"].as_str() {
