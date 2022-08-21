@@ -40,6 +40,19 @@ pub(crate) async fn my_handler(
     let mut response_headers: HeaderMap = HeaderMap::new();
     response_headers.insert("Content-Type", "application/json".parse().unwrap());
 
+    if event.http_method.as_str() != "POST" {
+        let resp = ApiGatewayProxyResponse {
+            status_code: 400,
+            headers: response_headers,
+            multi_value_headers: HeaderMap::new(),
+            body: Some(Body::Text(
+                r#"{ "statusCode": 400, "message": "Wrong HTTP method!" }"#.to_owned(),
+            )),
+            is_base64_encoded: Some(false),
+        };
+        return Ok(resp);
+    }
+
     let request_body: Value;
     let mut snip: Snip = Snip {
         id: nanoid!(10),
