@@ -55,7 +55,7 @@ pub(crate) async fn my_handler(
 
     let request_body: Value;
     let mut snip: Snip = Snip {
-        id: nanoid!(10),
+        id: nanoid!(3).to_ascii_lowercase(),
         code: " ".to_owned(),
         language: None,
         password: None,
