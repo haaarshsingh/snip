@@ -60,7 +60,7 @@ If you would also like to run the [Netlify serverless functions](https://www.net
 netlify dev
 ```
 
-...and your local development server should now be running on [localhost:8080](https://localhost:8080).
+...and your local development server should now be running on [localhost:8888](https://localhost:8888).
 
 # 🔧 Tools Used
 
