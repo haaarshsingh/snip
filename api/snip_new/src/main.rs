@@ -6,6 +6,7 @@ use lambda_runtime::{handler_fn, Context, Error};
 use log::LevelFilter;
 use nanoid::nanoid;
 use postgrest::Postgrest;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use simple_logger::SimpleLogger;
 use std::env;
@@ -23,11 +24,13 @@ async fn main() -> Result<(), Error> {
     Ok(())
 }
 
+#[derive(Serialize, Deserialize)]
 struct Snip {
     id: String,
-    code: &str,
-    language: &str,
-    password: &str,
+    code: String,
+    user_id: Option<String>,
+    language: Option<String>,
+    password: Option<String>,
 }
 
 pub(crate) async fn my_handler(
@@ -40,15 +43,39 @@ pub(crate) async fn my_handler(
     let request_body: Value;
     let mut snip: Snip = Snip {
         id: nanoid!(10),
-        code: (),
-        language: (),
-        password: (),
+        code: " ".to_owned(),
+        language: None,
+        password: None,
+        user_id: None,
     };
-
-    let language: String;
 
     let client = Postgrest::new("https://araasnleificjyjflqml.supabase.co/rest/v1/")
         .insert_header("apikey", &env::var("SUPABASE_PUBLIC_ANON_KEY").unwrap());
+
+    if event.headers.contains_key("Authorization") {
+        match event.headers["Authorization"].to_str() {
+            Ok(value) => {
+                if !value.contains("Bearer") {
+                    let resp = ApiGatewayProxyResponse {
+                        status_code: 401,
+                        headers: response_headers,
+                        multi_value_headers: HeaderMap::new(),
+                        body: Some(Body::Text(
+                            r#"{ "statusCode": 401, "message": "Wrong authorization scheme" }"#
+                                .to_owned(),
+                        )),
+                        is_base64_encoded: Some(false),
+                    };
+                    return Ok(resp);
+                }
+
+                snip.user_id = Some(value.chars().skip("Bearer ".len()).collect());
+            }
+            Err(error) => {
+                println!("{}", error)
+            }
+        }
+    }
 
     match event.body {
         Some(value) => request_body = serde_json::from_str(&value)?,
@@ -72,11 +99,12 @@ pub(crate) async fn my_handler(
             Some(value) => {
                 snip.id = value.to_owned();
             }
-            None => todo!("id does not contain value"),
+            None => println!("id does not contain value"),
         }
     }
+
     if let Some(value) = request_body["code"].as_str() {
-        snip.code = value;
+        snip.code = value.to_owned();
     } else {
         let resp = ApiGatewayProxyResponse {
             status_code: 400,
@@ -92,11 +120,14 @@ pub(crate) async fn my_handler(
     }
 
     match request_body["language"].as_str() {
-        Some(value) => snip.language = value,
-        None => snip.language = "",
+        Some(value) => snip.language = Some(value.to_owned()),
+        None => snip.language = None,
     }
 
-    print!("{}", serde_json::to_string(&snip));
+    match request_body["password"].as_str() {
+        Some(value) => snip.password = Some(value.to_owned()),
+        None => snip.password = None,
+    }
 
     let resp = client
         .from("snips")
