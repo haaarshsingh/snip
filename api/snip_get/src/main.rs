@@ -4,6 +4,7 @@ use dotenv::dotenv;
 use http::header::HeaderMap;
 use lambda_runtime::{handler_fn, Context, Error};
 use postgrest::Postgrest;
+use serde_json::Value;
 use std::env;
 
 use log::LevelFilter;
@@ -57,11 +58,51 @@ pub(crate) async fn my_handler(
         .eq("id", snip_id)
         .execute()
         .await?;
+
     let body = resp.text().await?;
+    let body_json: Value = serde_json::from_str(&body)?;
+
+    if !body_json["password"].is_null() {
+        if event.headers.contains_key("Password") {
+            match event.headers["Password"].to_str() {
+                Ok(value) => {
+                    if value != body_json["password"] {
+                        let resp = ApiGatewayProxyResponse {
+                            status_code: 401,
+                            headers: response_headers,
+                            multi_value_headers: HeaderMap::new(),
+                            body: Some(Body::Text(
+                                r#"{ "statusCode": 401, "message": "Incorrect Password header provided!" }"#
+                                    .to_owned(),
+                            )),
+                            is_base64_encoded: Some(false),
+                        };
+                        return Ok(resp);
+                    }
+                }
+                Err(_) => println!("Password header is invalid."),
+            }
+        } else {
+            let resp = ApiGatewayProxyResponse {
+                status_code: 401,
+                headers: response_headers,
+                multi_value_headers: HeaderMap::new(),
+                body: Some(Body::Text(
+                    r#"{ "statusCode": 401, "message": "No Password header!" }"#.to_owned(),
+                )),
+                is_base64_encoded: Some(false),
+            };
+
+            return Ok(resp);
+        }
+    }
+
+    let mut response_header: HeaderMap = HeaderMap::new();
+    response_header.insert("Content-Type", "application/json".parse().unwrap());
 
     let resp = ApiGatewayProxyResponse {
         status_code: 200,
-        headers: response_headers,
+        headers: response_header,
         multi_value_headers: HeaderMap::new(),
         body: Some(Body::Text(body)),
         is_base64_encoded: Some(false),
