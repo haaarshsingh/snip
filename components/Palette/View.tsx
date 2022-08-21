@@ -1,6 +1,7 @@
 import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
-import { FC } from 'react'
+import { Dispatch, FC, SetStateAction, useEffect } from 'react'
 import {
+  FiArrowLeft,
   FiCheck,
   FiCode,
   FiCopy,
@@ -24,10 +25,10 @@ import { definitions } from '@typings/supabase'
 import { User } from '@supabase/supabase-js'
 import { useRouter } from 'next/router'
 
-const Palette: FC<{ snip: definitions['snips']; user: User | null }> = ({
-  snip,
-  user,
-}) => {
+const Palette: FC<{
+  snip: definitions['snips']
+  user: User | null
+}> = ({ snip, user }) => {
   const [input, setInput, open, setOpen] = useKmenu()
   const { setTheme } = useTheme()
   const router = useRouter()

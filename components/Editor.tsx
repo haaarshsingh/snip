@@ -15,7 +15,16 @@ const Form: FC<{
   readOnly?: boolean
   hideExpires?: boolean
   snip?: definitions['snips']
-}> = ({ setCode, language, expires, readOnly, hideExpires, snip }) => {
+  preventFocus?: boolean
+}> = ({
+  setCode,
+  language,
+  expires,
+  readOnly,
+  hideExpires,
+  snip,
+  preventFocus,
+}) => {
   const inputRef = useRef<ReactCodeMirrorRef>(null)
   const [input, setInput, open, setOpen] = useKmenu()
   const { theme } = useTheme()
@@ -85,7 +94,7 @@ const Form: FC<{
         }}
         readOnly={readOnly}
         value={snip?.code || ''}
-        autoFocus
+        autoFocus={!preventFocus}
         ref={inputRef}
         onChange={
           typeof setCode === 'undefined' ? undefined : (value) => setCode(value)

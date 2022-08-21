@@ -152,8 +152,9 @@ export interface definitions {
       | '1w'
       | '1m'
       | '1y'
+      | null
     /** Format: text */
-    language?: string
+    language?: string | null
   }
 }
 
