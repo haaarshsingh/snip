@@ -6,7 +6,7 @@ The base endpoint is `https://snip.au/api`.
 Returns a snip provided it's id. All snips are public by default unless protected with a password.
 
 ### **Example Response**
-`http://localhost:8888/api/snip_get?id=test`
+`http://snip.au/api/snip_get?id=test`
 ```json
 [
     {
@@ -66,14 +66,29 @@ Returns all snips from a particular user. Requires `Authorization` header with t
 ]
 ```
 ## **PATCH** api/snip_edit
+Edits the snip using the `id` provided in the body. Requires the `Authorization` header with your `user_id`. If the snip is not associated with an account,  Parameters that can be changed: `code`, `language`. 
 
 ### **Example Response**
 ```json
-
+[
+    {
+        "id": "example",
+        "code": "println!(\"Hello Rust!\");",
+        "password": null,
+        "user_id": "c3a74692-f210-4f27-bb36-feedb31f8425",
+        "created_at": "07:48:24",
+        "expires_in": null,
+        "language": "Rust"
+    }
+]
 ```
 ## **DELETE** api/snip_delete
+Deletes the snip using the `id` provided in the body. Requires the `Authorization` header with your `user_id`. Snips that are not associated with an account can not be deleted.
 
 ### **Example Response**
 ```json
-
+{
+    "statusCode": 200,
+    "message": "Snip deleted successfully!"
+}
 ```
