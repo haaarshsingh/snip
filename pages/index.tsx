@@ -7,6 +7,7 @@ import langs from '@lib/languages'
 import Options from '@components/Options'
 import { expires as ExpiresEnum } from '@typings/expires'
 import { nanoid } from 'nanoid'
+import supabase from '@lib/supabase'
 
 const Home: NextPage = () => {
   const [code, setCode] = useState<string>('')
@@ -14,18 +15,30 @@ const Home: NextPage = () => {
   const [slug, setSlug] = useState<string>(nanoid(10))
   const [language, setLanguage] = useState<keyof typeof langs>('JavaScript')
   const [expires, setExpires] = useState<ExpiresEnum>(ExpiresEnum.NEVER)
+  const user = supabase.auth.user()
 
   const create = () => {
-    console.log(code)
-    console.log(password)
-    console.log(slug)
-    console.log(language)
-    console.log(expires)
+    fetch(`/api/snip_create?id=${slug}`, {
+      method: 'POST',
+      // @ts-ignore
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: user ? `Bearer ${user.id}` : undefined,
+        body: JSON.stringify({
+          code: code,
+          password: password,
+          slug: slug,
+          language: language,
+          expires: expires,
+        }),
+      },
+    })
   }
 
   return (
     <Wrapper>
       <Palette
+        user={user}
         create={create}
         setPassword={setPassword}
         setSlug={setSlug}

@@ -5,6 +5,7 @@ import Navbar from './Nav'
 import Footer from './Footer'
 import { MenuConfig, MenuProvider } from 'kmenu'
 import { useTheme } from 'next-themes'
+import { Toaster } from 'react-hot-toast'
 
 export const meta = {
   root: 'https://snip.au',
@@ -87,6 +88,7 @@ const Wrapper: FC<{
             {/* <BackToTop /> */}
           </div>
         </div>
+        <Toaster />
       </MenuProvider>
     </div>
   )

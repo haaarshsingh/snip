@@ -4,6 +4,7 @@ import {
   FiDownloadCloud,
   FiEdit,
   FiEdit2,
+  FiLoader,
   FiLock,
   FiShare,
   FiTrash,
@@ -19,6 +20,8 @@ const Options: FC<{ create: () => void }> = ({ create }) => {
     { text: 'Edit Slug', icon: <FiEdit2 />, index: 5 },
   ]
 
+  const [loading, setLoading] = useState(false)
+
   return (
     <div className='mt-10 bg-white shadow-custom dark:bg-gray-800 flex items-center justify-between p-5 rounded-lg text-xl'>
       <div className='flex items-center'>
@@ -27,12 +30,21 @@ const Options: FC<{ create: () => void }> = ({ create }) => {
         ))}
       </div>
       <div>
-        <button
-          className='text-base bg-gray-200 dark:bg-gray-700 hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'
-          onClick={create}
-        >
-          Create Snip
-        </button>
+        {loading ? (
+          <button className='flex items-center text-base bg-gray-200 dark:bg-[#272727] border border-gray-500 text-gray-500 cursor-not-allowed py-3 px-4 rounded font-medium transition-colors'>
+            <FiLoader className='text-xl mr-2 animate-spin' />
+            Create Snip
+          </button>
+        ) : (
+          <button
+            className='text-base bg-gray-200 dark:bg-gray-700 border border-transparent hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'
+            onClick={() => {
+              setLoading(true)
+            }}
+          >
+            Create Snip
+          </button>
+        )}
       </div>
     </div>
   )

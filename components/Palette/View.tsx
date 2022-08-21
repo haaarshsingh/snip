@@ -171,6 +171,7 @@ const Palette: FC<{ snip: definitions['snips']; user: User | null }> = ({
           text: 'Confirm',
           perform: async () => {
             fetch(`/api/snip_delete?id=${snip.id}`, {
+              method: 'DELETE',
               headers: { Authorization: `Bearer ${snip.user_id!}` },
             }).then((res) => {
               if (res.status === 200) router.push('/')

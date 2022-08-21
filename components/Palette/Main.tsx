@@ -24,17 +24,18 @@ import langs from '@lib/languages'
 import { expires } from '@typings/expires'
 import { nanoid } from 'nanoid'
 import supabase from '@lib/supabase'
+import { User } from '@supabase/supabase-js'
 
 const Palette: FC<{
+  user: User | null
   create: () => void
   setPassword: Dispatch<SetStateAction<string | undefined>>
   setSlug: Dispatch<SetStateAction<string>>
   setLanguage: Dispatch<SetStateAction<keyof typeof langs>>
   setExpires: Dispatch<SetStateAction<expires>>
-}> = ({ create, setPassword, setSlug, setLanguage, setExpires }) => {
+}> = ({ user, create, setPassword, setSlug, setLanguage, setExpires }) => {
   const [input, setInput, open, setOpen] = useKmenu()
   const { theme, setTheme } = useTheme()
-  const user = supabase.auth.user()
 
   const main: Command[] = [
     {
