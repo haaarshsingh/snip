@@ -1,5 +1,3 @@
-use std::env;
-
 use aws_lambda_events::encodings::Body;
 use aws_lambda_events::event::apigw::{ApiGatewayProxyRequest, ApiGatewayProxyResponse};
 use dotenv::dotenv;
@@ -10,6 +8,7 @@ use postgrest::Postgrest;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use simple_logger::SimpleLogger;
+use std::env;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
