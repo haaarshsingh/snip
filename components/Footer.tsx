@@ -46,7 +46,6 @@ const Footer: FC = () => {
         </p>
       </div>
       <div className='flex items-center text-gray-300 dark:text-gray-600 text-sm mt-3'>
-        Made with
         <span className='ml-1 flex items-center text-emerald-400'>
           <a
             href='https://supabase.com'
@@ -58,7 +57,7 @@ const Footer: FC = () => {
           </a>
           <SiSupabase className='ml-1' />
         </span>
-        ,  
+        &nbsp;• 
         <span className='mx-1 flex items-center text-orange-400'>
           <a
             href='https://www.rust-lang.org/'
@@ -70,7 +69,7 @@ const Footer: FC = () => {
           </a>
           <SiRust className='ml-1' />
         </span>
-        and
+        &nbsp;•
         <span className='ml-1 flex items-center text-black dark:text-gray-100'>
           <a
             href='https://nextjs.orgf'
