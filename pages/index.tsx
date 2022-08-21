@@ -9,9 +9,12 @@ import { expires as ExpiresEnum } from '@typings/expires'
 import { nanoid } from 'nanoid'
 import supabase from '@lib/supabase'
 import { useRouter } from 'next/router'
+import toast from 'react-hot-toast'
+import { errorIconTheme, errorStyle } from '@css/toast'
 
 const Home: NextPage = () => {
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
   const [code, setCode] = useState<string>('')
   const [password, setPassword] = useState<string | undefined>(undefined)
   const [slug, setSlug] = useState<string | undefined>(undefined)
@@ -22,6 +25,29 @@ const Home: NextPage = () => {
   const user = supabase.auth.user()
 
   const create = () => {
+    setLoading(true)
+
+    if (
+      slug &&
+      (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/g.test(slug.toLowerCase()) ||
+        slug.includes('/') ||
+        slug === 'snips')
+    ) {
+      setLoading(false)
+      return toast.error('Invalid Slug!', {
+        style: errorStyle,
+        iconTheme: errorIconTheme,
+      })
+    }
+
+    if (code === '') {
+      setLoading(false)
+      return toast.error('Empty Code!', {
+        style: errorStyle,
+        iconTheme: errorIconTheme,
+      })
+    }
+
     fetch('/api/snip_new', {
       method: 'POST',
       // @ts-ignore
@@ -39,7 +65,14 @@ const Home: NextPage = () => {
     })
       .then((res) => res.json())
       .then((res) => router.push(`/${res[0].id}`))
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        setLoading(false)
+        console.log(err)
+        return toast.error('Error Creating Snip!', {
+          style: errorStyle,
+          iconTheme: errorIconTheme,
+        })
+      })
   }
 
   return (
@@ -53,7 +86,7 @@ const Home: NextPage = () => {
         setExpires={setExpires}
       />
       <Editor setCode={setCode} language={language} expires={expires} />
-      <Options create={create} />
+      <Options create={create} loading={loading} />
     </Wrapper>
   )
 }

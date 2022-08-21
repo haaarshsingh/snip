@@ -7,3 +7,13 @@ export const iconTheme = {
   primary: '#FFF',
   secondary: '#059669',
 }
+
+export const errorStyle = {
+  backgroundColor: '#FF6D6D',
+  color: '#FFF',
+}
+
+export const errorIconTheme = {
+  primary: '#FFF',
+  secondary: '#FF6D6D',
+}

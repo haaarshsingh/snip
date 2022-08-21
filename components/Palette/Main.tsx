@@ -2,6 +2,7 @@ import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
 import { Dispatch, FC, SetStateAction, useCallback } from 'react'
 import {
   FiArrowLeft,
+  FiCheck,
   FiClock,
   FiCode,
   FiCopy,
@@ -920,14 +921,17 @@ const Palette: FC<{
       category: 'Options',
       commands: [
         {
-          text: 'Back',
-          icon: <FiArrowLeft />,
-          perform: () => setOpen(1),
+          text: 'Confirm',
+          icon: <FiCheck />,
+          perform: () => setOpen(0),
         },
         {
           text: 'Cancel',
           icon: <FiX />,
-          perform: () => setOpen(0),
+          perform: () => {
+            setSlug('')
+            setOpen(0)
+          },
         },
       ],
     },
@@ -938,9 +942,9 @@ const Palette: FC<{
       category: 'Options',
       commands: [
         {
-          text: 'Back',
-          icon: <FiArrowLeft />,
-          perform: () => setOpen(1),
+          text: 'Confirm',
+          icon: <FiCheck />,
+          perform: () => setOpen(0),
         },
         {
           text: 'Generate Password',

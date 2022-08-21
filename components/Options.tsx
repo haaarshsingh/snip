@@ -1,4 +1,11 @@
-import { FC, ReactNode, useEffect, useState } from 'react'
+import {
+  Dispatch,
+  FC,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react'
 import {
   FiCopy,
   FiDownloadCloud,
@@ -16,17 +23,16 @@ import Link from 'next/link'
 import toast from 'react-hot-toast'
 import { iconTheme, style } from '@css/toast'
 
-const Options: FC<{ create: () => void; edit?: boolean }> = ({
-  create,
-  edit,
-}) => {
+const Options: FC<{
+  create: () => void
+  edit?: boolean
+  loading: boolean
+}> = ({ create, edit, loading }) => {
   const options = [
     { text: 'Encrypt Snip', icon: <FiLock />, index: 4 },
     { text: 'Edit Slug', icon: <FiEdit2 />, index: 5 },
   ]
   const editOptions = [{ text: 'Encrypt Snip', icon: <FiLock />, index: 4 }]
-
-  const [loading, setLoading] = useState(false)
 
   return (
     <div className='mt-10 bg-white shadow-custom dark:bg-gray-800 flex items-center justify-between p-5 rounded-lg text-xl'>
@@ -48,10 +54,7 @@ const Options: FC<{ create: () => void; edit?: boolean }> = ({
         ) : (
           <button
             className='text-base bg-gray-200 dark:bg-gray-700 border border-transparent hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'
-            onClick={() => {
-              setLoading(true)
-              create()
-            }}
+            onClick={create}
           >
             {edit ? 'Save Snip' : 'Create Snip'}
           </button>
