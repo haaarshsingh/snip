@@ -30,7 +30,7 @@ const Palette: FC<{
   user: User | null
   create: () => void
   setPassword: Dispatch<SetStateAction<string | undefined>>
-  setSlug: Dispatch<SetStateAction<string>>
+  setSlug: Dispatch<SetStateAction<string | undefined>>
   setLanguage: Dispatch<SetStateAction<keyof typeof langs | undefined>>
   setExpires: Dispatch<SetStateAction<expires>>
 }> = ({ user, create, setPassword, setSlug, setLanguage, setExpires }) => {

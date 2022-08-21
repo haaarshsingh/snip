@@ -8,11 +8,13 @@ import Options from '@components/Options'
 import { expires as ExpiresEnum } from '@typings/expires'
 import { nanoid } from 'nanoid'
 import supabase from '@lib/supabase'
+import { useRouter } from 'next/router'
 
 const Home: NextPage = () => {
+  const router = useRouter()
   const [code, setCode] = useState<string>('')
   const [password, setPassword] = useState<string | undefined>(undefined)
-  const [slug, setSlug] = useState<string>(nanoid(10))
+  const [slug, setSlug] = useState<string | undefined>(undefined)
   const [language, setLanguage] = useState<keyof typeof langs | undefined>(
     'JavaScript'
   )
@@ -20,21 +22,24 @@ const Home: NextPage = () => {
   const user = supabase.auth.user()
 
   const create = () => {
-    fetch(`/api/snip_create?id=${slug}`, {
+    fetch('/api/snip_new', {
       method: 'POST',
       // @ts-ignore
       headers: {
         'Content-Type': 'application/json',
         Authorization: user ? `Bearer ${user.id}` : undefined,
-        body: JSON.stringify({
-          code: code,
-          password: password,
-          slug: slug,
-          language: language,
-          expires: expires,
-        }),
       },
+      body: JSON.stringify({
+        id: slug,
+        code: code,
+        password: password,
+        language: language,
+        expires: expires,
+      }),
     })
+      .then((res) => res.json())
+      .then((res) => router.push(`/${res[0].id}`))
+      .catch((err) => console.log(err))
   }
 
   return (

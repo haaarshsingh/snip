@@ -50,6 +50,7 @@ const Options: FC<{ create: () => void; edit?: boolean }> = ({
             className='text-base bg-gray-200 dark:bg-gray-700 border border-transparent hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'
             onClick={() => {
               setLoading(true)
+              create()
             }}
           >
             {edit ? 'Save Snip' : 'Create Snip'}
