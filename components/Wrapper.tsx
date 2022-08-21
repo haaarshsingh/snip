@@ -8,10 +8,10 @@ import { useTheme } from 'next-themes'
 import { Toaster } from 'react-hot-toast'
 
 export const meta = {
-  root: 'https://snip.au',
+  root: 'https://snip.place',
   title: 'snip',
   description: 'A free and open-source tool for sharing online code snippets.',
-  image: 'https://snip.au/banner.png',
+  image: 'https://snip.place/banner.png',
   type: 'website',
 }
 
