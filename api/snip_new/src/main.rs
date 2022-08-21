@@ -6,6 +6,7 @@ use lambda_runtime::{handler_fn, Context, Error};
 use log::LevelFilter;
 use nanoid::nanoid;
 use postgrest::Postgrest;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use simple_logger::SimpleLogger;
@@ -113,6 +114,19 @@ pub(crate) async fn handler(
                 snip.id = value.to_owned();
             }
             None => println!("id does not have value"),
+        }
+        let snip_id_re = Regex::new(r"^[a-z0-9]+(?:-[a-z0-9]+)*$").unwrap();
+        if !snip_id_re.is_match(snip.id.as_str()) || snip.id.contains("/") || snip.id == "snips" {
+            let resp = ApiGatewayProxyResponse {
+                status_code: 400,
+                headers: response_headers,
+                multi_value_headers: HeaderMap::new(),
+                body: Some(Body::Text(
+                    r#"{ "statusCode": 400, "message": "Forbidden id used!" }"#.to_owned(),
+                )),
+                is_base64_encoded: Some(false),
+            };
+            return Ok(resp);
         }
     }
 

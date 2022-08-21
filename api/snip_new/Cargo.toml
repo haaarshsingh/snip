@@ -5,6 +5,7 @@ version = "0.1.0"
 
 
 [dependencies]
+regex = "1"
 postgrest = "1.0"
 dotenv = "0.15.0"
 nanoid = "0.4.0"
