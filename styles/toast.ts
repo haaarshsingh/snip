@@ -17,3 +17,13 @@ export const errorIconTheme = {
   primary: '#FFF',
   secondary: '#FF6D6D',
 }
+
+export const promiseStyle = {
+  backgroundColor: '#16A0FF',
+  color: '#FFF',
+}
+
+export const promiseIconTheme = {
+  primary: '#FFF',
+  secondary: '#16A0FF',
+}

@@ -3,7 +3,12 @@ import { ViewOptions } from '@components/Options'
 import Palette from '@components/Palette/View'
 import PasswordModal from '@components/PasswordModal'
 import Wrapper from '@components/Wrapper'
-import { errorIconTheme, errorStyle } from '@css/toast'
+import {
+  errorIconTheme,
+  errorStyle,
+  promiseIconTheme,
+  promiseStyle,
+} from '@css/toast'
 import supabase from '@lib/supabase'
 import { definitions } from '@typings/supabase'
 import type { GetServerSideProps, NextPage } from 'next'
@@ -27,7 +32,7 @@ const View: NextPage<{
     if (snip.id === undefined && !encrypted) router.push('/')
   }, [])
 
-  const refetch = async () => {
+  const refetch = () => {
     const response = fetch(
       `${
         process.env.NODE_ENV === 'development'
@@ -38,23 +43,24 @@ const View: NextPage<{
         headers: { Password: password },
       }
     )
-      .then((res) => res.json())
-      .catch((err) => {
-        console.log('test')
-        console.log(err)
+      .then((res) => {
+        if (res.status === 401) throw new Error('Incorrect Password')
+        return res.json()
       })
+      .then((res) => setUnlockedSnip(res[0]))
 
-    const snip = await response
-
-    toast.promise(response, {
-      loading: 'Loading',
-      success: 'Got the data',
-      error: 'Error when fetching',
-    })
-
-    if (snip[0]) {
-      setUnlockedSnip(snip[0])
-    }
+    toast.promise(
+      response,
+      {
+        loading: 'Loading',
+        success: 'Loaded Snip!',
+        error: 'Incorrect Password',
+      },
+      {
+        style: promiseStyle,
+        iconTheme: promiseIconTheme,
+      }
+    )
   }
 
   if (snip.id !== undefined && !encrypted) {
