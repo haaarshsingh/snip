@@ -140,9 +140,6 @@ pub(crate) async fn handler(
         None => {}
     }
 
-    //todo: [VERY DANGEROUS] still need to handle if both snip_user_id and request_user_id are value "empty",
-    // the case will still go through and delete the snip.
-
     if snip_user_id.trim().is_empty() {
         let resp = ApiGatewayProxyResponse {
             status_code: 403,
@@ -157,7 +154,7 @@ pub(crate) async fn handler(
         return Ok(resp);
     }
 
-    if snip_user_id == request_user_id {
+    if snip_user_id == request_user_id && !snip_user_id.is_empty() {
         client
             .from("snips")
             .select("*")
@@ -166,9 +163,6 @@ pub(crate) async fn handler(
             .execute()
             .await?;
     } else {
-        println!("{}", snip_user_id);
-        println!("{}", request_user_id);
-
         let resp = ApiGatewayProxyResponse {
             status_code: 401,
             headers: response_headers,
