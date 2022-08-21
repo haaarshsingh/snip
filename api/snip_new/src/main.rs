@@ -23,10 +23,12 @@ async fn main() -> Result<(), Error> {
     Ok(())
 }
 
-// struct Paste {
-//     paste_id: String,
-//     code: &str,
-// }
+struct Snip {
+    id: String,
+    code: &str,
+    language: &str,
+    password: &str,
+}
 
 pub(crate) async fn my_handler(
     event: ApiGatewayProxyRequest,
@@ -36,10 +38,14 @@ pub(crate) async fn my_handler(
     response_headers.insert("Content-Type", "application/json".parse().unwrap());
 
     let request_body: Value;
+    let mut snip: Snip = Snip {
+        id: nanoid!(10),
+        code: (),
+        language: (),
+        password: (),
+    };
 
-    let mut paste_id = nanoid!(10);
     let language: String;
-    let code: &str;
 
     let client = Postgrest::new("https://araasnleificjyjflqml.supabase.co/rest/v1/")
         .insert_header("apikey", &env::var("SUPABASE_PUBLIC_ANON_KEY").unwrap());
@@ -64,13 +70,13 @@ pub(crate) async fn my_handler(
     if !request_body["id"].is_null() {
         match request_body["id"].as_str() {
             Some(value) => {
-                paste_id = value.to_owned();
+                snip.id = value.to_owned();
             }
             None => todo!("id does not contain value"),
         }
     }
     if let Some(value) = request_body["code"].as_str() {
-        code = value;
+        snip.code = value;
     } else {
         let resp = ApiGatewayProxyResponse {
             status_code: 400,
@@ -86,15 +92,15 @@ pub(crate) async fn my_handler(
     }
 
     match request_body["language"].as_str() {
-        Some(value) => language = format!("\"{value}\""),
-        None => language = "null".to_owned(),
+        Some(value) => snip.language = value,
+        None => snip.language = "",
     }
+
+    print!("{}", serde_json::to_string(&snip));
 
     let resp = client
         .from("snips")
-        .insert(format!(
-            r#"[ {{ "id": "{paste_id}", "code": "{code}", "language": {language} }} ]"#
-        ))
+        .insert(serde_json::to_string(&snip)?)
         .execute()
         .await?;
 
