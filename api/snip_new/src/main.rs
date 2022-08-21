@@ -19,7 +19,7 @@ async fn main() -> Result<(), Error> {
         .unwrap();
     dotenv().ok();
 
-    let func = handler_fn(my_handler);
+    let func = handler_fn(handler);
     lambda_runtime::run(func).await?;
     Ok(())
 }
@@ -33,7 +33,7 @@ struct Snip {
     password: Option<String>,
 }
 
-pub(crate) async fn my_handler(
+pub(crate) async fn handler(
     event: ApiGatewayProxyRequest,
     _ctx: Context,
 ) -> Result<ApiGatewayProxyResponse, Error> {
