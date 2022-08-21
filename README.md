@@ -13,7 +13,7 @@
 
 # ✨ Team
 
-Harsh Singh • Frontend (TypeScript) • [GitHub](https://github.com/harshhhhdev) • [Twitter](https://twitter.com/harshhhdev)
+Harsh Singh • Frontend (TypeScript) • [GitHub](https://github.com/harshhhdev) • [Twitter](https://twitter.com/harshhhdev)
 
 Ibrahim Hisham • Backend (Rust) • [GitHub](https://github.com/ibra) • [Twitter](https://twitter.com/IbrahDev)
 
