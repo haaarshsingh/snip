@@ -13,6 +13,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useKmenu } from 'kmenu'
 import { definitions } from '@typings/supabase'
 import Link from 'next/link'
+import toast from 'react-hot-toast'
+import { iconTheme, style } from '@css/toast'
 
 const Options: FC<{ create: () => void; edit?: boolean }> = ({
   create,
@@ -71,13 +73,26 @@ export const ViewOptions: FC<{
     {
       text: 'Copy Snip',
       icon: <FiCopy />,
-      perform: () => navigator.clipboard.writeText(snip.code),
+      perform: () => {
+        toast.success('Copied Snip', {
+          style: style,
+          iconTheme: iconTheme,
+        })
+
+        navigator.clipboard.writeText(snip.code)
+      },
     },
     {
       text: 'Copy URL',
       icon: <FiShare />,
-      perform: () =>
-        navigator.clipboard.writeText(`https://snip.place/${snip.id}`),
+      perform: () => {
+        toast.success('Copied URL', {
+          style: style,
+          iconTheme: iconTheme,
+        })
+
+        navigator.clipboard.writeText(`https://snip.place/${snip.id}`)
+      },
     },
     {
       text: 'Download Snip',
@@ -103,13 +118,26 @@ export const ViewOptions: FC<{
     {
       text: 'Copy Snip',
       icon: <FiCopy />,
-      perform: () => navigator.clipboard.writeText(snip.code),
+      perform: () => {
+        toast.success('Copied Snip', {
+          style: style,
+          iconTheme: iconTheme,
+        })
+
+        navigator.clipboard.writeText(snip.code)
+      },
     },
     {
       text: 'Copy URL',
       icon: <FiShare />,
-      perform: () =>
-        navigator.clipboard.writeText(`https://snip.place/${snip.id}`),
+      perform: () => {
+        toast.success('Copied URL', {
+          style: style,
+          iconTheme: iconTheme,
+        })
+
+        navigator.clipboard.writeText(`https://snip.place/${snip.id}`)
+      },
     },
     {
       text: 'Download Snip',

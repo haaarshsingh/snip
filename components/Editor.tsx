@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useEffect, useRef } from 'react'
+import { Dispatch, FC, SetStateAction, useRef } from 'react'
 import CodeMirror, { ReactCodeMirrorRef } from '@uiw/react-codemirror'
 import { dark, light } from '@lib/theme'
 import langs from '@lib/languages'
@@ -19,8 +19,6 @@ const Form: FC<{
   const inputRef = useRef<ReactCodeMirrorRef>(null)
   const [input, setInput, open, setOpen] = useKmenu()
   const { theme } = useTheme()
-
-  useEffect(() => console.log(language), [language])
 
   return (
     <div className='w-full flex flex-col items-start justify-center mt-10'>

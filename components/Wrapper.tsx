@@ -80,6 +80,7 @@ const Wrapper: FC<{
         config={theme === 'dark' ? darkConfig : lightConfig}
         dimensions={{ sectionHeight: 36 }}
       >
+        <Toaster />
         <div className='flex flex-col items-center'>
           <div className='max-w-800 w-90 lg:w-70 xl:w-60 2xl:w-40 mt-10'>
             <Navbar header={nav} />
@@ -88,7 +89,6 @@ const Wrapper: FC<{
             {/* <BackToTop /> */}
           </div>
         </div>
-        <Toaster />
       </MenuProvider>
     </div>
   )
