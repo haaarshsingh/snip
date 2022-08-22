@@ -15,6 +15,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter'],
+        mono: ['Fira Code'],
       },
       colors: {
         gray: {
