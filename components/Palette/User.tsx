@@ -1,4 +1,4 @@
-import { Command, CommandMenu, useCommands } from 'kmenu'
+import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
 import { FC } from 'react'
 import {
   FiCode,
@@ -14,6 +14,7 @@ import { useTheme } from 'next-themes'
 import supabase from '@lib/supabase'
 
 const Palette: FC = () => {
+  const [input, setInput, open, setOpen] = useKmenu()
   const { setTheme } = useTheme()
 
   const main: Command[] = [
@@ -34,10 +35,14 @@ const Palette: FC = () => {
           icon: <FiPlus />,
           text: 'New Snip',
           href: 'https://snip.place/',
+          shortcuts: { keys: ['n'] },
         },
         {
           icon: <BiPaintRoll />,
           text: 'Theme...',
+          keywords: 'dark light mode themes',
+          perform: () => setOpen(2),
+          shortcuts: { modifier: 'alt', keys: ['t'] },
         },
         {
           icon: <FiCopy />,
@@ -48,7 +53,8 @@ const Palette: FC = () => {
         {
           icon: <FiCode />,
           text: 'API',
-          href: '/api',
+          href: 'https://github.com/harshhhdev/snip/blob/main/API.md',
+          newTab: true,
         },
         {
           icon: <FiGithub />,

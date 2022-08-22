@@ -1,7 +1,6 @@
 import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
-import { Dispatch, FC, SetStateAction, useEffect } from 'react'
+import { FC } from 'react'
 import {
-  FiArrowLeft,
   FiCheck,
   FiCode,
   FiCopy,
@@ -24,6 +23,9 @@ import supabase from '@lib/supabase'
 import { definitions } from '@typings/supabase'
 import { User } from '@supabase/supabase-js'
 import { useRouter } from 'next/router'
+import toast from 'react-hot-toast'
+import { errorIconTheme, errorStyle } from '@css/toast'
+import { CategoryCommand } from 'kmenu/dist/types'
 
 const Palette: FC<{
   snip: definitions['snips']
@@ -33,62 +35,48 @@ const Palette: FC<{
   const { setTheme } = useTheme()
   const router = useRouter()
 
-  const utilityCommands = [
+  const utilityCommands: CategoryCommand[] = [
     {
       icon: <FiPlus />,
       text: 'New Snip',
       href: 'https://snip.place/',
+      shortcuts: { keys: ['n'] },
     },
     {
       icon: <FiCopy />,
       text: 'Copy Snip',
       perform: () => navigator.clipboard.writeText(snip.code),
+      shortcuts: { keys: ['c', 's'] },
     },
     {
       icon: <FiShare2 />,
       text: 'Copy URL',
       perform: () =>
         navigator.clipboard.writeText(`https://snip.place/${snip.id}`),
+      shortcuts: { keys: ['c', 'u'] },
     },
     {
       icon: <FiDownloadCloud />,
       text: 'Download Snip',
       href: `data:application/octet-stream,${encodeURIComponent(snip.code)}`,
+      shortcuts: { modifier: 'ctrl', keys: ['d'] },
     },
   ]
 
-  const utilityCommandsOwner = [
+  const utilityCommandsOwner: CategoryCommand[] = [
     {
       icon: <FiEdit />,
       text: 'Edit Snip',
       href: `https://snip.place/edit/${snip.id}`,
+      shortcuts: { keys: ['e'] },
     },
     {
       icon: <FiTrash />,
       text: 'Delete Snip',
       perform: () => setOpen(3),
+      shortcuts: { keys: ['d', 'l'] },
     },
-    {
-      icon: <FiPlus />,
-      text: 'New Snip',
-      href: 'https://snip.place/',
-    },
-    {
-      icon: <FiCopy />,
-      text: 'Copy Snip',
-      perform: () => navigator.clipboard.writeText(snip.code),
-    },
-    {
-      icon: <FiShare2 />,
-      text: 'Copy URL',
-      perform: () =>
-        navigator.clipboard.writeText(`https://snip.place/${snip.id}`),
-    },
-    {
-      icon: <FiDownloadCloud />,
-      text: 'Download Snip',
-      href: `data:application/octet-stream,${encodeURIComponent(snip.code)}`,
-    },
+    ...utilityCommands,
   ]
 
   const main: Command[] = [
@@ -104,7 +92,7 @@ const Palette: FC<{
                 await supabase.auth.signIn({
                   provider: 'github',
                 }),
-          href: user ? '/snips' : undefined,
+          href: user ? `/user/${user.id}` : undefined,
         },
         {
           icon: user ? <FiLogOut /> : <FiGitlab />,
@@ -129,11 +117,15 @@ const Palette: FC<{
         {
           icon: <BiPaintRoll />,
           text: 'Theme...',
+          keywords: 'dark light mode themes',
+          perform: () => setOpen(6),
+          shortcuts: { modifier: 'alt', keys: ['t'] },
         },
         {
           icon: <FiCode />,
           text: 'API',
-          href: '/api',
+          href: 'https://github.com/harshhhdev/snip/blob/main/API.md',
+          newTab: true,
         },
         {
           icon: <FiGithub />,
@@ -171,12 +163,17 @@ const Palette: FC<{
           icon: <FiCheck />,
           text: 'Confirm',
           perform: async () => {
-            fetch(`/api/snip_delete?id=${snip.id}`, {
+            fetch(`/api/snip_delete`, {
               method: 'DELETE',
               headers: { Authorization: `Bearer ${snip.user_id!}` },
+              body: JSON.stringify({ id: snip.id }),
             }).then((res) => {
               if (res.status === 200) router.push('/')
-              console.log('failed')
+              else
+                toast.error('Error Deleting Snip!', {
+                  style: errorStyle,
+                  iconTheme: errorIconTheme,
+                })
             })
           },
         },

@@ -7,22 +7,29 @@ import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-const Snips: NextPage<{ snips: definitions['snips'][] }> = ({ snips }) => {
+const Snips: NextPage<{ snips: definitions['snips'][]; id: string }> = ({
+  snips,
+  id,
+}) => {
   const user = supabase.auth.user()
   const router = useRouter()
   useEffect(() => {
-    if (!user) router.push('/')
+    if (user?.id !== id) router.push('/')
   }, [])
 
-  return (
-    <Wrapper nav='Your Snips'>
-      <Palette />
-      <User snips={snips} />
-    </Wrapper>
-  )
+  if (user?.id === id) {
+    return (
+      <Wrapper nav='Your Snips'>
+        <Palette />
+        <User snips={snips} />
+      </Wrapper>
+    )
+  }
+
+  return <></>
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const response: Promise<definitions['snips'][]> = fetch(
     `${
       process.env.NODE_ENV === 'development'
@@ -30,13 +37,14 @@ export const getServerSideProps: GetServerSideProps = async () => {
         : 'https://snip.place'
     }/api/user_snips`,
     {
-      headers: { Authorization: 'Bearer c3a74692-f210-4f27-bb36-feedb31f8425' },
+      headers: { Authorization: `Bearer ${params?.id?.toString()}` },
     }
   ).then((res) => res.json())
 
   return {
     props: {
       snips: await response,
+      id: params?.id?.toString(),
     },
   }
 }

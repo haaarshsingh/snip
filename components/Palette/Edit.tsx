@@ -2,10 +2,8 @@ import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
 import { Dispatch, FC, SetStateAction } from 'react'
 import {
   FiArrowLeft,
-  FiClock,
   FiCode,
   FiCopy,
-  FiEdit2,
   FiGithub,
   FiGitlab,
   FiLock,
@@ -47,7 +45,8 @@ const Palette: FC<{
                 await supabase.auth.signIn({
                   provider: 'github',
                 }),
-          href: user ? '/snips' : undefined,
+          href: user ? `/user/${user.id}` : undefined,
+          shortcuts: { modifier: 'alt', keys: ['v'] },
         },
         {
           icon: user ? <FiLogOut /> : <FiGitlab />,
@@ -66,29 +65,22 @@ const Palette: FC<{
       commands: [
         {
           icon: <FiPlus />,
-          text: 'Create Snip',
+          text: 'Save Snip',
           perform: create,
+          shortcuts: { modifier: 'ctrl', keys: ['s'] },
         },
         {
           icon: <FiCode />,
           text: 'Language...',
           perform: () => setOpen(2),
-        },
-        {
-          icon: <FiClock />,
-          text: 'Expires...',
-          perform: () => setOpen(3),
+          shortcuts: { modifier: 'ctrl', keys: ['l'] },
         },
         {
           icon: <FiLock />,
           text: 'Encrypt...',
-          perform: () => setOpen(4),
+          perform: () => setOpen(3),
           keywords: 'password',
-        },
-        {
-          icon: <FiEdit2 />,
-          text: 'Edit Slug...',
-          perform: () => setOpen(5),
+          shortcuts: { modifier: 'alt', keys: ['e'] },
         },
       ],
     },
@@ -100,6 +92,7 @@ const Palette: FC<{
           text: 'Theme...',
           keywords: 'dark light mode themes',
           perform: () => setOpen(6),
+          shortcuts: { modifier: 'alt', keys: ['t'] },
         },
         {
           icon: <FiCopy />,
@@ -109,7 +102,8 @@ const Palette: FC<{
         {
           icon: <FiCode />,
           text: 'API',
-          href: '/api',
+          href: 'https://github.com/harshhhdev/snip/blob/main/API.md',
+          newTab: true,
         },
         {
           icon: <FiGithub />,

@@ -62,7 +62,8 @@ const Palette: FC<{
                 await supabase.auth.signIn({
                   provider: 'github',
                 }),
-          href: user ? '/snips' : undefined,
+          href: user ? `/user/${user.id}` : undefined,
+          shortcuts: { modifier: 'alt', keys: ['v'] },
         },
         {
           icon: user ? <FiLogOut /> : <FiGitlab />,
@@ -83,27 +84,32 @@ const Palette: FC<{
           icon: <FiPlus />,
           text: 'Create Snip',
           perform: create,
+          shortcuts: { modifier: 'ctrl', keys: ['s'] },
         },
         {
           icon: <FiCode />,
           text: 'Language...',
           perform: () => setOpen(2),
+          shortcuts: { modifier: 'ctrl', keys: ['l'] },
         },
         {
           icon: <FiClock />,
           text: 'Expires...',
           perform: () => setOpen(3),
+          shortcuts: { modifier: 'ctrl', keys: ['e'] },
         },
         {
           icon: <FiLock />,
           text: 'Encrypt...',
           perform: () => setOpen(4),
           keywords: 'password',
+          shortcuts: { modifier: 'alt', keys: ['e'] },
         },
         {
           icon: <FiEdit2 />,
           text: 'Edit Slug...',
           perform: () => setOpen(5),
+          shortcuts: { modifier: 'alt', keys: ['o'] },
         },
       ],
     },
@@ -115,6 +121,7 @@ const Palette: FC<{
           text: 'Theme...',
           keywords: 'dark light mode themes',
           perform: () => setOpen(6),
+          shortcuts: { modifier: 'alt', keys: ['t'] },
         },
         {
           icon: <FiCopy />,
@@ -124,7 +131,8 @@ const Palette: FC<{
         {
           icon: <FiCode />,
           text: 'API',
-          href: '/api',
+          href: 'https://github.com/harshhhdev/snip/blob/main/API.md',
+          newTab: true,
         },
         {
           icon: <FiGithub />,
