@@ -21,7 +21,7 @@ const Home: NextPage = () => {
     'JavaScript'
   )
   const [expires, setExpires] = useState<ExpiresEnum>(ExpiresEnum.NEVER)
-  const user = supabase.auth.user()
+  const session = supabase.auth.session()
 
   const create = () => {
     setLoading(true)
@@ -29,7 +29,7 @@ const Home: NextPage = () => {
     const headers = new Headers({ 'Content-Type': 'application/json' })
     const authenticatedHeaders = new Headers({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${user?.id}`,
+      Authorization: `Bearer ${session?.user?.id}`,
     })
 
     fetch('/api/snip_new', {
@@ -58,9 +58,9 @@ const Home: NextPage = () => {
 
   return (
     <Wrapper>
-      <p className='text-white'>{user?.id}</p>
+      <p className='text-white'>{typeof session?.access_token}</p>
       <Palette
-        user={user}
+        user={session?.user!}
         slug={slug}
         password={password}
         setPassword={setPassword}

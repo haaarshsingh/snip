@@ -14,6 +14,7 @@ const Snip = ({ Component, pageProps }: AppProps) => {
         height={3}
         showOnShallow={true}
       />
+      {/* @ts-ignore */}
       <Component {...pageProps} />
     </ThemeProvider>
   )

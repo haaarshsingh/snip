@@ -11,11 +11,12 @@ import {
 } from 'react-icons/fi'
 import { BsShift, BsArrowReturnLeft } from 'react-icons/bs'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useKmenu, useShortcut } from 'kmenu'
+import { useKmenu } from 'kmenu'
 import { definitions } from '@typings/supabase'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 import { iconTheme, style } from '@css/toast'
+import useKeyPress from '@hooks/useKeyPress'
 
 const Options: FC<{
   create: () => void
@@ -27,8 +28,7 @@ const Options: FC<{
     { text: 'Edit Slug', icon: <FiEdit2 />, index: 5 },
   ]
   const editOptions = [{ text: 'Encrypt Snip', icon: <FiLock />, index: 4 }]
-
-  const createSnip = useShortcut({ modifier: 'shift', targetKey: 'Enter' })
+  const createSnip = useKeyPress('Enter')
   useEffect(() => {
     if (createSnip) create()
   }, [createSnip])
