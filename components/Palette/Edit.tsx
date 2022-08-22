@@ -66,12 +66,6 @@ const Palette: FC<{
       category: 'Utility',
       commands: [
         {
-          icon: <FiPlus />,
-          text: 'Save Snip',
-          perform: create,
-          shortcuts: { modifier: 'ctrl', keys: ['s'] },
-        },
-        {
           icon: <FiCode />,
           text: 'Language...',
           perform: () => setOpen(2),

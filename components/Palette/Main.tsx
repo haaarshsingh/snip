@@ -54,10 +54,13 @@ const Palette: FC<{
           text: user ? 'View Snips' : 'Continue With GitHub',
           perform: user
             ? undefined
-            : async () =>
-                await supabase.auth.signIn({
+            : async () => {
+                const { user } = await supabase.auth.signIn({
                   provider: 'github',
-                }),
+                })
+
+                if (user) window.location.reload()
+              },
           href: user ? `/user/${user.id}` : undefined,
         },
         {

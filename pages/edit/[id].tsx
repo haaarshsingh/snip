@@ -2,14 +2,17 @@ import Editor from '@components/Editor'
 import Options from '@components/Options'
 import Palette from '@components/Palette/Edit'
 import Wrapper from '@components/Wrapper'
+import { errorIconTheme, errorStyle } from '@css/toast'
 import langs from '@lib/languages'
 import supabase from '@lib/supabase'
 import { definitions } from '@typings/supabase'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 const Edit: NextPage<{ snip: definitions['snips'] }> = ({ snip }) => {
+  const [loading, setLoading] = useState(false)
   const [code, setCode] = useState<string>(snip.code)
   const [password, setPassword] = useState<string | null>(snip.password!)
   const [language, setLanguage] = useState<keyof typeof langs | undefined>(
@@ -22,7 +25,34 @@ const Edit: NextPage<{ snip: definitions['snips'] }> = ({ snip }) => {
     if (snip.user_id !== user?.id) router.push('/')
   }, [])
 
-  const edit = () => {}
+  const edit = () => {
+    setLoading(true)
+
+    fetch('/api/snip_edit', {
+      method: 'PATCH',
+      // @ts-ignore
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user?.id}`,
+      },
+      body: JSON.stringify({
+        id: snip.id,
+        code: code,
+        password: password,
+        language: language,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => router.push(`/${res[0].id}`))
+      .catch((err) => {
+        setLoading(false)
+        console.log(err)
+        return toast.error('Error Editing Snip!', {
+          style: errorStyle,
+          iconTheme: errorIconTheme,
+        })
+      })
+  }
 
   if (snip.user_id === user?.id) {
     return (
@@ -34,7 +64,7 @@ const Edit: NextPage<{ snip: definitions['snips'] }> = ({ snip }) => {
           setLanguage={setLanguage}
         />
         <Editor snip={snip} setCode={setCode} language={language} hideExpires />
-        <Options create={edit} edit />
+        <Options create={edit} loading={loading} edit />
       </Wrapper>
     )
   }

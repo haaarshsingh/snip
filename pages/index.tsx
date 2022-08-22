@@ -58,6 +58,7 @@ const Home: NextPage = () => {
 
   return (
     <Wrapper>
+      <p className='text-white'>{user?.id}</p>
       <Palette
         user={user}
         slug={slug}
