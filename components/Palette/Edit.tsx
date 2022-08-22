@@ -46,7 +46,6 @@ const Palette: FC<{
                   provider: 'github',
                 }),
           href: user ? `/user/${user.id}` : undefined,
-          shortcuts: { modifier: 'alt', keys: ['v'] },
         },
         {
           icon: user ? <FiLogOut /> : <FiGitlab />,
