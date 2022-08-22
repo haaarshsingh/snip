@@ -2,10 +2,13 @@ import { definitions } from '@typings/supabase'
 import { FC, useEffect, useRef, useState } from 'react'
 import { motion, AnimateSharedLayout } from 'framer-motion'
 import Link from 'next/link'
-import { useShortcut } from 'kmenu'
+import { useKmenu, useShortcut } from 'kmenu'
 import { FiSearch } from 'react-icons/fi'
+import { useTheme } from 'next-themes'
 
 const User: FC<{ snips: definitions['snips'][] }> = ({ snips }) => {
+  const [input, setInput, open, setOpen] = useKmenu()
+  const { theme } = useTheme()
   const [selected, setSelected] = useState(0)
   const [results, setResults] = useState<definitions['snips'][] | undefined>(
     snips
@@ -24,7 +27,7 @@ const User: FC<{ snips: definitions['snips'][] }> = ({ snips }) => {
 
   return (
     <div className='flex flex-col min-h-[80vh]'>
-      <div className='flex items-center h-16 bg-[#1f1f1f] rounded text-lg my-10'>
+      <div className='flex items-center h-16 bg-gray-200 dark:bg-[#1f1f1f] rounded text-lg my-10'>
         <FiSearch className='text-xl ml-5' />
         <input
           className='bg-transparent ml-3 outline-none w-full'
@@ -51,6 +54,8 @@ const User: FC<{ snips: definitions['snips'][] }> = ({ snips }) => {
             snip={snip}
             selected={selected === index}
             onMouseMove={() => setSelected(index)}
+            modalOpen={open !== 0}
+            theme={theme!}
           />
         ))}
       </AnimateSharedLayout>
@@ -62,11 +67,14 @@ const Snip: FC<{
   snip: definitions['snips']
   selected: boolean
   onMouseMove: () => void
-}> = ({ snip, selected, onMouseMove }) => {
+  modalOpen: boolean
+  theme: string
+}> = ({ snip, selected, onMouseMove, modalOpen, theme }) => {
   const enter = useShortcut({ targetKey: 'Enter' })
 
   useEffect(() => {
-    if (enter) window.open(`https://snip.place/${snip.id}`, '_self')
+    if (enter && selected && !modalOpen)
+      window.open(`https://snip.place/${snip.id}`, '_self')
   }, [enter])
 
   return (
@@ -75,7 +83,14 @@ const Snip: FC<{
         className='w-full select-none text-base h-16 flex items-center rounded-lg transition-colors relative'
         onMouseMove={onMouseMove}
         style={{
-          color: selected ? '#FFFFFF' : '#444444',
+          color:
+            theme === 'dark'
+              ? selected
+                ? '#FFF'
+                : '#4E4E4E'
+              : selected
+              ? '#343434'
+              : '#828282',
         }}
       >
         {selected && (
