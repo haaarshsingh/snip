@@ -1,11 +1,4 @@
-import {
-  Dispatch,
-  FC,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react'
+import { FC, ReactNode, useEffect, useState } from 'react'
 import {
   FiCopy,
   FiDownloadCloud,
@@ -16,8 +9,9 @@ import {
   FiShare,
   FiTrash,
 } from 'react-icons/fi'
+import { BsShift, BsArrowReturnLeft } from 'react-icons/bs'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useKmenu } from 'kmenu'
+import { useKmenu, useShortcut } from 'kmenu'
 import { definitions } from '@typings/supabase'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
@@ -33,6 +27,11 @@ const Options: FC<{
     { text: 'Edit Slug', icon: <FiEdit2 />, index: 5 },
   ]
   const editOptions = [{ text: 'Encrypt Snip', icon: <FiLock />, index: 4 }]
+
+  const createSnip = useShortcut({ modifier: 'shift', targetKey: 'Enter' })
+  useEffect(() => {
+    if (createSnip) create()
+  }, [createSnip])
 
   return (
     <div className='mt-10 bg-white shadow-custom dark:bg-gray-800 flex items-center justify-between p-5 rounded-lg text-xl'>
@@ -52,12 +51,10 @@ const Options: FC<{
             {edit ? 'Save Snip' : 'Create Snip'}
           </button>
         ) : (
-          <button
-            className='text-base bg-gray-200 dark:bg-gray-700 border border-transparent hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'
-            onClick={create}
-          >
-            {edit ? 'Save Snip' : 'Create Snip'}
-          </button>
+          <ButtonWithTooltip
+            create={create}
+            text={edit ? 'Save Snip' : 'Create Snip'}
+          />
         )}
       </div>
     </div>
@@ -211,6 +208,36 @@ const Option: FC<{
         )}
       </AnimatePresence>
       {command.icon}
+    </button>
+  )
+}
+
+const ButtonWithTooltip: FC<{ create: () => void; text: string }> = ({
+  create,
+  text,
+}) => {
+  const [open, setOpen] = useState(false)
+  return (
+    <button
+      className='flex justify-center text-base bg-gray-200 dark:bg-gray-700 border border-transparent hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'
+      onClick={create}
+      onMouseOver={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className='absolute font-mono flex items-center tracking-tighter text-sm -mt-16 bg-gray-200 border border-gray-300 dark:border-none dark:bg-gray-600 text-gray-300 p-2 rounded pointer-events-none'
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 10, opacity: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <BsShift className='mr-1' />+<BsArrowReturnLeft className='ml-1' />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {text}
     </button>
   )
 }
