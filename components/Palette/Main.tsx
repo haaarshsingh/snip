@@ -1,7 +1,6 @@
 import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
 import { Dispatch, FC, SetStateAction } from 'react'
 import {
-  FiArrowLeft,
   FiCheck,
   FiClock,
   FiCode,
@@ -12,7 +11,6 @@ import {
   FiLock,
   FiLogOut,
   FiMoon,
-  FiPlus,
   FiRefreshCcw,
   FiSun,
   FiUser,
@@ -29,7 +27,6 @@ import { User } from '@supabase/supabase-js'
 
 const Palette: FC<{
   user: User | null
-  create: () => void
   password: string | undefined
   slug: string | undefined
   setPassword: Dispatch<SetStateAction<string | undefined>>
@@ -38,7 +35,6 @@ const Palette: FC<{
   setExpires: Dispatch<SetStateAction<expires>>
 }> = ({
   user,
-  create,
   password,
   slug,
   setPassword,
@@ -79,12 +75,6 @@ const Palette: FC<{
     {
       category: 'Utility',
       commands: [
-        {
-          icon: <FiPlus />,
-          text: 'Create Snip',
-          perform: create,
-          shortcuts: { modifier: 'ctrl', keys: ['s'] },
-        },
         {
           icon: <FiCode />,
           text: 'Language...',

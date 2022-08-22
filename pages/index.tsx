@@ -6,7 +6,6 @@ import Palette from '@components/Palette/Main'
 import langs from '@lib/languages'
 import Options from '@components/Options'
 import { expires as ExpiresEnum } from '@typings/expires'
-import { nanoid } from 'nanoid'
 import supabase from '@lib/supabase'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
@@ -27,36 +26,18 @@ const Home: NextPage = () => {
   const create = () => {
     setLoading(true)
 
-    if (
-      slug &&
-      (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/g.test(slug.toLowerCase()) ||
-        slug.includes('/') ||
-        slug === 'snips')
-    ) {
-      setLoading(false)
-      return toast.error('Invalid Slug!', {
-        style: errorStyle,
-        iconTheme: errorIconTheme,
-      })
-    }
-
-    if (code === '') {
-      setLoading(false)
-      return toast.error('Empty Code!', {
-        style: errorStyle,
-        iconTheme: errorIconTheme,
-      })
-    }
+    const headers = new Headers({ 'Content-Type': 'application/json' })
+    const authenticatedHeaders = new Headers({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${user?.id}`,
+    })
 
     fetch('/api/snip_new', {
       method: 'POST',
       // @ts-ignore
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: user ? `Bearer ${user.id}` : undefined,
-      },
+      headers: user ? authenticatedHeaders : headers,
       body: JSON.stringify({
-        id: slug,
+        id: slug === undefined || slug === '' ? null : slug,
         code: code,
         password: password,
         language: language,
@@ -79,7 +60,6 @@ const Home: NextPage = () => {
     <Wrapper>
       <Palette
         user={user}
-        create={create}
         slug={slug}
         password={password}
         setPassword={setPassword}
