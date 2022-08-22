@@ -22,6 +22,7 @@ import langs from '@lib/languages'
 import { nanoid } from 'nanoid'
 import supabase from '@lib/supabase'
 import { User } from '@supabase/supabase-js'
+import { useUser } from '@lib/UserContext'
 
 const Palette: FC<{
   user: User | null
@@ -31,6 +32,7 @@ const Palette: FC<{
 }> = ({ user, create, setPassword, setLanguage }) => {
   const [input, setInput, open, setOpen] = useKmenu()
   const { theme, setTheme } = useTheme()
+  const { logout } = useUser()
 
   const main: Command[] = [
     {
@@ -42,7 +44,7 @@ const Palette: FC<{
           perform: user
             ? undefined
             : async () =>
-                await supabase.auth.signIn({
+                await supabase.auth.signInWithOAuth({
                   provider: 'github',
                 }),
           href: user ? `/user/${user.id}` : undefined,
@@ -52,11 +54,11 @@ const Palette: FC<{
           text: user ? 'Logout' : 'Continue With GitLab',
           perform: user
             ? async () => {
-                await supabase.auth.signOut()
+                logout()
                 window.location.reload()
               }
             : async () =>
-                await supabase.auth.signIn({
+                await supabase.auth.signInWithOAuth({
                   provider: 'gitlab',
                 }),
         },

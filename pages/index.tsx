@@ -1,18 +1,21 @@
 import Editor from '@components/Editor'
 import Wrapper from '@components/Wrapper'
 import type { NextPage } from 'next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Palette from '@components/Palette/Main'
 import langs from '@lib/languages'
 import Options from '@components/Options'
 import { expires as ExpiresEnum } from '@typings/expires'
-import supabase from '@lib/supabase'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import { errorIconTheme, errorStyle } from '@css/toast'
+import { useUser } from '@lib/UserContext'
 
 const Home: NextPage = () => {
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
   const [loading, setLoading] = useState(false)
   const [code, setCode] = useState<string>('')
   const [password, setPassword] = useState<string | undefined>(undefined)
@@ -21,7 +24,7 @@ const Home: NextPage = () => {
     'JavaScript'
   )
   const [expires, setExpires] = useState<ExpiresEnum>(ExpiresEnum.NEVER)
-  const user = supabase.auth.user()
+  const { user } = useUser()
 
   const create = () => {
     setLoading(true)
@@ -29,7 +32,7 @@ const Home: NextPage = () => {
     const headers = new Headers({ 'Content-Type': 'application/json' })
     const authenticatedHeaders = new Headers({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${user?.id}`,
+      Authorization: `Bearer ${user?.data.user?.id}`,
     })
 
     fetch('/api/snip_new', {
@@ -56,11 +59,11 @@ const Home: NextPage = () => {
       })
   }
 
+  if (!mounted) return null
+
   return (
     <Wrapper>
-      <p className='text-white'>{user?.id}</p>
       <Palette
-        user={user}
         slug={slug}
         password={password}
         setPassword={setPassword}

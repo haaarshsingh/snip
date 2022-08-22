@@ -3,13 +3,8 @@ import { ViewOptions } from '@components/Options'
 import Palette from '@components/Palette/View'
 import PasswordModal from '@components/PasswordModal'
 import Wrapper from '@components/Wrapper'
-import {
-  errorIconTheme,
-  errorStyle,
-  promiseIconTheme,
-  promiseStyle,
-} from '@css/toast'
-import supabase from '@lib/supabase'
+import { promiseIconTheme, promiseStyle } from '@css/toast'
+import { useUser } from '@lib/UserContext'
 import { definitions } from '@typings/supabase'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
@@ -21,7 +16,7 @@ const View: NextPage<{
   encrypted: boolean
   id: string
 }> = ({ snip, encrypted, id }) => {
-  const user = supabase.auth.user()
+  const { user } = useUser()
   const router = useRouter()
   const [password, setPassword] = useState('')
   const [unlockedSnip, setUnlockedSnip] = useState<
@@ -66,9 +61,12 @@ const View: NextPage<{
   if (snip.id !== undefined && !encrypted) {
     return (
       <Wrapper>
-        <Palette snip={snip} user={user} />
+        <Palette snip={snip} user={user?.data?.user!} />
         <Editor snip={snip} readOnly />
-        <ViewOptions snip={snip} owner={user?.id === snip.user_id} />
+        <ViewOptions
+          snip={snip}
+          owner={user?.data?.user?.id === snip.user_id}
+        />
       </Wrapper>
     )
   }
@@ -93,11 +91,11 @@ const View: NextPage<{
   if (unlockedSnip?.id !== undefined) {
     return (
       <Wrapper>
-        <Palette snip={unlockedSnip} user={user} />
+        <Palette snip={unlockedSnip} user={user?.data?.user!} />
         <Editor snip={unlockedSnip} readOnly />
         <ViewOptions
           snip={unlockedSnip}
-          owner={user?.id === unlockedSnip.user_id}
+          owner={user?.data.user?.id === unlockedSnip.user_id}
         />
       </Wrapper>
     )

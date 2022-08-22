@@ -4,7 +4,7 @@ import Palette from '@components/Palette/Edit'
 import Wrapper from '@components/Wrapper'
 import { errorIconTheme, errorStyle } from '@css/toast'
 import langs from '@lib/languages'
-import supabase from '@lib/supabase'
+import { useUser } from '@lib/UserContext'
 import { definitions } from '@typings/supabase'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
@@ -18,11 +18,11 @@ const Edit: NextPage<{ snip: definitions['snips'] }> = ({ snip }) => {
   const [language, setLanguage] = useState<keyof typeof langs | undefined>(
     snip.language === null ? undefined : (snip.language as keyof typeof langs)
   )
-  const user = supabase.auth.user()
+  const { user } = useUser()
 
   const router = useRouter()
   useEffect(() => {
-    if (snip.user_id !== user?.id) router.push('/')
+    if (snip.user_id !== user?.data.user?.id) router.push('/')
   }, [])
 
   const edit = () => {
@@ -33,7 +33,7 @@ const Edit: NextPage<{ snip: definitions['snips'] }> = ({ snip }) => {
       // @ts-ignore
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${user?.id}`,
+        Authorization: `Bearer ${user?.data.user?.id}`,
       },
       body: JSON.stringify({
         id: snip.id,
@@ -54,11 +54,11 @@ const Edit: NextPage<{ snip: definitions['snips'] }> = ({ snip }) => {
       })
   }
 
-  if (snip.user_id === user?.id) {
+  if (snip.user_id === user?.data.user?.id) {
     return (
       <Wrapper>
         <Palette
-          user={user}
+          user={user?.data?.user!}
           create={edit}
           setPassword={setPassword}
           setLanguage={setLanguage}

@@ -26,6 +26,7 @@ import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import { promiseIconTheme, promiseStyle } from '@css/toast'
 import { CategoryCommand } from 'kmenu/dist/types'
+import { useUser } from '@lib/UserContext'
 
 const Palette: FC<{
   snip: definitions['snips']
@@ -33,6 +34,7 @@ const Palette: FC<{
 }> = ({ snip, user }) => {
   const [input, setInput, open, setOpen] = useKmenu()
   const { setTheme } = useTheme()
+  const { logout } = useUser()
   const router = useRouter()
 
   const utilityCommands: CategoryCommand[] = [
@@ -89,7 +91,7 @@ const Palette: FC<{
           perform: user
             ? undefined
             : async () =>
-                await supabase.auth.signIn({
+                await supabase.auth.signInWithOAuth({
                   provider: 'github',
                 }),
           href: user ? `/user/${user.id}` : undefined,
@@ -99,11 +101,11 @@ const Palette: FC<{
           text: user ? 'Logout' : 'Continue With GitLab',
           perform: user
             ? async () => {
-                await supabase.auth.signOut()
+                logout()
                 window.location.reload()
               }
             : async () =>
-                await supabase.auth.signIn({
+                await supabase.auth.signInWithOAuth({
                   provider: 'gitlab',
                 }),
         },

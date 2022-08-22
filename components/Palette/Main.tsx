@@ -1,5 +1,5 @@
 import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
-import { Dispatch, FC, SetStateAction } from 'react'
+import { Dispatch, FC, SetStateAction, useState } from 'react'
 import {
   FiCheck,
   FiClock,
@@ -23,56 +23,34 @@ import langs from '@lib/languages'
 import { expires } from '@typings/expires'
 import { nanoid } from 'nanoid'
 import supabase from '@lib/supabase'
-import { User } from '@supabase/supabase-js'
+import { useUser } from '@lib/UserContext'
 
 const Palette: FC<{
-  user: User | null
   password: string | undefined
   slug: string | undefined
   setPassword: Dispatch<SetStateAction<string | undefined>>
   setSlug: Dispatch<SetStateAction<string | undefined>>
   setLanguage: Dispatch<SetStateAction<keyof typeof langs | undefined>>
   setExpires: Dispatch<SetStateAction<expires>>
-}> = ({
-  user,
-  password,
-  slug,
-  setPassword,
-  setSlug,
-  setLanguage,
-  setExpires,
-}) => {
+}> = ({ password, slug, setPassword, setSlug, setLanguage, setExpires }) => {
   const [input, setInput, open, setOpen] = useKmenu()
   const { theme, setTheme } = useTheme()
+  const { logout, user } = useUser()
 
   const main: Command[] = [
     {
       category: 'Account',
       commands: [
         {
-          icon: user ? <FiUser /> : <FiGithub />,
-          text: user ? 'View Snips' : 'Continue With GitHub',
-          perform: user
-            ? undefined
-            : async () => {
-                const { user } = await supabase.auth.signIn({
-                  provider: 'github',
-                })
-
-                if (user) window.location.reload()
-              },
-          href: user ? `/user/${user.id}` : undefined,
-        },
-        {
           icon: user ? <FiLogOut /> : <FiGitlab />,
           text: user ? 'Logout' : 'Continue With GitLab',
           perform: user
             ? async () => {
-                await supabase.auth.signOut()
+                logout()
                 window.location.reload()
               }
             : async () =>
-                await supabase.auth.signIn({
+                await supabase.auth.signInWithOAuth({
                   provider: 'gitlab',
                 }),
         },
@@ -1000,7 +978,7 @@ const Palette: FC<{
     if (open === 5) setSlug(input)
   }, [open, input, setSlug])
 
-  const [mainCommands] = useCommands(main)
+  const [mainCommands, setMain] = useCommands(main)
   const [languageCommands] = useCommands(langs)
   const [expiresCommands] = useCommands(expiresIn)
   const [editSlugCommands] = useCommands(editSlug)

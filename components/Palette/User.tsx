@@ -12,10 +12,12 @@ import {
 import { BiPaintRoll } from 'react-icons/bi'
 import { useTheme } from 'next-themes'
 import supabase from '@lib/supabase'
+import { useUser } from '@lib/UserContext'
 
 const Palette: FC = () => {
   const [input, setInput, open, setOpen] = useKmenu()
   const { setTheme } = useTheme()
+  const { logout } = useUser()
 
   const main: Command[] = [
     {
@@ -25,7 +27,7 @@ const Palette: FC = () => {
           icon: <FiLogOut />,
           text: 'Logout',
           perform: async () => {
-            await supabase.auth.signOut()
+            logout()
             window.location.reload()
           },
         },

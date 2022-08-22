@@ -12,7 +12,7 @@
     "@codemirror/language-data": "^6.1.0",
     "@codemirror/state": "^6.1.1",
     "@lezer/highlight": "^1.0.0",
-    "@supabase/supabase-js": "^1.35.6",
+    "@supabase/supabase-js": "2.0.0-rc.4",
     "@uiw/codemirror-themes": "^4.11.4",
     "@uiw/react-codemirror": "^4.11.4",
     "focus-trap-react": "8.11.2",
