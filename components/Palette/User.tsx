@@ -24,7 +24,7 @@ const Palette: FC = () => {
         {
           icon: <FiLogOut />,
           text: 'Logout',
-          perform: () => supabase.auth.signOut(),
+          perform: async () => await supabase.auth.signOut(),
         },
       ],
     },
