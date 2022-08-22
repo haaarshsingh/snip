@@ -51,7 +51,10 @@ const Palette: FC<{
           icon: user ? <FiLogOut /> : <FiGitlab />,
           text: user ? 'Logout' : 'Continue With GitLab',
           perform: user
-            ? () => supabase.auth.signOut()
+            ? async () => {
+                await supabase.auth.signOut()
+                window.location.reload()
+              }
             : async () =>
                 await supabase.auth.signIn({
                   provider: 'gitlab',
