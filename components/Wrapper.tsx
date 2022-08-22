@@ -59,7 +59,7 @@ const Wrapper: FC<{
         <meta property='og:url' content={`${meta.root}${router.asPath}`} />
         <link rel='canonical' href={`${meta.root}${router.asPath}`} />
         <meta property='og:type' content={meta.type} />
-        <meta property='og:site_name' content='Harsh Singh' />
+        <meta property='og:site_name' content='Harsh Singh &amp; Ibrahim Hisham' />
         <meta
           property='og:description'
           content={description ? description : meta.description}
