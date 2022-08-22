@@ -24,12 +24,7 @@ import { definitions } from '@typings/supabase'
 import { User } from '@supabase/supabase-js'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
-import {
-  errorIconTheme,
-  errorStyle,
-  promiseIconTheme,
-  promiseStyle,
-} from '@css/toast'
+import { promiseIconTheme, promiseStyle } from '@css/toast'
 import { CategoryCommand } from 'kmenu/dist/types'
 
 const Palette: FC<{
@@ -172,9 +167,7 @@ const Palette: FC<{
               method: 'DELETE',
               headers: { Authorization: `Bearer ${snip.user_id!}` },
               body: JSON.stringify({ id: snip.id }),
-            }).then((res) => {
-              if (res.status === 200) router.push('/')
-            })
+            }).then((res) => res.status === 200 && router.push('/'))
 
             toast.promise(
               response,
