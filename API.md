@@ -10,7 +10,7 @@ Returns a snip provided it's id. All snips are public by default unless protecte
 ```json
 [
     {
-        "id": "example",
+        "id": "test",
         "code": "Console.WriteLine(\"Hello World\")",
         "password": null,
         "user_id": "d99cf61a-219a-11ed-861d-0242ac120002",
