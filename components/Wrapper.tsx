@@ -68,7 +68,7 @@ const Wrapper: FC<{
         <meta property='og:image' content={image ? image : meta.image} />
         <meta name='twitter:card' content='summary_large_image' />
         <meta name='twitter:site' content='@harshhhdev' />
-        <meta name='theme-color' content='#FF70C6' />
+        <meta name='theme-color' content='#FFF' />
         <meta name='twitter:title' content={title ? title : meta.title} />
         <meta
           name='twitter:description'
