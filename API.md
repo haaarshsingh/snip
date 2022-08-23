@@ -1,12 +1,12 @@
 # API Documentation
 
-The base endpoint is `https://snip.au/api`.
+The base endpoint is `https://snip.place/api`.
 
 ## **GET** snip_get
 Returns a snip provided it's id. All snips are public by default unless protected with a password.
 
 ### **Example Response**
-`http://snip.au/api/snip_get?id=test`
+`http://snip.place/api/snip_get?id=test`
 ```json
 [
     {
