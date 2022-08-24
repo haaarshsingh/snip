@@ -8,7 +8,7 @@ const Footer: FC = () => {
   return (
     <footer className='w-full flex flex-col items-center justify-center my-24'>
       <div>
-        <p className='text-sm text-gray-300 dark:text-gray-600 flex items-center'>
+        <p className='text-sm text-gray-300 dark:text-gray-500 flex items-center'>
           Built by
           <motion.a
             href='https://hxrsh.in'
@@ -45,7 +45,7 @@ const Footer: FC = () => {
           </motion.a>
         </p>
       </div>
-      <div className='flex items-center text-gray-300 dark:text-gray-600 text-sm mt-3'>
+      <div className='flex items-center text-gray-300 dark:text-gray-500 text-sm mt-3'>
         with{' '}
         <span className='ml-1 flex items-center text-emerald-400'>
           <a
