@@ -74,9 +74,7 @@ const Editor: FC<{
         height='700px'
         spellCheck='false'
         theme={theme === 'dark' ? dark : light}
-        role='textbox'
         aria-input-field-name='code editor'
-        contentEditable='true' 
         aria-multiline="true"
         aria-required="true"
         extensions={
