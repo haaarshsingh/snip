@@ -74,7 +74,8 @@ const Editor: FC<{
         height='700px'
         spellCheck='false'
         theme={theme === 'dark' ? dark : light}
-        aria-label='code'
+        role='textbox'
+        aria-input-field-name='code'
         extensions={
           hideExpires
             ? typeof language === 'undefined'
