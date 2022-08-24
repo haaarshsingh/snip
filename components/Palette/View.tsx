@@ -24,7 +24,12 @@ import { definitions } from '@typings/supabase'
 import { User } from '@supabase/supabase-js'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
-import { promiseIconTheme, promiseStyle } from '@css/toast'
+import {
+  promiseIconTheme,
+  promiseIconThemeDark,
+  promiseStyle,
+  promiseStyleDark,
+} from '@css/toast'
 import { CategoryCommand } from 'kmenu/dist/types'
 
 const Palette: FC<{
@@ -32,7 +37,7 @@ const Palette: FC<{
   user: User | null
 }> = ({ snip, user }) => {
   const [input, setInput, open, setOpen] = useKmenu()
-  const { setTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
   const router = useRouter()
 
   const utilityCommands: CategoryCommand[] = [
@@ -180,8 +185,9 @@ const Palette: FC<{
                 error: 'Error Deleting Snip!',
               },
               {
-                style: promiseStyle,
-                iconTheme: promiseIconTheme,
+                style: theme === 'dark' ? promiseStyleDark : promiseStyle,
+                iconTheme:
+                  theme === 'dark' ? promiseIconThemeDark : promiseIconTheme,
               }
             )
           },
@@ -202,11 +208,11 @@ const Palette: FC<{
   return (
     <>
       <CommandMenu commands={mainCommands} index={1} main />
-      <CommandMenu commands={themeCommands} index={2} placeholder='Theme...' />
+      <CommandMenu commands={themeCommands} index={2} placeholder="Theme..." />
       <CommandMenu
         commands={confirmCommands}
         index={3}
-        placeholder='Delete snip..?'
+        placeholder="Delete snip..?"
       />
     </>
   )
