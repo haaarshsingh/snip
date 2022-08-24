@@ -74,9 +74,6 @@ const Editor: FC<{
         height='700px'
         spellCheck='false'
         theme={theme === 'dark' ? dark : light}
-        aria-input-field-name='code editor'
-        aria-multiline="true"
-        aria-required="true"
         extensions={
           hideExpires
             ? typeof language === 'undefined'
