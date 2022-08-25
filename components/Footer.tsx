@@ -73,7 +73,7 @@ const Footer: FC = () => {
         and
         <span className='ml-1 flex items-center text-black dark:text-gray-100'>
           <a
-            href='https://nextjs.orgf'
+            href='https://nextjs.org'
             target='_blank'
             rel='noreferrer'
             className='underline underline-offset-8 decoration-gray-300 dark:decoration-gray-700 hover:decoration-black hover:dark:decoration-gray-100 transition-colors'
