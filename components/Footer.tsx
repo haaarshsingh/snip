@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 
 const Footer: FC = () => {
   return (
-    <footer className='w-full flex flex-col items-center justify-center my-24'>
+    <footer className='w-full flex justify-center my-24'>
       <div>
         <p className='text-sm text-gray-300 dark:text-gray-400 flex items-center'>
           Built by
@@ -44,44 +44,6 @@ const Footer: FC = () => {
             <span className='ml-1 font-medium'>Ibra</span>
           </motion.a>
         </p>
-      </div>
-      <div className='flex items-center text-gray-300 dark:text-gray-400 text-sm mt-3'>
-        with{' '}
-        <span className='ml-1 flex items-center text-emerald-400'>
-          <a
-            href='https://supabase.com'
-            target='_blank'
-            rel='noreferrer'
-            className='underline underline-offset-8 decoration-emerald-300 dark:decoration-emerald-900 hover:decoration-emerald-400 hover:dark:decoration-emerald-400 transition-colors'
-          >
-            Supabase
-          </a>
-          <SiSupabase className='ml-1' />
-        </span>
-        ,
-        <span className='mx-1 flex items-center text-orange-400'>
-          <a
-            href='https://www.rust-lang.org/'
-            target='_blank'
-            rel='noreferrer'
-            className='underline underline-offset-8 decoration-orange-300 dark:decoration-orange-900 hover:decoration-orange-400 hover:dark:decoration-orange-400 transition-colors'
-          >
-            Rust
-          </a>
-          <SiRust className='ml-1' />
-        </span>
-        and
-        <span className='ml-1 flex items-center text-black dark:text-gray-100'>
-          <a
-            href='https://nextjs.org'
-            target='_blank'
-            rel='noreferrer'
-            className='underline underline-offset-8 decoration-gray-300 dark:decoration-gray-700 hover:decoration-black hover:dark:decoration-gray-100 transition-colors'
-          >
-            Next.js
-          </a>
-          <TbBrandNextjs className='ml-1 text-lg' />
-        </span>
       </div>
     </footer>
   )
