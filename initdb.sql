@@ -17,5 +17,5 @@ CREATE TABLE snips (
     expires_in expires,
     created_at TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id UUID,
-    CONSTRAINT user FOREIGN KEY(user_id) REFERENCES user(id)
+    CONSTRAINT users FOREIGN KEY(user_id) REFERENCES users(id)
 )
