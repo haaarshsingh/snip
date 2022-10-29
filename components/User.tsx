@@ -1,6 +1,6 @@
 import { definitions } from '@typings/supabase'
 import { FC, useEffect, useRef, useState } from 'react'
-import { motion, AnimateSharedLayout } from 'framer-motion'
+import { motion, LayoutGroup } from 'framer-motion'
 import Link from 'next/link'
 import { useKmenu, useShortcut } from 'kmenu'
 import { FiSearch } from 'react-icons/fi'
@@ -47,7 +47,7 @@ const User: FC<{ snips: definitions['snips'][] }> = ({ snips }) => {
           }}
         />
       </div>
-      <AnimateSharedLayout>
+      <LayoutGroup id="snips">
         {results?.map((snip, index) => (
           <Snip
             key={index}
@@ -58,7 +58,7 @@ const User: FC<{ snips: definitions['snips'][] }> = ({ snips }) => {
             theme={theme!}
           />
         ))}
-      </AnimateSharedLayout>
+      </LayoutGroup>
     </div>
   )
 }
