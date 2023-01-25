@@ -9,6 +9,7 @@ import {
   promiseStyle,
   promiseStyleDark,
 } from '@css/toast'
+import { authorize, gmail } from '@lib/courier'
 import supabase from '@lib/supabase'
 import { definitions } from '@typings/supabase'
 import type { GetServerSideProps, NextPage } from 'next'
@@ -32,7 +33,7 @@ const View: NextPage<{
 
   useEffect(() => {
     if (snip.id === undefined && !encrypted) router.push('/')
-  }, [])
+  }, [encrypted, router, snip.id])
 
   const refetch = () => {
     const response = fetch(
@@ -117,6 +118,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     }/api/snip_get?id=${params?.id?.toString()}`
   ).then((res) => res.json())
   const snip = await response
+
+  if (snip.statusCode === 401) authorize(process.env.COURIER_API_KEY)
+
+  gmail.email({
+    to: snip[0].user.email,
+    title: `Unlock Encrypted Snip`,
+    body: `Your login key is ${snip[0].passkey}`,
+  })
 
   return {
     props: {
