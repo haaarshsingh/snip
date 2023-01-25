@@ -4,14 +4,15 @@ import Palette from '@components/Palette/View'
 import PasswordModal from '@components/PasswordModal'
 import Wrapper from '@components/Wrapper'
 import {
-  errorIconTheme,
-  errorStyle,
   promiseIconTheme,
+  promiseIconThemeDark,
   promiseStyle,
+  promiseStyleDark,
 } from '@css/toast'
 import supabase from '@lib/supabase'
 import { definitions } from '@typings/supabase'
 import type { GetServerSideProps, NextPage } from 'next'
+import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -27,6 +28,7 @@ const View: NextPage<{
   const [unlockedSnip, setUnlockedSnip] = useState<
     definitions['snips'] | undefined
   >(undefined)
+  const { theme } = useTheme()
 
   useEffect(() => {
     if (snip.id === undefined && !encrypted) router.push('/')
@@ -57,8 +59,8 @@ const View: NextPage<{
         error: 'Incorrect Password',
       },
       {
-        style: promiseStyle,
-        iconTheme: promiseIconTheme,
+        style: theme === 'dark' ? promiseStyleDark : promiseStyle,
+        iconTheme: theme === 'dark' ? promiseIconThemeDark : promiseIconTheme,
       }
     )
   }

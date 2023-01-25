@@ -19,11 +19,21 @@ export const errorIconTheme = {
 }
 
 export const promiseStyle = {
-  backgroundColor: '#16A0FF',
+  backgroundColor: '#999999',
   color: '#FFF',
 }
 
 export const promiseIconTheme = {
   primary: '#FFF',
-  secondary: '#16A0FF',
+  secondary: '#999999',
+}
+
+export const promiseStyleDark = {
+  backgroundColor: '#222222',
+  color: '#FFF',
+}
+
+export const promiseIconThemeDark = {
+  primary: '#FFF',
+  secondary: '#222222',
 }

@@ -1,7 +1,7 @@
-import Editor from '@components/Editor'
+import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import Wrapper from '@components/Wrapper'
 import type { NextPage } from 'next'
-import { useState } from 'react'
 import Palette from '@components/Palette/Main'
 import langs from '@lib/languages'
 import Options from '@components/Options'
@@ -10,6 +10,7 @@ import supabase from '@lib/supabase'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import { errorIconTheme, errorStyle } from '@css/toast'
+const Editor = dynamic(() => import('@components/Editor'))
 
 const Home: NextPage = () => {
   const router = useRouter()
@@ -67,6 +68,7 @@ const Home: NextPage = () => {
         setLanguage={setLanguage}
         setExpires={setExpires}
       />
+      {/* @ts-ignore */}
       <Editor setCode={setCode} language={language} expires={expires} />
       <Options create={create} loading={loading} />
     </Wrapper>

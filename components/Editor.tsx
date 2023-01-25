@@ -8,7 +8,7 @@ import { expires as ExpiresEnum } from '@typings/expires'
 import { useTheme } from 'next-themes'
 import { definitions } from '@typings/supabase'
 
-const Form: FC<{
+const Editor: FC<{
   setCode?: Dispatch<SetStateAction<string>>
   language?: keyof typeof langs | undefined
   expires?: ExpiresEnum
@@ -107,4 +107,4 @@ const Form: FC<{
   )
 }
 
-export default Form
+export default Editor

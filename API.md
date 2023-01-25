@@ -1,16 +1,16 @@
 # API Documentation
 
-The base endpoint is `https://snip.au/api`.
+The base endpoint is `https://snip.place/api`.
 
 ## **GET** snip_get
 Returns a snip provided it's id. All snips are public by default unless protected with a password.
 
 ### **Example Response**
-`http://snip.au/api/snip_get?id=test`
+`http://snip.place/api/snip_get?id=test`
 ```json
 [
     {
-        "id": "example",
+        "id": "test",
         "code": "Console.WriteLine(\"Hello World\")",
         "password": null,
         "user_id": "d99cf61a-219a-11ed-861d-0242ac120002",

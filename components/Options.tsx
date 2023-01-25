@@ -188,6 +188,7 @@ const Option: FC<{
       className='mx-2 text-gray-300 dark:text-gray-500 dark:hover:text-white hover:text-black transition-colors flex justify-center'
       onMouseOver={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
+      aria-label={command.text}
       onClick={
         typeof command.index === 'undefined'
           ? command.perform
@@ -221,6 +222,7 @@ const ButtonWithTooltip: FC<{ create: () => void; text: string }> = ({
     <button
       className='flex justify-center text-base bg-gray-200 dark:bg-gray-700 border border-transparent hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'
       onClick={create}
+      aria-label={text}
       onMouseOver={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >

@@ -5,6 +5,9 @@ const nextConfig = {
   images: {
     domains: ['avatars.githubusercontent.com'],
   },
+  experimental: {
+    concurrentFeatures: true,
+  },
 }
 
 module.exports = nextConfig
