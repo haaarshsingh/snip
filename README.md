@@ -6,7 +6,7 @@
 </p> 
 <p align="center">:cyclone: The gamma variant of Pastebin</p>
 <p align="center">
-  <a href="https://supabase.com/blog/launch-week-5-hackathon">Supabase Hackathon</a>
+  <a href="https://courier-hacks-productivity.devpost.com/">Courier Hackathon</a>
     ·
   <a href="https://snip.place/">Demo</a>
  </p>
