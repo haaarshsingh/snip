@@ -18,27 +18,12 @@ export const errorIconTheme = {
   secondary: '#FF6D6D',
 }
 
-<<<<<<< Updated upstream
 export const promiseStyle = {
   backgroundColor: '#999999',
-=======
-export const promiseStyleLight = {
-  backgroundColor: '#16A0FF',
->>>>>>> Stashed changes
   color: '#FFF',
 }
 
-export const promiseIconThemeLight = {
-  primary: '#FFF',
-  secondary: '#16A0FF',
-}
-
-export const promiseStyleDark = {
-  backgroundColor: '#16A0FF',
-  color: '#FFF',
-}
-
-export const promiseIconThemeDark = {
+export const promiseIconTheme = {
   primary: '#FFF',
   secondary: '#999999',
 }
