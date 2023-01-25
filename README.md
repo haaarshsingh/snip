@@ -11,13 +11,13 @@
   <a href="https://snip.place/">Demo</a>
  </p>
 
-# ✨ Team
+## ✨ Team
 
 Harsh Singh • Frontend (TypeScript) • [GitHub](https://github.com/harshhhdev) • [Twitter](https://twitter.com/harshhhdev)
 
 Ibrahim Hisham • Backend (Rust) • [GitHub](https://github.com/ibra) • [Twitter](https://twitter.com/IbrahDev)
 
-# 🚀 Quickstart
+## 🚀 Quickstart
 
 Run the website locally
 
@@ -25,7 +25,7 @@ Run the website locally
 git clone https://github.com/harshhhdev/snip.git
 ```
 
-## Setting up the development environment
+### Setting up the development environment
 
 ```bash
 cd snip
@@ -34,17 +34,25 @@ cd snip
 yarn
 ```
 
-## Setting up the database
+### Setting up Courier
+
+ - Create an account at [courier.com](https://courier.com/).
+ - Enable and configure the Gmail extension.
+ - Substitute `COURIER_API_KEY` in the `.env` file with your API.
+
+You should be set to go. For further tools and information, check out the [Courier documentation](https://www.courier.com/docs/).
+
+### Setting up the database
 
 NOTE: This project uses [PostgreSQL](https://www.postgresql.org/) on [Supabase](https://supabase.com/database) to store data. Things like authentication are handled by Supabase.
 
 Currently, according to the [Supabase documentation](https://supabase.com/blog/supabase-cli), there isn't any 'right' way to do migrations, however you can initialise your database with the `initdb.sql` file located at the root of the project.
 
-## Authentication
+### Authentication
 
 This application uses [Supabase's Authentication](https://supabase.com/auth) with the [GitHub](https://supabase.com/docs/guides/auth/auth-github) and [GitLab](https://supabase.com/docs/guides/auth/auth-gitlab). Refer to the linked guides for how to create an OAuth application and connect it with your account.
 
-## Starting server
+### Starting server
 
 ```bash
 # Start the server
@@ -62,7 +70,7 @@ netlify dev
 
 ...and your local development server should now be running on [localhost:8888](https://localhost:8888).
 
-# 🔧 Tools Used
+## 🔧 Tools Used
 
 ### Frontend
 
@@ -91,7 +99,7 @@ netlify dev
 - [Prettier](https://prettier.io/)
 - [ESLint](https://eslint.org/)
 
-# 🤞 Contributing
+## 🤞 Contributing
 
 After setting up the project, and making changes:
 
