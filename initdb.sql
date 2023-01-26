@@ -18,4 +18,4 @@ CREATE TABLE snips (
     created_at TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id UUID,
     CONSTRAINT users FOREIGN KEY(user_id) REFERENCES users(id)
-)
+);

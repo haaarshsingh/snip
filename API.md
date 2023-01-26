@@ -3,9 +3,11 @@
 The base endpoint is `https://snip.place/api`.
 
 ## **GET** snip_get
+
 Returns a snip provided it's id. All snips are public by default unless protected with a password.
 
 ### **Example Response**
+
 `http://snip.place/api/snip_get?id=test`
 ```json
 [
@@ -21,8 +23,8 @@ Returns a snip provided it's id. All snips are public by default unless protecte
 ]
 ```
 
-
 ## **POST** api/snip_new
+
 Creates a snip, provided with different parameters. An `Authorization` header with your `user_id` is recommended so the snip is associated with an account, but is not required. Responds with the parameters of the created snip.
 
 ### **Example Response**
@@ -40,9 +42,11 @@ Creates a snip, provided with different parameters. An `Authorization` header wi
 ]
 ```
 ## **GET** users_snips
+
 Returns all snips from a particular user. Requires `Authorization` header with the value of your `user_id`.
 
 ### **Example Response**
+
 ```json
 [
     {
@@ -65,10 +69,14 @@ Returns all snips from a particular user. Requires `Authorization` header with t
     },
 ]
 ```
+
 ## **PATCH** api/snip_edit
+
 Edits the snip using the `id` provided in the body. Requires the `Authorization` header with your `user_id`. If the snip is not associated with an account,  Parameters that can be changed: `code`, `language`. 
 
+
 ### **Example Response**
+
 ```json
 [
     {
@@ -82,10 +90,12 @@ Edits the snip using the `id` provided in the body. Requires the `Authorization`
     }
 ]
 ```
+
 ## **DELETE** api/snip_delete
 Deletes the snip using the `id` provided in the body. Requires the `Authorization` header with your `user_id`. Snips that are not associated with an account can not be deleted.
 
 ### **Example Response**
+
 ```json
 {
     "statusCode": 200,

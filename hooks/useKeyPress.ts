@@ -1,20 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const useKeyPress = (targetKey: string): boolean => {
   const [keyPressed, setKeyPressed] = useState(false)
-  const downHandler = ({
-    key,
-    shiftKey,
-  }: {
-    key: string
-    shiftKey: boolean
-  }): void => {
-    if (key === targetKey && shiftKey) setKeyPressed(true)
-  }
 
-  const upHandler = ({ key }: { key: string }): void => {
-    if (key === targetKey) setKeyPressed(false)
-  }
+  const downHandler = useCallback(
+    ({ key, shiftKey }: { key: string; shiftKey: boolean }): void => {
+      if (key === targetKey && shiftKey) setKeyPressed(true)
+    },
+    [targetKey]
+  )
+
+  const upHandler = useCallback(
+    ({ key }: { key: string }): void => {
+      if (key === targetKey) setKeyPressed(false)
+    },
+    [targetKey]
+  )
 
   useEffect(() => {
     window.addEventListener('keydown', downHandler)
@@ -23,7 +24,7 @@ const useKeyPress = (targetKey: string): boolean => {
       window.removeEventListener('keydown', downHandler)
       window.removeEventListener('keyup', upHandler)
     }
-  }, [])
+  }, [downHandler, upHandler])
 
   return keyPressed
 }

@@ -23,7 +23,7 @@ const User: FC<{ snips: definitions['snips'][] }> = ({ snips }) => {
     if (up && selected > 0) setSelected((selected) => selected - 1)
     else if (down && selected < results!.length - 1)
       setSelected((selected) => selected + 1)
-  }, [up, down])
+  }, [up, down, results, selected])
 
   return (
     <div className='flex flex-col min-h-[80vh]'>
@@ -75,7 +75,7 @@ const Snip: FC<{
   useEffect(() => {
     if (enter && selected && !modalOpen)
       window.open(`https://snip.place/${snip.id}`, '_self')
-  }, [enter])
+  }, [enter, modalOpen, selected, snip.id])
 
   return (
     <Link href={`/${snip.id}`} passHref>
@@ -91,8 +91,7 @@ const Snip: FC<{
               : selected
               ? '#343434'
               : '#828282',
-        }}
-      >
+        }}>
         {selected && (
           <motion.div
             layoutId='box'

@@ -71,6 +71,7 @@ pub(crate) async fn handler(
                 )),
                 is_base64_encoded: Some(false),
             };
+         
             return Ok(resp);
         }
     }
