@@ -9,14 +9,12 @@ import {
   FiShare,
   FiTrash,
 } from 'react-icons/fi'
-import { BsShift, BsArrowReturnLeft } from 'react-icons/bs'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useKmenu } from 'kmenu'
 import { definitions } from '@typings/supabase'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 import { iconTheme, style } from '@css/toast'
-import useKeyPress from '@hooks/useKeyPress'
 
 const Options: FC<{
   create: () => void
@@ -24,17 +22,13 @@ const Options: FC<{
   loading: boolean
 }> = ({ create, edit, loading }) => {
   const options = [
-    { text: 'Encrypt Snip', icon: <FiLock />, index: 4 },
-    { text: 'Edit Slug', icon: <FiEdit2 />, index: 5 },
+    { text: 'Encrypt Snip', icon: <FiLock size={16} />, index: 4 },
+    { text: 'Edit Slug', icon: <FiEdit2 size={16} />, index: 5 },
   ]
   const editOptions = [{ text: 'Encrypt Snip', icon: <FiLock />, index: 4 }]
-  const createSnip = useKeyPress('Enter')
-  useEffect(() => {
-    if (createSnip) create()
-  }, [createSnip])
 
   return (
-    <div className='mt-10 bg-white shadow-custom dark:bg-gray-800 flex items-center justify-between p-5 rounded-lg text-xl'>
+    <div className='mt-5 bg-white shadow-custom dark:bg-gray-800 flex items-center justify-between p-3 rounded text-xl'>
       <div className='flex items-center'>
         {edit
           ? editOptions.map((command, index) => (
@@ -46,12 +40,12 @@ const Options: FC<{
       </div>
       <div>
         {loading ? (
-          <button className='flex items-center text-base bg-gray-200 dark:bg-[#272727] border border-gray-500 text-gray-500 cursor-not-allowed py-3 px-4 rounded font-medium transition-colors'>
+          <button className='flex items-center text-sm bg-gray-200 dark:bg-[#272727] border border-gray-500 text-gray-500 cursor-not-allowed py-3 px-4 rounded font-medium transition-colors'>
             <FiLoader className='text-xl mr-2 animate-spin' />
             {edit ? 'Save Snip' : 'Create Snip'}
           </button>
         ) : (
-          <ButtonWithTooltip
+          <CreateSnip
             create={create}
             text={edit ? 'Save Snip' : 'Create Snip'}
           />
@@ -151,7 +145,7 @@ export const ViewOptions: FC<{
   ]
 
   return (
-    <div className='mt-10 bg-white shadow-custom dark:bg-gray-800 flex items-center justify-between p-5 rounded-lg text-xl'>
+    <div className='mt-10 bg-white shadow-custom dark:bg-gray-800 flex items-center justify-between p-5 rounded text-xl'>
       <div className='flex items-center'>
         {owner
           ? ownerOptions.map((command, index) => (
@@ -163,7 +157,7 @@ export const ViewOptions: FC<{
       </div>
       <div>
         <Link href='/' passHref>
-          <a className='text-base bg-gray-200 dark:bg-gray-700 hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'>
+          <a className='text-sm bg-gray-200 dark:bg-gray-700 hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'>
             New Snip
           </a>
         </Link>
@@ -193,17 +187,15 @@ const Option: FC<{
         typeof command.index === 'undefined'
           ? command.perform
           : () => setKmenu(command.index!)
-      }
-    >
+      }>
       <AnimatePresence>
         {open && (
           <motion.div
-            className='absolute block text-sm -mt-12 bg-gray-200 border border-gray-300 dark:border-none dark:bg-gray-600 text-gray-300 p-2 rounded pointer-events-none'
+            className='absolute block text-xs -mt-12 bg-gray-200 border border-gray-300 dark:border-none dark:bg-gray-600 text-gray-300 p-2 rounded pointer-events-none'
             initial={{ y: -10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 10, opacity: 0 }}
-            transition={{ delay: 0.2 }}
-          >
+            transition={{ delay: 0.2 }}>
             {command.text}
           </motion.div>
         )}
@@ -213,32 +205,15 @@ const Option: FC<{
   )
 }
 
-const ButtonWithTooltip: FC<{ create: () => void; text: string }> = ({
+const CreateSnip: FC<{ create: () => void; text: string }> = ({
   create,
   text,
 }) => {
-  const [open, setOpen] = useState(false)
   return (
     <button
-      className='flex justify-center text-base bg-gray-200 dark:bg-gray-700 border border-transparent hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'
+      className='flex justify-center text-sm bg-gray-200 dark:bg-gray-700 border border-transparent hover:bg-[#dbdbdb] active:bg-[#cecece] dark:hover:bg-gray-600 py-3 px-4 rounded font-medium transition-colors'
       onClick={create}
-      aria-label={text}
-      onMouseOver={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            className='absolute font-mono flex items-center tracking-tighter text-sm -mt-16 bg-gray-200 border border-gray-300 dark:border-none dark:bg-gray-600 text-gray-300 p-2 rounded pointer-events-none'
-            initial={{ y: -10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 10, opacity: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <BsShift className='mr-1' />+<BsArrowReturnLeft className='ml-1' />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      aria-label={text}>
       {text}
     </button>
   )

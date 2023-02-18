@@ -7,11 +7,11 @@ input::placeholder {
 }
 
 ::selection {
-  @apply bg-emerald-400 text-white;
+  @apply bg-[#ffffff2c] text-white;
 }
 
 .cm-theme {
-  @apply p-4 z-10 !rounded-xl;
+  @apply p-3 z-10 !rounded;
 }
 
 .ͼ1.cm-editor {

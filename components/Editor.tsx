@@ -34,10 +34,9 @@ const Editor: FC<{
       <div className='flex items-center justify-between w-full'>
         <button
           onClick={readOnly ? undefined : () => setOpen(2)}
-          className={`flex items-center bg-white shadow-2xl dark:shadow-none dark:bg-gray-800 py-3 px-5 rounded-lg mb-5 cursor-default ${
+          className={`flex items-center bg-white shadow-2xl dark:shadow-none dark:bg-gray-800 py-3 px-5 rounded mb-5 cursor-default text-sm ${
             !readOnly && 'interactive'
-          }`}
-        >
+          }`}>
           <FiCode className='mr-2' />
           {hideExpires
             ? typeof language === 'undefined'
@@ -54,10 +53,9 @@ const Editor: FC<{
         {!hideExpires || (readOnly && snip?.expires_in !== null) ? (
           <button
             onClick={readOnly ? undefined : () => setOpen(3)}
-            className={`flex items-center bg-white shadow-2xl dark:shadow-none dark:bg-gray-800 py-3 px-5 rounded-lg mb-5 z-10 cursor-default ${
+            className={`flex items-center bg-white shadow-2xl dark:shadow-none dark:bg-gray-800 py-3 px-5 rounded mb-5 z-10 cursor-default text-sm ${
               !readOnly && 'interactive'
-            }`}
-          >
+            }`}>
             {typeof snip === 'undefined'
               ? typeof expires === 'undefined'
                 ? 'Never'

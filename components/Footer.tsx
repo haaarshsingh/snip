@@ -6,7 +6,7 @@ const Footer: FC = () => {
   return (
     <footer className='w-full flex justify-center my-24'>
       <div>
-        <p className='text-sm text-gray-300 dark:text-gray-400 flex items-center'>
+        <p className='text-xs text-gray-300 dark:text-gray-400 flex items-center'>
           Crafted by
           <motion.a
             href='https://hxrsh.in'
@@ -16,7 +16,7 @@ const Footer: FC = () => {
             whileTap={{ scale: 0.9 }}>
             <Image
               src='https://avatars.githubusercontent.com/u/69592270?v=4'
-              alt='Picture of Harsh'
+              alt="Harsh's PFP"
               className='rounded-full'
               height={20}
               width={20}
@@ -32,7 +32,7 @@ const Footer: FC = () => {
             whileTap={{ scale: 0.9 }}>
             <Image
               src='https://avatars.githubusercontent.com/u/61324615?v=4'
-              alt='Picture of Ibra'
+              alt="Ibrahim's PFP"
               className='rounded-full'
               height={20}
               width={20}
