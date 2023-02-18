@@ -1,5 +1,5 @@
 import '@css/globals.css'
-import 'kmenu/dist/index.css'
+import '@css/kmenu.css'
 import { ThemeProvider } from 'next-themes'
 import type { AppProps } from 'next/app'
 import Bar from 'nextjs-progressbar'

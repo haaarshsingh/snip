@@ -44,14 +44,12 @@ const Palette: FC = () => {
           icon: <FiPlus />,
           text: 'New Snip',
           href: 'https://snip.place/',
-          shortcuts: { keys: ['n'] },
         },
         {
           icon: <BiPaintRoll />,
           text: 'Theme...',
           keywords: 'dark light mode themes',
           perform: () => setOpen(2),
-          shortcuts: { modifier: 'alt', keys: ['t'] },
         },
         {
           icon: <FiCopy />,

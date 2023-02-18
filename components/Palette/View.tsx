@@ -51,26 +51,22 @@ const Palette: FC<{
       icon: <FiPlus />,
       text: 'New Snip',
       href: 'https://snip.place/',
-      shortcuts: { keys: ['n'] },
     },
     {
       icon: <FiCopy />,
       text: 'Copy Snip',
       perform: () => navigator.clipboard.writeText(snip.code),
-      shortcuts: { keys: ['c', 's'] },
     },
     {
       icon: <FiShare2 />,
       text: 'Copy URL',
       perform: () =>
         navigator.clipboard.writeText(`https://snip.place/${snip.id}`),
-      shortcuts: { keys: ['c', 'u'] },
     },
     {
       icon: <FiDownloadCloud />,
       text: 'Download Snip',
       href: `data:application/octet-stream,${encodeURIComponent(snip.code)}`,
-      shortcuts: { modifier: 'ctrl', keys: ['d'] },
     },
   ]
 
@@ -79,13 +75,11 @@ const Palette: FC<{
       icon: <FiEdit />,
       text: 'Edit Snip',
       href: `https://snip.place/edit/${snip.id}`,
-      shortcuts: { keys: ['e'] },
     },
     {
       icon: <FiTrash />,
       text: 'Delete Snip',
       perform: () => setOpen(3),
-      shortcuts: { keys: ['d', 'l'] },
     },
     ...utilityCommands,
   ]
@@ -133,7 +127,6 @@ const Palette: FC<{
           text: 'Theme...',
           keywords: 'dark light mode themes',
           perform: () => setOpen(6),
-          shortcuts: { modifier: 'alt', keys: ['t'] },
         },
         {
           icon: <FiCode />,

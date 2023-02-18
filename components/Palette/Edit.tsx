@@ -75,14 +75,12 @@ const Palette: FC<{
           icon: <FiCode />,
           text: 'Language...',
           perform: () => setOpen(2),
-          shortcuts: { modifier: 'ctrl', keys: ['l'] },
         },
         {
           icon: <FiLock />,
           text: 'Encrypt...',
           perform: () => setOpen(3),
           keywords: 'password',
-          shortcuts: { modifier: 'alt', keys: ['e'] },
         },
       ],
     },
@@ -94,7 +92,6 @@ const Palette: FC<{
           text: 'Theme...',
           keywords: 'dark light mode themes',
           perform: () => setOpen(6),
-          shortcuts: { modifier: 'alt', keys: ['t'] },
         },
         {
           icon: <FiCopy />,

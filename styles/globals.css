@@ -33,3 +33,19 @@ button {
 .interactive {
   @apply hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer;
 }
+
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-800 rounded-xl;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-700;
+}

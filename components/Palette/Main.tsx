@@ -5,7 +5,7 @@ import {
   useCommands,
   useKmenu,
 } from 'kmenu'
-import { Dispatch, FC, SetStateAction } from 'react'
+import { Dispatch, FC, SetStateAction, useState } from 'react'
 import {
   FiCheck,
   FiClock,
@@ -48,6 +48,7 @@ const Palette: FC<{
   setLanguage,
   setExpires,
 }) => {
+  const [value, setValue] = useState<string | undefined>('')
   const { open, setOpen, input } = useKmenu()
   const { setTheme } = useTheme()
 
@@ -91,26 +92,22 @@ const Palette: FC<{
           icon: <FiCode />,
           text: 'Language...',
           perform: () => setOpen(2),
-          shortcuts: { modifier: 'ctrl', keys: ['l'] },
         },
         {
           icon: <FiClock />,
           text: 'Expires...',
           perform: () => setOpen(3),
-          shortcuts: { modifier: 'ctrl', keys: ['e'] },
         },
         {
           icon: <FiLock />,
           text: 'Encrypt...',
           perform: () => setOpen(4),
           keywords: 'password',
-          shortcuts: { modifier: 'alt', keys: ['e'] },
         },
         {
           icon: <FiEdit2 />,
           text: 'Edit Slug...',
           perform: () => setOpen(5),
-          shortcuts: { modifier: 'alt', keys: ['o'] },
         },
       ],
     },
@@ -122,7 +119,6 @@ const Palette: FC<{
           text: 'Theme...',
           keywords: 'dark light mode themes',
           perform: () => setOpen(6),
-          shortcuts: { modifier: 'alt', keys: ['t'] },
         },
         {
           icon: <FiCopy />,
@@ -999,12 +995,16 @@ const Palette: FC<{
   ]
 
   useEffect(() => {
-    if (open === 4) setPassword(input)
-  }, [open, input, setPassword])
-
-  useEffect(() => {
-    if (open === 5) setSlug(input)
-  }, [open, input, setSlug])
+    if (open !== 4 && open !== 5) {
+      setValue('')
+    } else if (open === 4) {
+      setPassword(input)
+      setValue(password)
+    } else if (open === 5) {
+      setSlug(input)
+      setValue(slug)
+    }
+  }, [open, input, setPassword, setSlug, setValue, slug, password])
 
   const [mainCommands] = useCommands(main)
   const [languageCommands] = useCommands(langs)
@@ -1014,7 +1014,7 @@ const Palette: FC<{
   const [themeCommands] = useCommands(themes)
 
   return (
-    <CommandWrapper>
+    <CommandWrapper value={value}>
       <CommandMenu commands={mainCommands} crumbs={['Home']} index={1} />
       <CommandMenu
         commands={languageCommands}
@@ -1033,7 +1033,6 @@ const Palette: FC<{
         crumbs={['Home', 'Encrypt']}
         index={4}
         placeholder='New Password...'
-        value={password}
         preventSearch
       />
       <CommandMenu
@@ -1041,7 +1040,6 @@ const Palette: FC<{
         index={5}
         placeholder='New slug...'
         crumbs={['Home', 'Slug']}
-        value={slug}
         preventSearch
       />
       <CommandMenu

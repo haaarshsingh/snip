@@ -1,0 +1,150 @@
+.backdrop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100vw;
+  height: 100vh;
+  user-select: none;
+  filter: none !important;
+}
+
+.dialog {
+  width: 600px;
+  transition: 0.1s ease 0s;
+  will-change: height;
+  position: relative;
+  border-style: solid;
+  margin-bottom: 250px;
+  padding-bottom: 10px;
+  top: 20%;
+}
+
+.searchbar {
+  border: none;
+  padding: 15px 20px 20px 20px;
+  background-color: transparent;
+  font-size: 14px;
+  width: 100%;
+  outline: 0;
+  font-family: inherit;
+}
+
+.command_wrapper {
+  display: flex;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-direction: column;
+  width: 100%;
+  transition: height 0.1s ease 0s;
+  will-change: height;
+  padding: 0px 7px 0px 7px;
+}
+
+.command_wrapper::-webkit-scrollbar {
+  width: 5px;
+}
+
+.command {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  height: 50px;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.1s linear;
+}
+
+.shortcuts > kbd {
+  padding: 3px 6px;
+  border-radius: 2px;
+  font-size: 12px;
+  margin-right: 7px;
+  font-family: monospace;
+}
+
+.shortcuts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.info_wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-left: 15px;
+}
+
+.info_wrapper > svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 7px;
+}
+
+.category_header {
+  margin: 15px 0 10px 10px;
+  font-size: 12px;
+}
+
+.selected {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.command_text {
+  max-width: 90%;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+}
+
+.scroll_ref {
+  margin-top: 20px;
+}
+
+.crumbs {
+  display: flex;
+  margin: 10px 0px 0px 10px;
+}
+
+.breadcrumb {
+  border: none;
+  outline: none;
+  padding: 7px 12px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 700px) {
+  .dialog {
+    width: 90%;
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
