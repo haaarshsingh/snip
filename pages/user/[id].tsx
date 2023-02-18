@@ -15,7 +15,7 @@ const Snips: NextPage<{ snips: definitions['snips'][]; id: string }> = ({
   const router = useRouter()
   useEffect(() => {
     if (user?.id !== id) router.push('/')
-  }, [])
+  }, [id, router, user?.id])
 
   if (user?.id === id) {
     return (

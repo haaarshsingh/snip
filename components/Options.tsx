@@ -92,7 +92,7 @@ export const ViewOptions: FC<{
   const options = [
     {
       text: 'Copy Snip',
-      icon: <FiCopy />,
+      icon: <FiCopy size={16} />,
       perform: () => {
         toast.success('Copied Snip', {
           style: style,
@@ -104,7 +104,7 @@ export const ViewOptions: FC<{
     },
     {
       text: 'Copy URL',
-      icon: <FiShare />,
+      icon: <FiShare size={16} />,
       perform: () => {
         toast.success('Copied URL', {
           style: style,
@@ -116,7 +116,7 @@ export const ViewOptions: FC<{
     },
     {
       text: 'Download Snip',
-      icon: <FiDownloadCloud />,
+      icon: <FiDownloadCloud size={16} />,
       perform: () =>
         window.open(
           `data:application/octet-stream,${encodeURIComponent(snip.code)}`
@@ -127,17 +127,17 @@ export const ViewOptions: FC<{
   const ownerOptions = [
     {
       text: 'Edit Snip',
-      icon: <FiEdit />,
+      icon: <FiEdit size={16} />,
       perform: () => window.open(`https://snip.place/edit/${snip.id}`),
     },
     {
       text: 'Delete Snip',
-      icon: <FiTrash />,
+      icon: <FiTrash size={16} />,
       index: 3,
     },
     {
       text: 'Copy Snip',
-      icon: <FiCopy />,
+      icon: <FiCopy size={16} />,
       perform: () => {
         toast.success('Copied Snip', {
           style: style,
@@ -149,7 +149,7 @@ export const ViewOptions: FC<{
     },
     {
       text: 'Copy URL',
-      icon: <FiShare />,
+      icon: <FiShare size={16} />,
       perform: () => {
         toast.success('Copied URL', {
           style: style,
@@ -161,7 +161,7 @@ export const ViewOptions: FC<{
     },
     {
       text: 'Download Snip',
-      icon: <FiDownloadCloud />,
+      icon: <FiDownloadCloud size={16} />,
       perform: () =>
         window.open(
           `data:application/octet-stream,${encodeURIComponent(snip.code)}`
@@ -204,7 +204,7 @@ const Option: FC<
     <button
       className={`mx-2 text-gray-300 dark:text-gray-500 dark:hover:text-gray-300 hover:text-black transition-colors flex justify-center ${clsx(
         command.disabled && 'cursor-not-allowed !text-gray-700',
-        command.password && '!text-white'
+        command.password && !command.index && '!text-white'
       )}`}
       onMouseOver={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
