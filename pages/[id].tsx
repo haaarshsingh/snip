@@ -118,6 +118,34 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   ).then((res) => res.json())
   const snip = await response
 
+  if (snip.statusCode === 401) {
+    const raw = JSON.stringify({
+      message: {
+        to: { email: 'hi.harsh@pm.me' },
+        content: {
+          title: `Your OTP For Snip ${params?.id?.toString()}`,
+          body: 'Your code is: -S97WKwC7c2QV35iktge',
+        },
+      },
+    })
+
+    const headers = new Headers()
+    headers.append('Authorization', `Bearer ${process.env.COURIER_API_KEY}`)
+    headers.append('Content-Type', 'application/json')
+
+    const requestOptions: RequestInit = {
+      method: 'POST',
+      headers: headers,
+      body: raw,
+      redirect: 'follow',
+    }
+
+    fetch('https://api.courier.com/send', requestOptions)
+      .then((response) => response.json())
+      .then((result) => result)
+      .catch((error) => error)
+  }
+
   return {
     props: {
       snip: snip[0] || [],

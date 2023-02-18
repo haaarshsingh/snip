@@ -27,10 +27,10 @@ const User: FC<{ snips: definitions['snips'][] }> = ({ snips }) => {
 
   return (
     <div className='flex flex-col min-h-[80vh]'>
-      <div className='flex items-center h-16 bg-gray-200 dark:bg-[#1f1f1f] rounded text-lg my-8'>
-        <FiSearch className='text-lg ml-2' />
+      <div className='flex items-center h-16 bg-gray-200 dark:bg-[#1f1f1f] rounded text-lg my-6'>
+        <FiSearch className='text-lg ml-3' />
         <input
-          className='bg-transparent ml-2 outline-none w-full text-base'
+          className='bg-transparent ml-2 outline-none w-full text-sm'
           autoFocus
           placeholder='Search snips...'
           ref={inputRef}
@@ -80,7 +80,7 @@ const Snip: FC<{
   return (
     <Link href={`/${snip.id}`} passHref>
       <a
-        className='w-full select-none text-sm h-10 flex items-center rounded transition-colors relative'
+        className='w-full select-none text-sm h-12 flex items-center rounded transition-colors relative'
         onMouseMove={onMouseMove}
         style={{
           color:
@@ -95,7 +95,7 @@ const Snip: FC<{
         {selected && (
           <motion.div
             layoutId='box'
-            className='bg-[#00000010] dark:bg-[#FFFFFF20] rounded w-full h-10 absolute'
+            className='bg-[#00000010] dark:bg-[#FFFFFF20] rounded w-full h-12 absolute'
             transition={{
               type: 'spring',
               stiffness: 1000,

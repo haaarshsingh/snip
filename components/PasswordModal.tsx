@@ -26,7 +26,7 @@ const PasswordModal: FC<{
           aria-modal={true}>
           <input
             placeholder='Snip password...'
-            className='searchbar text-black dark:text-white border-b-2'
+            className='searchbar text-black dark:text-white border-b-2 mt-2'
             aria-expanded='true'
             aria-autocomplete='list'
             aria-controls='options'
@@ -35,13 +35,13 @@ const PasswordModal: FC<{
             spellCheck='false'
             style={{
               borderBottom: `1px solid ${
-                theme === 'dark' ? 'rgb(57, 57, 57)' : '#E9ECEF'
+                theme === 'dark' ? 'rgb(31,41, 55)' : 'rgb(31,41, 55)'
               }`,
             }}
             onChange={(event) => setPassword(event.currentTarget.value)}
             ref={input}
           />
-          <a href='#' className='command mt-2' onClick={onClick}>
+          <a href='#' className='command mt-2 mx-2' onClick={onClick}>
             <div
               aria-hidden='true'
               className='bg-[#00000010] dark:bg-[#FFFFFF10] selected'
