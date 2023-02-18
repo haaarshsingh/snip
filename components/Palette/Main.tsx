@@ -1,4 +1,10 @@
-import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
+import {
+  Command,
+  CommandMenu,
+  CommandWrapper,
+  useCommands,
+  useKmenu,
+} from 'kmenu'
 import { Dispatch, FC, SetStateAction } from 'react'
 import {
   FiCheck,
@@ -42,8 +48,8 @@ const Palette: FC<{
   setLanguage,
   setExpires,
 }) => {
-  const [input, setInput, open, setOpen] = useKmenu()
-  const { theme, setTheme } = useTheme()
+  const { open, setOpen, input } = useKmenu()
+  const { setTheme } = useTheme()
 
   const main: Command[] = [
     {
@@ -1008,20 +1014,23 @@ const Palette: FC<{
   const [themeCommands] = useCommands(themes)
 
   return (
-    <>
-      <CommandMenu commands={mainCommands} index={1} main />
+    <CommandWrapper>
+      <CommandMenu commands={mainCommands} crumbs={['Home']} index={1} />
       <CommandMenu
         commands={languageCommands}
+        crumbs={['Home', 'Language']}
         index={2}
         placeholder='Language...'
       />
       <CommandMenu
         commands={expiresCommands}
+        crumbs={['Home', 'Expires']}
         index={3}
         placeholder='Expires In...'
       />
       <CommandMenu
         commands={editPasswordCommands}
+        crumbs={['Home', 'Encrypt']}
         index={4}
         placeholder='New Password...'
         value={password}
@@ -1031,16 +1040,18 @@ const Palette: FC<{
         commands={editSlugCommands}
         index={5}
         placeholder='New slug...'
+        crumbs={['Home', 'Slug']}
         value={slug}
         preventSearch
       />
       <CommandMenu
         commands={themeCommands}
+        crumbs={['Home', 'Themes']}
         index={6}
         placeholder='Theme...'
         preventSearch
       />
-    </>
+    </CommandWrapper>
   )
 }
 

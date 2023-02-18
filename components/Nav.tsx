@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useKmenu } from 'kmenu'
 
 const Nav: FC<{ header?: string }> = ({ header }) => {
-  const [input, setInput, open, setOpen] = useKmenu()
+  const { setOpen } = useKmenu()
 
   return (
     <div className='flex items-center justify-between w-full'>

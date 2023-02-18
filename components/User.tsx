@@ -7,7 +7,7 @@ import { FiSearch } from 'react-icons/fi'
 import { useTheme } from 'next-themes'
 
 const User: FC<{ snips: definitions['snips'][] }> = ({ snips }) => {
-  const [input, setInput, open, setOpen] = useKmenu()
+  const { open } = useKmenu()
   const { theme } = useTheme()
   const [selected, setSelected] = useState(0)
   const [results, setResults] = useState<definitions['snips'][] | undefined>(

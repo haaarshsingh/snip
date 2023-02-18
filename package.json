@@ -16,7 +16,7 @@
     "@uiw/codemirror-themes": "^4.11.4",
     "@uiw/react-codemirror": "^4.11.4",
     "focus-trap-react": "8.11.2",
-    "kmenu": "^1.0.9-beta",
+    "kmenu": "^1.2.2-dev",
     "nanoid": "^4.0.0",
     "next": "12.2.5",
     "next-themes": "^0.2.0",

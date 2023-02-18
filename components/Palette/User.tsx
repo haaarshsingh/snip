@@ -1,4 +1,10 @@
-import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
+import {
+  Command,
+  CommandMenu,
+  CommandWrapper,
+  useCommands,
+  useKmenu,
+} from 'kmenu'
 import { FC } from 'react'
 import {
   FiCode,
@@ -14,7 +20,7 @@ import { useTheme } from 'next-themes'
 import supabase from '@lib/supabase'
 
 const Palette: FC = () => {
-  const [input, setInput, open, setOpen] = useKmenu()
+  const { setOpen } = useKmenu()
   const { setTheme } = useTheme()
 
   const main: Command[] = [
@@ -91,10 +97,15 @@ const Palette: FC = () => {
   const [themeCommands] = useCommands(themes)
 
   return (
-    <>
-      <CommandMenu commands={mainCommands} index={1} main />
-      <CommandMenu commands={themeCommands} index={2} placeholder='Theme...' />
-    </>
+    <CommandWrapper>
+      <CommandMenu commands={mainCommands} index={1} crumbs={['Home']} />
+      <CommandMenu
+        commands={themeCommands}
+        index={2}
+        crumbs={['Home', 'Theme']}
+        placeholder='Theme...'
+      />
+    </CommandWrapper>
   )
 }
 

@@ -1,4 +1,10 @@
-import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
+import {
+  Command,
+  CommandMenu,
+  CommandWrapper,
+  useCommands,
+  useKmenu,
+} from 'kmenu'
 import { Dispatch, FC, SetStateAction } from 'react'
 import {
   FiArrowLeft,
@@ -28,9 +34,9 @@ const Palette: FC<{
   create: () => void
   setPassword: Dispatch<SetStateAction<string | null>>
   setLanguage: Dispatch<SetStateAction<keyof typeof langs | undefined>>
-}> = ({ user, create, setPassword, setLanguage }) => {
-  const [input, setInput, open, setOpen] = useKmenu()
-  const { theme, setTheme } = useTheme()
+}> = ({ user, setPassword, setLanguage }) => {
+  const { input, open, setOpen } = useKmenu()
+  const { setTheme } = useTheme()
 
   const main: Command[] = [
     {
@@ -900,26 +906,29 @@ const Palette: FC<{
   const [themeCommands] = useCommands(themes)
 
   return (
-    <>
-      <CommandMenu commands={mainCommands} index={1} main />
+    <CommandWrapper>
+      <CommandMenu commands={mainCommands} index={1} crumbs={['Home']} />
       <CommandMenu
         commands={languageCommands}
         index={2}
+        crumbs={['Home', 'Language']}
         placeholder='Language...'
       />
       <CommandMenu
         commands={editPasswordCommands}
         index={3}
+        crumbs={['Home', 'Encrypt']}
         placeholder='New Password...'
         preventSearch
       />
       <CommandMenu
         commands={themeCommands}
         index={4}
+        crumbs={['Home', 'Theme']}
         placeholder='Theme...'
         preventSearch
       />
-    </>
+    </CommandWrapper>
   )
 }
 

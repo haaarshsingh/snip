@@ -1,4 +1,10 @@
-import { Command, CommandMenu, useCommands, useKmenu } from 'kmenu'
+import {
+  Command,
+  CommandMenu,
+  CommandWrapper,
+  useCommands,
+  useKmenu,
+} from 'kmenu'
 import { FC } from 'react'
 import {
   FiCheck,
@@ -36,7 +42,7 @@ const Palette: FC<{
   snip: definitions['snips']
   user: User | null
 }> = ({ snip, user }) => {
-  const [input, setInput, open, setOpen] = useKmenu()
+  const { setOpen } = useKmenu()
   const { theme, setTheme } = useTheme()
   const router = useRouter()
 
@@ -206,15 +212,21 @@ const Palette: FC<{
   const [confirmCommands] = useCommands(confirm)
 
   return (
-    <>
-      <CommandMenu commands={mainCommands} index={1} main />
-      <CommandMenu commands={themeCommands} index={2} placeholder="Theme..." />
+    <CommandWrapper>
+      <CommandMenu commands={mainCommands} crumbs={['Home']} index={1} />
+      <CommandMenu
+        commands={themeCommands}
+        crumbs={['Home', 'Theme']}
+        index={2}
+        placeholder='Theme...'
+      />
       <CommandMenu
         commands={confirmCommands}
         index={3}
-        placeholder="Delete snip..?"
+        crumbs={['Home', 'Delete']}
+        placeholder='Delete snip..?'
       />
-    </>
+    </CommandWrapper>
   )
 }
 

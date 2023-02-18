@@ -174,7 +174,7 @@ const Option: FC<{
     perform?: () => void
   }
 }> = ({ command }) => {
-  const [input, setInput, kmenu, setKmenu] = useKmenu()
+  const { setOpen: setKmenu } = useKmenu()
   const [open, setOpen] = useState(false)
 
   return (

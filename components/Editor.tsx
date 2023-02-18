@@ -26,7 +26,7 @@ const Editor: FC<{
   preventFocus,
 }) => {
   const inputRef = useRef<ReactCodeMirrorRef>(null)
-  const [input, setInput, open, setOpen] = useKmenu()
+  const { setOpen } = useKmenu()
   const { theme } = useTheme()
 
   return (
