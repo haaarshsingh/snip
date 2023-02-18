@@ -9,7 +9,6 @@ import {
   promiseStyle,
   promiseStyleDark,
 } from '@css/toast'
-import { authorize, gmail } from '@lib/courier'
 import supabase from '@lib/supabase'
 import { definitions } from '@typings/supabase'
 import type { GetServerSideProps, NextPage } from 'next'
