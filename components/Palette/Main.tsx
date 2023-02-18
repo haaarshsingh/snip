@@ -14,20 +14,16 @@ import {
   FiEdit2,
   FiGithub,
   FiGitlab,
-  FiLock,
   FiLogOut,
   FiMoon,
-  FiRefreshCcw,
   FiSun,
   FiUser,
   FiX,
 } from 'react-icons/fi'
 import { BiPaintRoll } from 'react-icons/bi'
 import { useTheme } from 'next-themes'
-import { useEffect } from 'react'
 import langs from '@lib/languages'
 import { expires } from '@typings/expires'
-import { nanoid } from 'nanoid'
 import supabase from '@lib/supabase'
 import { User } from '@supabase/supabase-js'
 
@@ -99,15 +95,9 @@ const Palette: FC<{
           perform: () => setOpen(3),
         },
         {
-          icon: <FiLock />,
-          text: 'Encrypt...',
-          perform: () => setOpen(4),
-          keywords: 'password',
-        },
-        {
           icon: <FiEdit2 />,
           text: 'Edit Slug...',
-          perform: () => setOpen(5),
+          perform: () => setOpen(4),
         },
       ],
     },
@@ -118,7 +108,7 @@ const Palette: FC<{
           icon: <BiPaintRoll />,
           text: 'Theme...',
           keywords: 'dark light mode themes',
-          perform: () => setOpen(6),
+          perform: () => setOpen(5),
         },
         {
           icon: <FiCopy />,
@@ -953,29 +943,6 @@ const Palette: FC<{
     },
   ]
 
-  const editPassword: Command[] = [
-    {
-      category: 'Options',
-      commands: [
-        {
-          text: 'Confirm',
-          icon: <FiCheck />,
-          perform: () => setOpen(0),
-        },
-        {
-          text: 'Generate Password',
-          icon: <FiRefreshCcw />,
-          perform: () => setPassword(nanoid(20)),
-        },
-        {
-          text: 'Cancel',
-          icon: <FiX />,
-          perform: () => setOpen(0),
-        },
-      ],
-    },
-  ]
-
   const themes: Command[] = [
     {
       category: 'Themes',
@@ -994,23 +961,10 @@ const Palette: FC<{
     },
   ]
 
-  useEffect(() => {
-    if (open !== 4 && open !== 5) {
-      setValue('')
-    } else if (open === 4) {
-      setPassword(input)
-      setValue(password)
-    } else if (open === 5) {
-      setSlug(input)
-      setValue(slug)
-    }
-  }, [open, input, setPassword, setSlug, setValue, slug, password])
-
   const [mainCommands] = useCommands(main)
   const [languageCommands] = useCommands(langs)
   const [expiresCommands] = useCommands(expiresIn)
   const [editSlugCommands] = useCommands(editSlug)
-  const [editPasswordCommands] = useCommands(editPassword)
   const [themeCommands] = useCommands(themes)
 
   return (
@@ -1029,15 +983,8 @@ const Palette: FC<{
         placeholder='Expires In...'
       />
       <CommandMenu
-        commands={editPasswordCommands}
-        crumbs={['Home', 'Encrypt']}
-        index={4}
-        placeholder='New Password...'
-        preventSearch
-      />
-      <CommandMenu
         commands={editSlugCommands}
-        index={5}
+        index={4}
         placeholder='New slug...'
         crumbs={['Home', 'Slug']}
         preventSearch
@@ -1045,9 +992,8 @@ const Palette: FC<{
       <CommandMenu
         commands={themeCommands}
         crumbs={['Home', 'Themes']}
-        index={6}
+        index={5}
         placeholder='Theme...'
-        preventSearch
       />
     </CommandWrapper>
   )

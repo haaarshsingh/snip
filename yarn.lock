@@ -1880,10 +1880,10 @@ json5@^1.0.1:
     array-includes "^3.1.5"
     object.assign "^4.1.3"
 
-kmenu@^1.2.2-dev:
-  version "1.2.2-dev"
-  resolved "https://registry.yarnpkg.com/kmenu/-/kmenu-1.2.2-dev.tgz#80a69cab96b9152dcabf3f0066a2cf7b1597b3d7"
-  integrity sha512-pgnGHfKtrwYiy833wzASAUYIWNS/CNQfm4tpRCqAW7WQiZNP1srVzfFqUgWzs9N9OfGGLVbXf43gMSB8lbHC8Q==
+kmenu@^1.2.2-nightly-dev:
+  version "1.2.2-nightly-dev"
+  resolved "https://registry.yarnpkg.com/kmenu/-/kmenu-1.2.2-nightly-dev.tgz#41e32a1756468a8faf8a501cbf9b0b75009d7302"
+  integrity sha512-NHg+GezJlHiNj6j73k6Z18ZGRd3pj/+To/hK/5AWDksCeYRZ2g9ombTLFu+fFjtZrfFZV2cEsjHEft1LTcKJ6Q==
   dependencies:
     framer-motion "^9.0.1"
     react-scrollbar-size "^5.0.0"

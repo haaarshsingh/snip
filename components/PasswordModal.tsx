@@ -15,16 +15,15 @@ const PasswordModal: FC<{
   const enter = useShortcut({ targetKey: 'Enter' })
   useEffect(() => {
     if (enter) onClick()
-  }, [enter])
+  }, [enter, onClick])
 
   return (
     <div className='backdrop bg-[#FFFFFF50] dark:bg-[#00000090] backdrop-blur-sm'>
       {/* @ts-ignore */}
       <FocusTrap>
         <div
-          className='dialog bg-white dark:bg-gray-900 border shadow-2xl rounded-lg border-transparent dark:border-gray-800'
-          aria-modal={true}
-        >
+          className='dialog bg-white dark:bg-gray-900 border shadow-2xl rounded border-transparent dark:border-gray-800'
+          aria-modal={true}>
           <input
             placeholder='Snip password...'
             className='searchbar text-black dark:text-white border-b-2'

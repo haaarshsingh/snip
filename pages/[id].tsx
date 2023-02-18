@@ -119,14 +119,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   ).then((res) => res.json())
   const snip = await response
 
-  if (snip.statusCode === 401) authorize(process.env.COURIER_API_KEY)
-
-  gmail.email({
-    to: snip[0].user.email,
-    title: `Unlock Encrypted Snip`,
-    body: `Your login key is ${snip[0].passkey}`,
-  })
-
   return {
     props: {
       snip: snip[0] || [],

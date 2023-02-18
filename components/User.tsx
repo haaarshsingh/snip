@@ -80,7 +80,7 @@ const Snip: FC<{
   return (
     <Link href={`/${snip.id}`} passHref>
       <a
-        className='w-full select-none text-base h-16 flex items-center rounded-lg transition-colors relative'
+        className='w-full select-none text-sm h-16 flex items-center rounded transition-colors relative'
         onMouseMove={onMouseMove}
         style={{
           color:
