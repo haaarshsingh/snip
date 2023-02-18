@@ -26,21 +26,23 @@ const Wrapper: FC<{
   const { theme } = useTheme()
 
   const darkConfig: MenuConfig = {
-    backdropColor: 'rgba(0, 0, 0, 0.90)',
-    backdropBlur: 5,
-    backgroundColor: '#121212',
+    backdropColor: '#00000099',
+    backgroundColor: '#171717',
+    backdropBlur: 0.1,
     borderWidth: 1,
-    borderColor: '#393939',
-    inputColor: '#FFFFFF',
-    commandActive: '#FFF',
-    commandInactive: '#4E4E4E',
+    borderColor: '#333333',
+    inputBorder: '#333333',
+    inputColor: '#ffffff',
     barBackground: '#FFFFFF10',
-    inputBorder: '#393939',
+    headingColor: '#696969',
+    commandInactive: '#696969',
+    commandActive: '#ffffff',
+    breadcrumbColor: '#202020',
   }
 
   const lightConfig: MenuConfig = {
     backdropColor: 'rgba(256, 256, 256, 0.50)',
-    backdropBlur: 5,
+    backdropBlur: 0,
   }
 
   return (
@@ -58,7 +60,10 @@ const Wrapper: FC<{
         <meta property='og:url' content={`${meta.root}${router.asPath}`} />
         <link rel='canonical' href={`${meta.root}${router.asPath}`} />
         <meta property='og:type' content={meta.type} />
-        <meta property='og:site_name' content='Harsh Singh &amp; Ibrahim Hisham' />
+        <meta
+          property='og:site_name'
+          content='Harsh Singh &amp; Ibrahim Hisham'
+        />
         <meta
           property='og:description'
           content={description ? description : meta.description}
@@ -77,15 +82,13 @@ const Wrapper: FC<{
       </Head>
       <MenuProvider
         config={theme === 'dark' ? darkConfig : lightConfig}
-        dimensions={{ sectionHeight: 36 }}
-      >
+        dimensions={{ sectionHeight: 43, commandHeight: 50 }}>
         <Toaster />
         <div className='flex flex-col items-center'>
           <div className='max-w-800 w-90 lg:w-70 xl:w-60 2xl:w-40 mt-10'>
             <Navbar header={nav} />
             <main id='main'>{children}</main>
             <Footer />
-            {/* <BackToTop /> */}
           </div>
         </div>
       </MenuProvider>
