@@ -17,7 +17,10 @@ const Nav: FC<{ header?: string }> = ({ header }) => {
             fill='none'
             xmlns='http://www.w3.org/2000/svg'
             className='rotate-180 w-1/2 h-1/2'>
-            <path d='M44 0L87.3013 75H0.69873L44 0Z' fill='#F6F6F6' />
+            <path
+              d='M44 0L87.3013 75H0.69873L44 0Z'
+              className='fill-black dark:fill-white'
+            />
           </svg>
           <div className='z-10 backdrop-blur-sm w-full h-1/2 absolute top-1/2' />
         </a>
