@@ -29,23 +29,12 @@ import { User } from '@supabase/supabase-js'
 
 const Palette: FC<{
   user: User | null
-  password: string | undefined
   slug: string | undefined
-  setPassword: Dispatch<SetStateAction<string | undefined>>
   setSlug: Dispatch<SetStateAction<string | undefined>>
   setLanguage: Dispatch<SetStateAction<keyof typeof langs | undefined>>
   setExpires: Dispatch<SetStateAction<expires>>
-}> = ({
-  user,
-  password,
-  slug,
-  setPassword,
-  setSlug,
-  setLanguage,
-  setExpires,
-}) => {
-  const [value, setValue] = useState<string | undefined>('')
-  const { open, setOpen, input } = useKmenu()
+}> = ({ user, slug, setSlug, setLanguage, setExpires }) => {
+  const { setOpen } = useKmenu()
   const { setTheme } = useTheme()
 
   const main: Command[] = [
@@ -968,7 +957,7 @@ const Palette: FC<{
   const [themeCommands] = useCommands(themes)
 
   return (
-    <CommandWrapper value={value}>
+    <CommandWrapper>
       <CommandMenu commands={mainCommands} crumbs={['Home']} index={1} />
       <CommandMenu
         commands={languageCommands}

@@ -1,4 +1,11 @@
-import { FC, ReactNode, useEffect, useState } from 'react'
+import {
+  Dispatch,
+  FC,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react'
 import {
   FiCopy,
   FiDownloadCloud,
@@ -15,27 +22,45 @@ import { definitions } from '@typings/supabase'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
 import { iconTheme, style } from '@css/toast'
+import clsx from 'clsx'
+import { User } from '@supabase/supabase-js'
+
+type Option = {
+  icon: ReactNode
+  text: string
+  index?: number
+  disabled?: boolean
+}
 
 const Options: FC<{
   create: () => void
   edit?: boolean
   loading: boolean
-}> = ({ create, edit, loading }) => {
-  const options = [
-    { text: 'Encrypt Snip', icon: <FiLock size={16} />, index: 4 },
-    { text: 'Edit Slug', icon: <FiEdit2 size={16} />, index: 5 },
+  password?: boolean | undefined
+  setPassword?: Dispatch<SetStateAction<boolean | undefined>>
+  user?: User | null
+}> = ({ create, edit, loading, password, setPassword, user }) => {
+  const options: Option[] = [
+    {
+      text: 'Encrypt Snip',
+      icon: <FiLock size={16} />,
+      disabled: user ? false : true,
+    },
+    { text: 'Edit Slug', icon: <FiEdit2 size={16} />, index: 3 },
   ]
-  const editOptions = [{ text: 'Encrypt Snip', icon: <FiLock />, index: 4 }]
 
   return (
     <div className='mt-5 bg-white shadow-custom dark:bg-gray-800 flex items-center justify-between p-3 rounded text-xl'>
       <div className='flex items-center'>
         {edit
-          ? editOptions.map((command, index) => (
-              <Option command={command} key={index} />
-            ))
+          ? null
           : options.map((command, index) => (
-              <Option command={command} key={index} />
+              <Option
+                {...command}
+                key={index}
+                password={password}
+                setPassword={setPassword}
+              />
             ))}
       </div>
       <div>
@@ -149,10 +174,10 @@ export const ViewOptions: FC<{
       <div className='flex items-center'>
         {owner
           ? ownerOptions.map((command, index) => (
-              <Option command={command} key={index} />
+              <Option {...command} key={index} />
             ))
           : options.map((command, index) => (
-              <Option command={command} key={index} />
+              <Option {...command} key={index} />
             ))}
       </div>
       <div>
@@ -166,27 +191,30 @@ export const ViewOptions: FC<{
   )
 }
 
-const Option: FC<{
-  command: {
-    icon: ReactNode
-    text: string
-    index?: number
-    perform?: () => void
+const Option: FC<
+  Option & {
+    password?: boolean | undefined
+    setPassword?: Dispatch<SetStateAction<boolean | undefined>>
   }
-}> = ({ command }) => {
+> = (command) => {
   const { setOpen: setKmenu } = useKmenu()
   const [open, setOpen] = useState(false)
 
   return (
     <button
-      className='mx-2 text-gray-300 dark:text-gray-500 dark:hover:text-white hover:text-black transition-colors flex justify-center'
+      className={`mx-2 text-gray-300 dark:text-gray-500 dark:hover:text-gray-300 hover:text-black transition-colors flex justify-center ${clsx(
+        command.disabled && 'cursor-not-allowed !text-gray-700',
+        command.password && '!text-white'
+      )}`}
       onMouseOver={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
+      disabled={command.disabled}
+      aria-disabled={command.disabled}
       aria-label={command.text}
-      onClick={
-        typeof command.index === 'undefined'
-          ? command.perform
-          : () => setKmenu(command.index!)
+      onClick={() =>
+        command.setPassword
+          ? command.setPassword((a) => !a)
+          : setKmenu(command.index!)
       }>
       <AnimatePresence>
         {open && (

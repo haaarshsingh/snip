@@ -10,13 +10,14 @@ import supabase from '@lib/supabase'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import { errorIconTheme, errorStyle } from '@css/toast'
+import { nanoid } from 'nanoid'
 const Editor = dynamic(() => import('@components/Editor'))
 
 const Home: NextPage = () => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [code, setCode] = useState<string>('')
-  const [password, setPassword] = useState<string | undefined>(undefined)
+  const [password, setPassword] = useState<boolean | undefined>(undefined)
   const [slug, setSlug] = useState<string | undefined>(undefined)
   const [language, setLanguage] = useState<keyof typeof langs | undefined>(
     'JavaScript'
@@ -40,7 +41,7 @@ const Home: NextPage = () => {
       body: JSON.stringify({
         id: slug === undefined || slug === '' ? null : slug,
         code: code,
-        password: password,
+        password: password ? nanoid(20) : undefined,
         language: language,
         expires: expires,
       }),
@@ -62,15 +63,19 @@ const Home: NextPage = () => {
       <Palette
         user={user}
         slug={slug}
-        password={password}
-        setPassword={setPassword}
         setSlug={setSlug}
         setLanguage={setLanguage}
         setExpires={setExpires}
       />
       {/* @ts-ignore */}
       <Editor setCode={setCode} language={language} expires={expires} />
-      <Options create={create} loading={loading} />
+      <Options
+        create={create}
+        loading={loading}
+        user={user}
+        password={password}
+        setPassword={setPassword}
+      />
     </Wrapper>
   )
 }

@@ -23,7 +23,7 @@ const Edit: NextPage<{ snip: definitions['snips'] }> = ({ snip }) => {
   const router = useRouter()
   useEffect(() => {
     if (snip.user_id !== user?.id) router.push('/')
-  }, [])
+  }, [router, snip.user_id, user?.id])
 
   const edit = () => {
     setLoading(true)
