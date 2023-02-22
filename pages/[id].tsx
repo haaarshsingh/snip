@@ -123,7 +123,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       message: {
         to: { email: 'hi.harsh@pm.me' },
         content: {
-          title: `Your OTP For Snip ${params?.id?.toString()}`,
+          title: `Your OTP For snip.place/${params?.id?.toString()}`,
           body: 'Your code is: -S97WKwC7c2QV35iktge',
         },
       },
