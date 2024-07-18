@@ -1,2 +1,0 @@
-User-agent: *
-Sitemap: https://snip.place/sitemap.xml

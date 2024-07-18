@@ -1,110 +1,36 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/harshhhdev/snip/main/public/Banner.png?token=GHSAT0AAAAAABXX5WNSA65XAUMK2MAJOKLYYYB4ZJA" />
-  <a href="https://snip.place">
-    <h2 align="center">snip</h2>
-  </a>
-</p> 
-<p align="center">:cyclone: The gamma variant of Pastebin</p>
-<p align="center">
-  <a href="https://courier-hacks-integrated-tools.devpost.com/">Courier Hackathon</a>
-    ·
-  <a href="https://snip.place/">Demo</a>
- </p>
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## ✨ Team
+## Getting Started
 
-Harsh Singh • Frontend (TypeScript) • [GitHub](https://github.com/harshhhdev) • [Twitter](https://twitter.com/harshhhdev)
-
-Ibrahim Hisham • Backend (Rust) • [GitHub](https://github.com/ibra) • [Twitter](https://twitter.com/IbrahDev)
-
-## 🚀 Quickstart
-
-Run the website locally
-
-```
-git clone https://github.com/harshhhdev/snip.git
-```
-
-### Setting up the development environment
+First, run the development server:
 
 ```bash
-cd snip
-
-# Install deps
-yarn
-```
-
-### Setting up Courier
-
- - Create an account at [courier.com](https://courier.com/).
- - Enable and configure the Gmail extension.
- - Substitute `COURIER_API_KEY` in the `.env` file with your API.
-
-You should be set to go. For further tools and information, check out the [Courier documentation](https://www.courier.com/docs/).
-
-### Setting up the database
-
-NOTE: This project uses [PostgreSQL](https://www.postgresql.org/) on [Supabase](https://supabase.com/database) to store data. Things like authentication are handled by Supabase.
-
-Currently, according to the [Supabase documentation](https://supabase.com/blog/supabase-cli), there isn't any 'right' way to do migrations, however you can initialise your database with the `initdb.sql` file located at the root of the project.
-
-### Authentication
-
-This application uses [Supabase's Authentication](https://supabase.com/auth) with the [GitHub](https://supabase.com/docs/guides/auth/auth-github) and [GitLab](https://supabase.com/docs/guides/auth/auth-gitlab). Refer to the linked guides for how to create an OAuth application and connect it with your account.
-
-### Starting server
-
-```bash
-# Start the server
+npm run dev
+# or
 yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-Server should now be running on [localhost](https://localhost:3000)
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-If you would also like to run the [Netlify serverless functions](https://www.netlify.com/blog/2021/10/14/write-netlify-functions-in-rust/), you can start with the [netlify dev](https://www.netlify.com/products/cli/) command.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-```bash
-# Start the Netlify server
-netlify dev
-```
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-...and your local development server should now be running on [localhost:8888](https://localhost:8888).
+## Learn More
 
-## 🔧 Tools Used
+To learn more about Next.js, take a look at the following resources:
 
-### Frontend
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-- [TypeScript](https://www.typescriptlang.org/)
-- [Next.js](https://nextjs.org/)
-- [TailwindCSS](https://tailwindcss.com/)
-- [react-icons](https://react-icons.github.io/react-icons/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
-- [kmenu](https://kmenu.hxrsh.in)
-- [Framer Motion](https://framer.com/motion)
-- [react-hot-toast](https://react-hot-toast.com/)
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-### Backend
+## Deploy on Vercel
 
-- [Rust](https://rust-lang.org)
-- [Netlify Serverless Functions](https://www.netlify.com/products/functions/)
-- [Supabase](https://supabase.com)
-- [postgrest-rs](https://github.com/supabase-community/postgrest-rs)
-- [serde_json](https://docs.rs/serde_json/latest/serde_json/)
-- [nanoid](https://zelark.github.io/nano-id-cc/)
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-### Miscellaneous
-
-- [Figma](https://www.figma.com/)
-- [nanoid](https://zelark.github.io/nano-id-cc/)
-- [Prettier](https://prettier.io/)
-- [ESLint](https://eslint.org/)
-
-## 🤞 Contributing
-
-After setting up the project, and making changes:
-
-```git
-git add .
-git commit -m "commit message"
-git push YOUR_REPO_URL YOUR_BRANCH
-```
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

@@ -1,5 +1,5 @@
 {
-  "name": "snip.place",
+  "name": "snip",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,33 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@codemirror/language-data": "^6.1.0",
-    "@codemirror/state": "^6.1.1",
-    "@lezer/highlight": "^1.0.0",
-    "@supabase/supabase-js": "^1.35.6",
-    "@uiw/codemirror-themes": "^4.11.4",
-    "@uiw/react-codemirror": "^4.11.4",
-    "clsx": "^1.2.1",
-    "focus-trap-react": "8.11.2",
-    "kmenu": "^1.2.2-nightly-dev",
-    "nanoid": "^4.0.0",
-    "next": "12.2.5",
-    "next-themes": "^0.2.0",
-    "nextjs-progressbar": "^0.0.14",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hot-toast": "^2.3.0",
-    "react-icons": "^4.4.0"
+    "react": "^18",
+    "react-dom": "^18",
+    "next": "14.2.5"
   },
   "devDependencies": {
-    "@types/node": "18.7.2",
-    "@types/react": "17.0.0",
-    "@types/react-dom": "^18.0.11",
-    "autoprefixer": "^10.4.8",
-    "eslint": "8.21.0",
-    "eslint-config-next": "12.2.5",
-    "postcss": "^8.4.16",
-    "tailwindcss": "^3.1.8",
-    "typescript": "4.7.4"
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.5"
   }
 }
