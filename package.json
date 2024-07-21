@@ -9,9 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@codemirror/language-data": "^6.5.1",
+    "@uiw/codemirror-themes": "^4.23.0",
+    "@uiw/react-codemirror": "^4.23.0",
+    "clsx": "^2.1.1",
+    "codemirror": "^6.0.1",
+    "framer-motion": "^11.3.8",
+    "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.5"
+    "react-icons": "^5.2.1"
   },
   "devDependencies": {
     "typescript": "^5",

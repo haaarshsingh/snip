@@ -3,31 +3,50 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  color-scheme: dark;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+::placeholder {
+  @apply !text-neutral-500 opacity-100;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply bg-neutral-900 text-neutral-50;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.cm-content {
+  @apply !p-0;
+}
+
+.cm-gutters {
+  @apply ml-1;
+}
+
+.cm-line {
+  @apply !p-1 text-xs mr-1;
+  font-family: var(--font-mono);
+}
+
+.cm-focused {
+  @apply !outline-none;
+}
+
+.cm-activeLineGutter {
+  @apply !bg-transparent;
+}
+
+.cm-activeLine {
+  @apply rounded;
+}
+
+.cm-gutterElement {
+  @apply !px-1 !pt-[3.5px] select-none;
+}
+
+.cm-gutterElement:first-of-type {
+  @apply hidden;
+}
+
+.cm-foldPlaceholder {
+  @apply !bg-neutral-700 !border-neutral-600;
 }
