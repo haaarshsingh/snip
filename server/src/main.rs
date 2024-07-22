@@ -1,3 +1,5 @@
+mod snip;
+
 use actix_web::{get, App, HttpResponse, HttpServer, Responder};
 
 #[get("/")]
