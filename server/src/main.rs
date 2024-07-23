@@ -1,6 +1,7 @@
 mod snip;
 
 use actix_web::{get, web, App, HttpResponse, HttpServer};
+use dotenv::dotenv;
 use mongodb::{bson::doc, Client, Collection};
 use snip::Snip;
 
@@ -21,6 +22,8 @@ async fn get_snip(client: web::Data<Client>, id: web::Path<String>) -> HttpRespo
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    dotenv().ok();
+
     let uri = std::env::var("MONGODB_URI").unwrap_or_else(|_| "mongodb://localhost:27017".into());
 
     let client = Client::with_uri_str(uri).await.expect("failed to connect");
