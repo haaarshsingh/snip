@@ -1,6 +1,6 @@
 mod snip;
 
-use actix_web::{get, web, App, HttpResponse, HttpServer};
+use actix_web::{get, post, web, App, HttpResponse, HttpServer};
 use dotenv::dotenv;
 use mongodb::{bson::doc, Client, Collection};
 use snip::Snip;
@@ -20,6 +20,17 @@ async fn get_snip(client: web::Data<Client>, id: web::Path<String>) -> HttpRespo
     }
 }
 
+#[post("/snips/create")]
+async fn create_snip(client: web::Data<Client>, new_snip: web::Json<Snip>) -> HttpResponse {
+    let collection: Collection<Snip> = client.database(DB_NAME).collection(COLL_NAME);
+    let result = collection.insert_one(new_snip.into_inner()).await;
+
+    match result {
+        Ok(_) => HttpResponse::Ok().body("snip added successfully"),
+        Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+    }
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
@@ -32,6 +43,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(client.clone()))
             .service(get_snip)
+            .service(create_snip)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
