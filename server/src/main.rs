@@ -57,7 +57,7 @@ async fn main() -> std::io::Result<()> {
             .service(get_snip)
             .service(create_snip)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("localhost", 4000))?
     .run()
     .await
 }
