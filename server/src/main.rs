@@ -57,8 +57,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(client.clone()))
-            .service(get_snip)
-            .service(create_snip)
+            .service(web::scope("/api").service(get_snip).service(create_snip))
     })
     .bind(("localhost", 4000))?
     .run()
