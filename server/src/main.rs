@@ -3,6 +3,7 @@ mod snip;
 use actix_web::{get, post, web, App, HttpResponse, HttpServer};
 use dotenv::dotenv;
 use mongodb::{bson::doc, Client, Collection};
+use nanoid::nanoid;
 use snip::SnipObject;
 
 const DB_NAME: &str = "snipdb";
@@ -13,6 +14,7 @@ async fn get_snip(client: web::Data<Client>, id: web::Path<String>) -> HttpRespo
     let snip_object_id = id.into_inner();
 
     let collection: Collection<SnipObject> = client.database(DB_NAME).collection(COLL_NAME);
+
     match collection.find_one(doc! { "id": &snip_object_id }).await {
         Ok(Some(user)) => HttpResponse::Ok().json(user),
         Ok(None) => {
@@ -23,8 +25,16 @@ async fn get_snip(client: web::Data<Client>, id: web::Path<String>) -> HttpRespo
 }
 
 #[post("/snips/create")]
-async fn create_snip(client: web::Data<Client>, new_snip: web::Json<SnipObject>) -> HttpResponse {
+async fn create_snip(
+    client: web::Data<Client>,
+    mut new_snip: web::Json<SnipObject>,
+) -> HttpResponse {
     let collection: Collection<SnipObject> = client.database(DB_NAME).collection(COLL_NAME);
+
+    if new_snip.id == None {
+        new_snip.id = Some(nanoid!(3));
+    }
+
     let result = collection.insert_one(new_snip.into_inner()).await;
 
     match result {
