@@ -138,7 +138,7 @@ export default () => {
             <TbHash />
           </button>
         </Tooltip>
-        <Tooltip title="Spaces" target="⌥ S">
+        <Tooltip title="Indentation" target="⌥ I">
           <button className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5">
             <TbIndentIncrease />
           </button>
