@@ -13,6 +13,9 @@ import data from "../utils/languages.json";
 export default () => {
   const [languagesOpen, setLanguagesOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [language, setLanguage] = useState("Autodetect");
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const languageButtonRef = useRef<HTMLButtonElement>(null);
 
   const [lineNumbers, setLineNumbers] = useState(true);
   const [wrap, setWrap] = useState(false);
@@ -23,13 +26,13 @@ export default () => {
       language.extension.toLowerCase().includes(query.toLowerCase()),
   );
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(event.target as Node) &&
+        languageButtonRef.current &&
+        !languageButtonRef.current.contains(event.target as Node)
       )
         setLanguagesOpen(false);
     };
@@ -49,10 +52,17 @@ export default () => {
         >
           <button
             className="group my-2 flex items-center rounded-md py-2 pl-2 pr-1.5 text-sm hover:bg-neutral-50/5 active:bg-neutral-50/10"
-            onClick={() => setLanguagesOpen((l) => !l)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setLanguagesOpen((l) => !l);
+            }}
           >
-            Autodetect
-            <TbChevronDown className="ml-1 text-xs" />
+            {language}
+            {languagesOpen ? (
+              <TbChevronDown className="ml-1 text-xs" />
+            ) : (
+              <TbChevronDown className="ml-1 text-xs" />
+            )}
           </button>
           {languagesOpen && (
             <div
@@ -82,7 +92,14 @@ export default () => {
                 {filteredLanguages.length > 0 ? (
                   filteredLanguages.map((language, index) => (
                     <li key={index}>
-                      <button className="flex w-full justify-start rounded p-2 hover:bg-neutral-50/5">
+                      <button
+                        className="flex w-full justify-start rounded p-2 hover:bg-neutral-50/5"
+                        onClick={() => {
+                          setLanguage(language.name);
+                          setQuery("");
+                          setLanguagesOpen(false);
+                        }}
+                      >
                         {language.name}
                       </button>
                     </li>
