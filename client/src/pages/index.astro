@@ -1,5 +1,7 @@
 ---
-
+import Editor from "../components/Editor";
+import Toolbar from "../components/Toolbar";
+import '../global.css'
 ---
 
 <html lang="en">
@@ -11,6 +13,7 @@
 		<title>Astro</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<Editor />
+		<Toolbar client:load />
 	</body>
 </html>
