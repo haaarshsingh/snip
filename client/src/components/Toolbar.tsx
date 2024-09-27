@@ -1,5 +1,15 @@
+"use client";
+
 import clsx from "clsx";
-import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+  type FC,
+  type ReactNode,
+} from "react";
 import {
   TbChevronDown,
   TbClockX,
@@ -10,15 +20,35 @@ import {
 } from "react-icons/tb";
 import data from "../utils/languages.json";
 
-export default () => {
+type Toolbar = {
+  language: string;
+  setLanguage: Dispatch<SetStateAction<string>>;
+  lineNumbers: boolean;
+  setLineNumbers: Dispatch<SetStateAction<boolean>>;
+  wrap: boolean;
+  setWrap: Dispatch<SetStateAction<boolean>>;
+};
+
+export default (({
+  language,
+  setLanguage,
+  lineNumbers,
+  setLineNumbers,
+  wrap,
+  setWrap,
+}) => {
   const [languagesOpen, setLanguagesOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [language, setLanguage] = useState("Autodetect");
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const languageDropdownRef = useRef<HTMLDivElement>(null);
   const languageButtonRef = useRef<HTMLButtonElement>(null);
 
-  const [lineNumbers, setLineNumbers] = useState(true);
-  const [wrap, setWrap] = useState(false);
+  const [expiryOpen, setExpiryOpen] = useState(false);
+  const expiryDropdownRef = useRef<HTMLDivElement>(null);
+  const expiryButtonRef = useRef<HTMLButtonElement>(null);
+
+  const [indentOpen, setIndentOpen] = useState(false);
+  const indentDropdownRef = useRef<HTMLDivElement>(null);
+  const indentButtonRef = useRef<HTMLButtonElement>(null);
 
   const filteredLanguages = data.languages.filter(
     (language) =>
@@ -29,12 +59,28 @@ export default () => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
+        languageDropdownRef.current &&
+        !languageDropdownRef.current.contains(event.target as Node) &&
         languageButtonRef.current &&
         !languageButtonRef.current.contains(event.target as Node)
       )
         setLanguagesOpen(false);
+
+      if (
+        expiryDropdownRef.current &&
+        !expiryDropdownRef.current.contains(event.target as Node) &&
+        expiryButtonRef.current &&
+        !expiryButtonRef.current.contains(event.target as Node)
+      )
+        setExpiryOpen(false);
+
+      if (
+        indentDropdownRef.current &&
+        !indentDropdownRef.current.contains(event.target as Node) &&
+        indentButtonRef.current &&
+        !indentButtonRef.current.contains(event.target as Node)
+      )
+        setIndentOpen(false);
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -56,6 +102,7 @@ export default () => {
               e.stopPropagation();
               setLanguagesOpen((l) => !l);
             }}
+            ref={languageButtonRef}
           >
             {language}
             {languagesOpen ? (
@@ -67,7 +114,7 @@ export default () => {
           {languagesOpen && (
             <div
               className="absolute left-1/2 w-56 -translate-x-1/2 -translate-y-[300px] rounded-md border border-neutral-800 bg-neutral-900 text-xs"
-              ref={dropdownRef}
+              ref={languageDropdownRef}
             >
               <div className="flex items-center justify-between px-3 py-2">
                 <div className="flex items-center">
@@ -153,7 +200,7 @@ export default () => {
       </button>
     </div>
   );
-};
+}) as FC<Toolbar>;
 
 const Tooltip: FC<{
   title: string;
@@ -166,7 +213,7 @@ const Tooltip: FC<{
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    let timer: number;
+    let timer: NodeJS.Timeout;
 
     if (isHovered) timer = setTimeout(() => setIsVisible(true), 1000);
     else setIsVisible(false);
