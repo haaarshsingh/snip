@@ -11,7 +11,11 @@ import {
   type ReactNode,
 } from "react";
 import {
+  TbCheck,
   TbChevronDown,
+  TbClock12,
+  TbClock24,
+  TbClockPlus,
   TbClockX,
   TbHash,
   TbIndentIncrease,
@@ -29,6 +33,18 @@ type Toolbar = {
   setWrap: Dispatch<SetStateAction<boolean>>;
 };
 
+export enum Expiry {
+  never = "Never",
+  afterRead = "After Read",
+  h12 = "12 Hours",
+  h24 = "24 Hours",
+}
+
+export enum Indentation {
+  spaces = "Spaces",
+  tabs = "Tabs",
+}
+
 export default (({
   language,
   setLanguage,
@@ -42,12 +58,16 @@ export default (({
   const languageDropdownRef = useRef<HTMLDivElement>(null);
   const languageButtonRef = useRef<HTMLButtonElement>(null);
 
+  const [expiry, setExpiry] = useState<Expiry>(Expiry.never);
   const [expiryOpen, setExpiryOpen] = useState(false);
-  const expiryDropdownRef = useRef<HTMLDivElement>(null);
+  const expiryDropdownRef = useRef<HTMLUListElement>(null);
   const expiryButtonRef = useRef<HTMLButtonElement>(null);
 
+  const [indentation, setIndentation] = useState<Indentation>(
+    Indentation.spaces,
+  );
   const [indentOpen, setIndentOpen] = useState(false);
-  const indentDropdownRef = useRef<HTMLDivElement>(null);
+  const indentDropdownRef = useRef<HTMLUListElement>(null);
   const indentButtonRef = useRef<HTMLButtonElement>(null);
 
   const filteredLanguages = data.languages.filter(
@@ -55,6 +75,19 @@ export default (({
       language.name.toLowerCase().includes(query.toLowerCase()) ||
       language.extension.toLowerCase().includes(query.toLowerCase()),
   );
+
+  const getExpiryIcon = () => {
+    switch (expiry) {
+      case Expiry.never:
+        return <TbClockPlus />;
+      case Expiry.afterRead:
+        return <TbClockX />;
+      case Expiry.h12:
+        return <TbClock12 />;
+      case Expiry.h24:
+        return <TbClock24 />;
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -98,10 +131,7 @@ export default (({
         >
           <button
             className="group my-2 flex items-center rounded-md py-2 pl-2 pr-1.5 text-sm hover:bg-neutral-50/5 active:bg-neutral-50/10"
-            onClick={(e) => {
-              e.stopPropagation();
-              setLanguagesOpen((l) => !l);
-            }}
+            onClick={() => setLanguagesOpen((l) => !l)}
             ref={languageButtonRef}
           >
             {language}
@@ -158,10 +188,35 @@ export default (({
             </div>
           )}
         </Tooltip>
-        <Tooltip title="Expiry" target="⌥ E">
-          <button className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5">
-            <TbClockX />
+        <Tooltip title="Expiry" target="⌥ E" condition={expiryOpen}>
+          <button
+            className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
+            ref={expiryButtonRef}
+            onClick={() => setExpiryOpen((e) => !e)}
+          >
+            {getExpiryIcon()}
           </button>
+          {expiryOpen && (
+            <ul
+              ref={expiryDropdownRef}
+              className="absolute left-1/2 w-32 -translate-x-1/2 -translate-y-[193px] rounded-md border border-neutral-800 bg-neutral-900 p-1 text-xs"
+            >
+              {Object.values(Expiry).map((item, index) => (
+                <li key={index}>
+                  <button
+                    className="flex w-full items-center justify-between rounded p-2 hover:bg-neutral-50/5"
+                    onClick={() => {
+                      setExpiry(item as Expiry);
+                      setExpiryOpen(false);
+                    }}
+                  >
+                    {item}
+                    {expiry === (item as Expiry) && <TbCheck />}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </Tooltip>
         <Tooltip title="Wrap" target="⌥ W">
           <button
@@ -185,10 +240,35 @@ export default (({
             <TbHash />
           </button>
         </Tooltip>
-        <Tooltip title="Indentation" target="⌥ I">
-          <button className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5">
+        <Tooltip title="Indentation" target="⌥ I" condition={indentOpen}>
+          <button
+            className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
+            onClick={() => setIndentOpen((i) => !i)}
+            ref={indentButtonRef}
+          >
             <TbIndentIncrease />
           </button>
+          {indentOpen && (
+            <ul
+              ref={indentDropdownRef}
+              className="absolute left-1/2 w-32 -translate-x-1/2 -translate-y-[129px] rounded-md border border-neutral-800 bg-neutral-900 p-1 text-xs"
+            >
+              {Object.values(Indentation).map((item, index) => (
+                <li key={index}>
+                  <button
+                    className="flex w-full items-center justify-between rounded p-2 hover:bg-neutral-50/5"
+                    onClick={() => {
+                      setIndentation(item as Indentation);
+                      setIndentOpen(false);
+                    }}
+                  >
+                    {item}
+                    {indentation === (item as Indentation) && <TbCheck />}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </Tooltip>
       </div>
       <div className="mx-1.5 h-12 w-px bg-neutral-800" />
