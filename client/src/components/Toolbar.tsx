@@ -26,7 +26,7 @@ import data from "../utils/languages.json";
 
 type Toolbar = {
   language: string;
-  setLanguage: Dispatch<SetStateAction<string>>;
+  setLanguage: (newLanguage: string) => void;
   lineNumbers: boolean;
   setLineNumbers: Dispatch<SetStateAction<boolean>>;
   wrap: boolean;

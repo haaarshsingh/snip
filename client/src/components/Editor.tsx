@@ -4,16 +4,52 @@ import theme from "@/utils/theme";
 import languages from "@/utils/languages";
 import Textarea from "@uiw/react-codemirror";
 import clsx from "clsx";
-import { FC, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import { TbPlus, TbX } from "react-icons/tb";
 import Toolbar from "./Toolbar";
 import { EditorView } from "codemirror";
 import { ReactSortable } from "react-sortablejs";
 
+type Tab = { id: number; title: string; content: string; language: string };
+
 export default () => {
-  const [language, setLanguage] = useState("Autodetect");
   const [lineNumbers, setLineNumbers] = useState(true);
   const [wrap, setWrap] = useState(false);
+
+  const [tabs, setTabs] = useState<Tab[]>([
+    { id: 1, title: "Untitled File", content: "", language: "Autodetect" },
+  ]);
+  const [selectedTab, setSelectedTab] = useState(1);
+
+  const updateTabContent = (id: number, content: string) => {
+    setTabs((tabs) =>
+      tabs.map((tab) => (tab.id === id ? { ...tab, content } : tab)),
+    );
+  };
+
+  const updateTabTitle = (id: number, newTitle: string) => {
+    setTabs((tabs) =>
+      tabs.map((tab) => (tab.id === id ? { ...tab, title: newTitle } : tab)),
+    );
+  };
+
+  const updateTabLanguage = (id: number, newLanguage: string) => {
+    setTabs((tabs) =>
+      tabs.map((tab) =>
+        tab.id === id ? { ...tab, language: newLanguage } : tab,
+      ),
+    );
+  };
+
+  const getSelectedTabContent = () => {
+    const currentTab = tabs.find((tab) => tab.id === selectedTab);
+    return currentTab ? currentTab.content : "";
+  };
+
+  const getSelectedTabLanguage = () => {
+    const currentTab = tabs.find((tab) => tab.id === selectedTab);
+    return currentTab ? currentTab.language : "Autodetect";
+  };
 
   return (
     <main>
@@ -21,9 +57,15 @@ export default () => {
         placeholder="New Snip..."
         className="w-full bg-transparent px-4 py-4 outline-none"
       />
-      <Tabs />
+      <Tabs
+        tabs={tabs}
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+        setTabs={setTabs}
+        updateTabTitle={updateTabTitle}
+      />
       <Textarea
-        value=""
+        value={getSelectedTabContent()}
         height="86vh"
         autoFocus
         basicSetup={{
@@ -33,18 +75,23 @@ export default () => {
           lineNumbers: lineNumbers,
         }}
         extensions={[
-          // @ts-expect-error
-          language === "Autodetect" ? [] : [languages[language]()],
+          getSelectedTabLanguage() === "Autodetect"
+            ? []
+            : // @ts-expect-error
+              [languages[getSelectedTabLanguage()]()],
           wrap ? EditorView.lineWrapping : [],
         ]}
         theme={theme}
+        onChange={(value) => updateTabContent(selectedTab, value)}
         data-gramm="false"
         data-gramm_editor="false"
         data-enable-grammarly="false"
       />
       <Toolbar
-        language={language}
-        setLanguage={setLanguage}
+        language={getSelectedTabLanguage()}
+        setLanguage={(newLanguage) =>
+          updateTabLanguage(selectedTab, newLanguage)
+        }
         lineNumbers={lineNumbers}
         setLineNumbers={setLineNumbers}
         wrap={wrap}
@@ -54,13 +101,24 @@ export default () => {
   );
 };
 
-const Tabs: FC = () => {
-  const [tabs, setTabs] = useState([{ id: 1, title: "Untitled File" }]);
-  const [selectedTab, setSelectedTab] = useState(1);
-
+const Tabs: FC<{
+  tabs: Tab[];
+  selectedTab: number;
+  setSelectedTab: (id: number) => void;
+  setTabs: Dispatch<SetStateAction<Tab[]>>;
+  updateTabTitle: (id: number, newTitle: string) => void;
+}> = ({ tabs, selectedTab, setSelectedTab, setTabs, updateTabTitle }) => {
   const addTab = () => {
     const newId = tabs.length ? tabs[tabs.length - 1].id + 1 : 1;
-    setTabs([...tabs, { id: newId, title: "Untitled File" }]);
+    setTabs([
+      ...tabs,
+      {
+        id: newId,
+        title: "Untitled File",
+        content: "",
+        language: "Autodetect",
+      },
+    ]);
     setSelectedTab(newId);
   };
 
@@ -68,12 +126,6 @@ const Tabs: FC = () => {
     if (tabs.length === 1) return;
     setTabs(tabs.filter((tab) => tab.id !== id));
     if (selectedTab === id && tabs.length > 1) setSelectedTab(tabs[0].id);
-  };
-
-  const updateTabTitle = (id: number, newTitle: string) => {
-    setTabs(
-      tabs.map((tab) => (tab.id === id ? { ...tab, title: newTitle } : tab)),
-    );
   };
 
   return (
