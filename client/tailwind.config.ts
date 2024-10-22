@@ -12,8 +12,11 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      width: { tabs: "calc(100vw - 52px)" },
+      flex: { tab: "1 1 calc(16.66% - 4px)" },
     },
   },
   plugins: [],
 };
+
 export default config;

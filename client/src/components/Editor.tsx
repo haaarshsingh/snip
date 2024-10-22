@@ -76,13 +76,13 @@ const Tabs: FC = () => {
   };
 
   return (
-    <div className="mb-2 flex items-center justify-between border-b border-t border-b-neutral-800 border-t-neutral-800 p-2">
-      <div className="w-tabs flex items-center gap-x-1 overflow-x-scroll">
+    <div className="relative mb-2 flex items-center justify-between border-b border-t border-b-neutral-800 border-t-neutral-800 p-2">
+      <div className="w-tabs flex flex-wrap items-center gap-1 overflow-x-scroll">
         {tabs.map((tab) => (
           <div
             key={tab.id}
             className={clsx(
-              "flex cursor-pointer items-center rounded-md px-2 py-1.5",
+              "flex-tab flex cursor-pointer flex-row items-center rounded-md px-2 py-1.5",
               selectedTab === tab.id
                 ? "bg-neutral-900"
                 : "hover:bg-neutral-900/75",
@@ -116,13 +116,13 @@ const Tabs: FC = () => {
             </button>
           </div>
         ))}
-        <button
-          onClick={addTab}
-          className="flex items-center justify-center rounded-md p-1.5 hover:bg-neutral-50/10"
-        >
-          <TbPlus />
-        </button>
       </div>
+      <button
+        onClick={addTab}
+        className="absolute right-0 mr-2 flex items-center justify-center rounded-md p-1.5 hover:bg-neutral-50/10"
+      >
+        <TbPlus />
+      </button>
     </div>
   );
 };
