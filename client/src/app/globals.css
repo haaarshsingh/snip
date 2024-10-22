@@ -7,6 +7,10 @@ body {
   font-family: var(--font-display);
 }
 
+input {
+  caret-color: #a855f7;
+}
+
 input::placeholder {
   @apply text-neutral-500;
   opacity: 1;
