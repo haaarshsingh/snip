@@ -31,6 +31,10 @@ export default () => {
     setTabs((tabs) =>
       tabs.map((tab) => (tab.id === id ? { ...tab, title: newTitle } : tab)),
     );
+
+    if (newTitle.indexOf(".") !== -1) {
+      newTitle.substring(newTitle.indexOf(".") + 1);
+    }
   };
 
   const updateTabLanguage = (id: number, newLanguage: string) => {
@@ -136,9 +140,6 @@ const Tabs: FC<{
         direction="horizontal"
         animation={150}
         className="flex w-tabs flex-wrap items-center gap-1 overflow-x-scroll"
-        onStart={(e) => {
-          console.log(e);
-        }}
       >
         {tabs.map((tab) => (
           <div
@@ -154,6 +155,7 @@ const Tabs: FC<{
             tabIndex={0}
             onClick={() => setSelectedTab(tab.id)}
             style={{ width: "100%" }}
+            draggable={false}
           >
             {selectedTab !== tab.id ? (
               <span className="ml-1 mr-2 w-full min-w-16 select-none truncate text-xs text-neutral-600">

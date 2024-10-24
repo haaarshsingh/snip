@@ -52,3 +52,7 @@ input::placeholder {
 .cm-foldPlaceholder {
   @apply !border-neutral-600 !bg-neutral-700;
 }
+
+.sortable-drag {
+  opacity: 0;
+}
