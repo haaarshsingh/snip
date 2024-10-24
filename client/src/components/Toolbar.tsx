@@ -23,6 +23,7 @@ import {
   TbTextWrap,
 } from "react-icons/tb";
 import data from "../utils/languages.json";
+import useHotkeys from "@/utils/hooks/useHotkeys";
 
 type Toolbar = {
   language: string;
@@ -53,6 +54,24 @@ export default (({
   wrap,
   setWrap,
 }) => {
+  useHotkeys(
+    [
+      { metaKey: true, altKey: true, key: "¬" },
+      { metaKey: true, altKey: true, key: "l" },
+    ],
+    (e) => {
+      e.preventDefault();
+      setLanguagesOpen((l) => !l);
+    },
+  );
+
+  useHotkeys([{ key: "Escape" }], (e) => {
+    e.preventDefault();
+    setLanguagesOpen(false);
+    setExpiryOpen(false);
+    setIndentOpen(false);
+  });
+
   const [languagesOpen, setLanguagesOpen] = useState(false);
   const [query, setQuery] = useState("");
   const languageDropdownRef = useRef<HTMLDivElement>(null);
@@ -125,7 +144,7 @@ export default (({
       <div className="flex items-center">
         <Tooltip
           title="Languages"
-          target="⌥ L"
+          target="⌘⌥ L"
           className="-mt-[80px]"
           condition={languagesOpen}
         >
@@ -188,7 +207,7 @@ export default (({
             </div>
           )}
         </Tooltip>
-        <Tooltip title="Expiry" target="⌥ E" condition={expiryOpen}>
+        <Tooltip title="Expiry" condition={expiryOpen}>
           <button
             className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
             ref={expiryButtonRef}
@@ -218,7 +237,7 @@ export default (({
             </ul>
           )}
         </Tooltip>
-        <Tooltip title="Wrap" target="⌥ W">
+        <Tooltip title="Line Wrap">
           <button
             className={clsx(
               "flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5",
@@ -229,7 +248,7 @@ export default (({
             <TbTextWrap />
           </button>
         </Tooltip>
-        <Tooltip title="Line Numbers" target="⌥ O">
+        <Tooltip title="Line Numbers">
           <button
             className={clsx(
               "flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5",
@@ -240,7 +259,7 @@ export default (({
             <TbHash />
           </button>
         </Tooltip>
-        <Tooltip title="Indentation" target="⌥ I" condition={indentOpen}>
+        <Tooltip title="Indentation" condition={indentOpen}>
           <button
             className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
             onClick={() => setIndentOpen((i) => !i)}
@@ -284,7 +303,7 @@ export default (({
 
 const Tooltip: FC<{
   title: string;
-  target: string;
+  target?: string;
   className?: string;
   children: ReactNode;
   condition?: boolean;
@@ -319,7 +338,7 @@ const Tooltip: FC<{
           )}
         >
           <span>{title}</span>
-          <span className="ml-2 text-neutral-500">{target}</span>
+          {target && <span className="ml-2 text-neutral-500">{target}</span>}
         </div>
       )}
     </div>
