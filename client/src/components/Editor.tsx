@@ -145,10 +145,10 @@ const Tabs: FC<{
           <div
             key={tab.id}
             className={clsx(
-              "flex flex-tab cursor-pointer flex-row items-center rounded-md px-2 py-1.5",
+              "flex flex-tab cursor-pointer flex-row items-center rounded-md border px-2 py-1.5",
               selectedTab === tab.id
-                ? "bg-neutral-900"
-                : "hover:bg-neutral-900/75",
+                ? "border-neutral-800 bg-neutral-900"
+                : "border-neutral-900 hover:bg-neutral-900/75",
             )}
             role="tab"
             aria-selected={selectedTab === tab.id}
