@@ -14,6 +14,7 @@ const config: Config = {
       },
       width: { tabs: "calc(100vw - 52px)" },
       flex: { tab: "1 1 calc(16.66% - 4px)" },
+      screens: { xs: "420px" },
     },
   },
   plugins: [],
