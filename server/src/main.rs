@@ -59,7 +59,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(client.clone()))
             .service(web::scope("/api").service(get_snip).service(create_snip))
     })
-    .bind(("localhost", 4000))?
+    .bind(("localhost", 3001))?
     .run()
     .await
 }
