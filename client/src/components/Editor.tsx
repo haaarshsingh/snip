@@ -1,3 +1,4 @@
+
 "use client";
 
 import theme from "@/utils/theme";
@@ -9,6 +10,7 @@ import { TbPlus, TbX } from "react-icons/tb";
 import Toolbar from "./Toolbar";
 import { EditorView } from "codemirror";
 import { ReactSortable } from "react-sortablejs";
+import useHotkeys from "@/utils/hooks/useHotkeys";
 
 type Tab = { id: number; title: string; content: string; language: string };
 
@@ -67,6 +69,7 @@ export default () => {
         setSelectedTab={setSelectedTab}
         setTabs={setTabs}
         updateTabTitle={updateTabTitle}
+        currentTab={tabs.find((tab) => tab.id === selectedTab)}
       />
       <Textarea
         value={getSelectedTabContent()}
@@ -111,7 +114,25 @@ const Tabs: FC<{
   setSelectedTab: (id: number) => void;
   setTabs: Dispatch<SetStateAction<Tab[]>>;
   updateTabTitle: (id: number, newTitle: string) => void;
-}> = ({ tabs, selectedTab, setSelectedTab, setTabs, updateTabTitle }) => {
+  currentTab: Tab | undefined;
+}> = ({
+  tabs,
+  selectedTab,
+  setSelectedTab,
+  setTabs,
+  updateTabTitle,
+  currentTab,
+}) => {
+  useHotkeys([{ ctrlKey: true, key: "T" }], (e) => {
+    e.preventDefault();
+    addTab();
+  });
+
+  useHotkeys([{ ctrlKey: true, key: "W" }], (e) => {
+    e.preventDefault();
+    if (currentTab) removeTab(currentTab?.id);
+  });
+
   const addTab = () => {
     const newId = tabs.length ? tabs[tabs.length - 1].id + 1 : 1;
     setTabs([
@@ -175,6 +196,7 @@ const Tabs: FC<{
                 removeTab(tab.id);
               }}
               className="rounded p-1 text-sm text-neutral-600 transition-colors hover:bg-neutral-50/5 hover:text-neutral-400"
+              title="Close Tab (^W)"
             >
               <TbX />
             </button>
@@ -184,6 +206,7 @@ const Tabs: FC<{
       <button
         onClick={addTab}
         className="absolute right-0 mr-2 flex items-center justify-center rounded-md p-1.5 hover:bg-neutral-50/10"
+        title="New Tab (^T)"
       >
         <TbPlus />
       </button>
