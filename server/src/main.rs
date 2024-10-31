@@ -12,18 +12,18 @@ use snip::SnipObject;
 const DB_NAME: &str = "snipdb";
 const COLL_NAME: &str = "snips";
 
-#[get("/snips/get/{id}")]
-async fn get_snip(client: web::Data<Client>, id: web::Path<String>) -> HttpResponse {
-    let snip_object_id = id.into_inner();
+#[get("/snips/get/{slug}")]
+async fn get_snip(client: web::Data<Client>, slug: web::Path<String>) -> HttpResponse {
+    let snip_object_slug = slug.into_inner();
 
     let collection: Collection<SnipObject> = client.database(DB_NAME).collection(COLL_NAME);
 
-    match collection.find_one(doc! { "id": &snip_object_id }).await {
+    match collection.find_one(doc! { "slug": &snip_object_slug }).await {
         Ok(Some(snip)) => HttpResponse::Ok().json(snip),
         Ok(None) => HttpResponse::NotFound()
             .json(json!({
                 "status": "error",
-                "error": format!("no snip found with id: {}", snip_object_id) 
+                "error": format!("no snip found with slug: {}", snip_object_slug) 
             })),
         Err(err) => HttpResponse::InternalServerError().json(json!({ "error": err.to_string() })),
     }
