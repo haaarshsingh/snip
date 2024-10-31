@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct SnipObject {
     pub snips: Vec<Snip>,
-    pub id: Option<String>,
+    pub slug: Option<String>,
     pub title: Option<String>,
 }
 
