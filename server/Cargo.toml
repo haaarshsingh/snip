@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 actix-web = "4"
+actix-cors = "0.6"
 dotenv = "0.15.0"
 mongodb = "3"
 nanoid = "0.4.0"

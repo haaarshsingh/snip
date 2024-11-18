@@ -28,7 +28,7 @@ type Snip = {
 type Tab = { id: number; title: string; content: string; language: string };
 
 export default (({ readOnly, title, snips, slug }) => {
-  const [snipTitle, setTitle] = useState(title);
+  const [snipTitle, setTitle] = useState(title || "");
 
   const [lineNumbers, setLineNumbers] = useState(true);
   const [wrap, setWrap] = useState(false);
