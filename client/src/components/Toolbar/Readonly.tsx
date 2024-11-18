@@ -105,7 +105,7 @@ export default (({ language, slug, content }) => {
             <TbFile />
           </button>
         </Tooltip>
-        <Tooltip title="Fork">
+        <Tooltip title="Fork" target="⌥F">
           <button
             className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
             onClick={() => router.push(`/fork/${slug}`)}
