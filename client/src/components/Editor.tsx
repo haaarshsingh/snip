@@ -11,15 +11,30 @@ import { EditorView } from "codemirror";
 import { ReactSortable } from "react-sortablejs";
 import useHotkeys from "@/utils/hooks/useHotkeys";
 
+export type EditorProps = {
+  title: string;
+  snips: Snip[];
+  readOnly: boolean;
+};
+
+type Snip = {
+  title: string;
+  content: string;
+  language: string;
+};
+
 type Tab = { id: number; title: string; content: string; language: string };
 
-export default () => {
+export default (({ readOnly, title, snips }) => {
   const [lineNumbers, setLineNumbers] = useState(true);
   const [wrap, setWrap] = useState(false);
 
-  const [tabs, setTabs] = useState<Tab[]>([
-    { id: 1, title: "Untitled File", content: "", language: "Autodetect" },
-  ]);
+  const starterTabs =
+    typeof snips === "undefined"
+      ? [{ id: 1, title: "Untitled File", content: "", language: "Autodetect" }]
+      : snips.map((snip, index) => ({ id: index + 1, ...snip }) as Tab);
+
+  const [tabs, setTabs] = useState<Tab[]>(starterTabs);
   const [selectedTab, setSelectedTab] = useState(1);
 
   const updateTabContent = (id: number, content: string) => {
@@ -57,10 +72,12 @@ export default () => {
   };
 
   return (
-    <main>
+    <main className={readOnly ? "readonly" : ""}>
       <input
         placeholder="New Snip..."
+        value={title}
         className="w-full bg-transparent px-4 py-4 outline-none"
+        readOnly={readOnly}
       />
       <Tabs
         tabs={tabs}
@@ -69,11 +86,13 @@ export default () => {
         setTabs={setTabs}
         updateTabTitle={updateTabTitle}
         currentTab={tabs.find((tab) => tab.id === selectedTab)}
+        readOnly={readOnly}
       />
       <Textarea
         value={getSelectedTabContent()}
         height="86vh"
         autoFocus
+        readOnly={readOnly}
         basicSetup={{
           autocompletion: false,
           searchKeymap: false,
@@ -105,7 +124,7 @@ export default () => {
       />
     </main>
   );
-};
+}) as FC<Partial<EditorProps>>;
 
 const Tabs: FC<{
   tabs: Tab[];
@@ -114,6 +133,7 @@ const Tabs: FC<{
   setTabs: Dispatch<SetStateAction<Tab[]>>;
   updateTabTitle: (id: number, newTitle: string) => void;
   currentTab: Tab | undefined;
+  readOnly?: boolean;
 }> = ({
   tabs,
   selectedTab,
@@ -121,6 +141,7 @@ const Tabs: FC<{
   setTabs,
   updateTabTitle,
   currentTab,
+  readOnly,
 }) => {
   useHotkeys([{ ctrlKey: true, key: "T" }], (e) => {
     e.preventDefault();
@@ -168,7 +189,10 @@ const Tabs: FC<{
         setList={setTabs}
         direction="horizontal"
         animation={150}
-        className="flex w-tabs flex-wrap items-center gap-1"
+        className={clsx(
+          "flex flex-wrap items-center gap-1",
+          readOnly ? "w-full" : "w-tabs",
+        )}
       >
         {tabs.map((tab) => (
           <div
@@ -186,8 +210,13 @@ const Tabs: FC<{
             style={{ width: "100%" }}
             draggable={false}
           >
-            {selectedTab !== tab.id ? (
-              <span className="ml-1 mr-2 w-full min-w-16 select-none truncate text-xs text-neutral-600">
+            {selectedTab !== tab.id || readOnly ? (
+              <span
+                className={clsx(
+                  "ml-1 mr-2 w-full min-w-16 select-none truncate text-xs",
+                  selectedTab !== tab.id && "text-neutral-600",
+                )}
+              >
                 {tab.title === "" ? "Untitled File" : tab.title}
               </span>
             ) : (
@@ -198,26 +227,30 @@ const Tabs: FC<{
                 className="ml-1 mr-2 w-full min-w-16 bg-transparent text-xs outline-none"
               />
             )}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                removeTab(tab.id);
-              }}
-              className="rounded p-1 text-sm text-neutral-600 transition-colors hover:bg-neutral-50/5 hover:text-neutral-400"
-              title="Close Tab (^W)"
-            >
-              <TbX />
-            </button>
+            {!readOnly && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeTab(tab.id);
+                }}
+                className="rounded p-1 text-sm text-neutral-600 transition-colors hover:bg-neutral-50/5 hover:text-neutral-400"
+                title="Close Tab (^W)"
+              >
+                <TbX />
+              </button>
+            )}
           </div>
         ))}
       </ReactSortable>
-      <button
-        onClick={addTab}
-        className="absolute right-0 mr-2 flex items-center justify-center rounded-md p-1.5 hover:bg-neutral-50/10"
-        title="New Tab (^T)"
-      >
-        <TbPlus />
-      </button>
+      {!readOnly && (
+        <button
+          onClick={addTab}
+          className="absolute right-0 mr-2 flex items-center justify-center rounded-md p-1.5 hover:bg-neutral-50/10"
+          title="New Tab (^T)"
+        >
+          <TbPlus />
+        </button>
+      )}
     </div>
   );
 };

@@ -56,3 +56,7 @@ input::placeholder {
 .sortable-drag {
   opacity: 0;
 }
+
+.readonly .cm-cursorLayer {
+  display: none !important;
+}
