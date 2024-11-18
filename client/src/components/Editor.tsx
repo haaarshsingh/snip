@@ -11,6 +11,7 @@ import { EditorView } from "codemirror";
 import { ReactSortable } from "react-sortablejs";
 import useHotkeys from "@/utils/hooks/useHotkeys";
 import Readonly from "./Toolbar/Readonly";
+import { useRouter } from "next/navigation";
 
 export type EditorProps = {
   title: string;
@@ -40,6 +41,8 @@ export default (({ readOnly, title, snips, slug }) => {
 
   const [tabs, setTabs] = useState<Tab[]>(starterTabs);
   const [selectedTab, setSelectedTab] = useState(1);
+
+  const router = useRouter();
 
   const updateTabContent = (id: number, content: string) => {
     setTabs((tabs) =>
@@ -76,8 +79,8 @@ export default (({ readOnly, title, snips, slug }) => {
   };
 
   const createSnip = () => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
       title: snipTitle,
@@ -90,13 +93,13 @@ export default (({ readOnly, title, snips, slug }) => {
 
     const requestOptions = {
       method: "POST",
-      headers: myHeaders,
+      headers: headers,
       body: raw,
     };
 
     fetch("https://api.snip.tf/snips/create", requestOptions)
       .then((response) => response.json())
-      .then((result) => console.log(result))
+      .then((result) => router.push(`/${result.data.slug}`))
       .catch((error) => console.error(error));
   };
 
