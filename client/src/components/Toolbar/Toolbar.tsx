@@ -210,7 +210,7 @@ export default (({
                     </li>
                   ))
                 ) : (
-                  <li>No results found</li>
+                  <li className="mt-2 w-full text-center">No results found</li>
                 )}
               </ul>
             </div>

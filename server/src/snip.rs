@@ -10,7 +10,7 @@ pub struct SnipObject {
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct Snip {
     pub content: String,
-    pub id: String,
+    pub id: Option<String>,
     pub title: Option<String>,
     pub language: Option<String>,
 }

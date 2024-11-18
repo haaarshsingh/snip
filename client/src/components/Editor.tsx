@@ -21,12 +21,19 @@ export type EditorProps = {
 };
 
 type Snip = {
+  id: string;
   title: string;
   content: string;
   language: string;
 };
 
-type Tab = { id: number; title: string; content: string; language: string };
+type Tab = {
+  id: number;
+  title: string;
+  content: string;
+  language: string;
+  slug?: string;
+};
 
 export default (({ readOnly, title, snips, slug }) => {
   const [snipTitle, setTitle] = useState(title || "");
@@ -38,7 +45,16 @@ export default (({ readOnly, title, snips, slug }) => {
   const starterTabs =
     typeof snips === "undefined"
       ? [{ id: 1, title: "Untitled File", content: "", language: "Autodetect" }]
-      : snips.map((snip, index) => ({ id: index + 1, ...snip }) as Tab);
+      : snips.map(
+          (snip, index) =>
+            ({
+              id: index + 1,
+              title: snip.title,
+              content: snip.content,
+              language: snip.language,
+              slug: snip.id,
+            }) as Tab,
+        );
 
   const [tabs, setTabs] = useState<Tab[]>(starterTabs);
   const [selectedTab, setSelectedTab] = useState(1);
@@ -77,6 +93,11 @@ export default (({ readOnly, title, snips, slug }) => {
   const getSelectedTabLanguage = () => {
     const currentTab = tabs.find((tab) => tab.id === selectedTab);
     return currentTab ? currentTab.language : "Autodetect";
+  };
+
+  const getSelectedTabSlug = () => {
+    const currentTab = tabs.find((tab) => tab.id === selectedTab);
+    return currentTab ? currentTab.slug : "";
   };
 
   const createSnip = async () => {
@@ -158,6 +179,7 @@ export default (({ readOnly, title, snips, slug }) => {
         <Readonly
           language={getSelectedTabLanguage()}
           slug={slug!}
+          selectedTabSlug={getSelectedTabSlug()}
           content={getSelectedTabContent()}
         />
       ) : (

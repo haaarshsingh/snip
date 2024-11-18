@@ -39,8 +39,10 @@ async fn create_snip(
     }
 
     for snip in &mut new_snip.snips {
-        snip.id = nanoid!(10);
-    }
+        if snip.id.is_none() {
+            snip.id = Some(nanoid!(10));
+        }
+    }    
 
     let result = collection.insert_one(new_snip.clone()).await;
 
