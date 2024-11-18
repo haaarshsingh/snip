@@ -20,7 +20,7 @@ export type EditorProps = {
   slug: string;
 };
 
-type Snip = {
+export type Snip = {
   id: string;
   title: string;
   content: string;
