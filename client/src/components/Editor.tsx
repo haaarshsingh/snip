@@ -16,6 +16,7 @@ export type EditorProps = {
   title: string;
   snips: Snip[];
   readOnly: boolean;
+  slug: string;
 };
 
 type Snip = {
@@ -26,7 +27,7 @@ type Snip = {
 
 type Tab = { id: number; title: string; content: string; language: string };
 
-export default (({ readOnly, title, snips }) => {
+export default (({ readOnly, title, snips, slug }) => {
   const [lineNumbers, setLineNumbers] = useState(true);
   const [wrap, setWrap] = useState(false);
 
@@ -114,7 +115,11 @@ export default (({ readOnly, title, snips }) => {
         data-enable-grammarly="false"
       />
       {readOnly ? (
-        <Readonly language={getSelectedTabLanguage()} />
+        <Readonly
+          language={getSelectedTabLanguage()}
+          slug={slug!}
+          content={getSelectedTabContent()}
+        />
       ) : (
         <Toolbar
           language={getSelectedTabLanguage()}

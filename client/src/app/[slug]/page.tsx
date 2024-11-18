@@ -3,6 +3,7 @@ import Editor, { EditorProps } from "@/components/Editor";
 const example: EditorProps = {
   title: "Example",
   readOnly: true,
+  slug: "woqejqwoe",
   snips: [
     {
       title: "example.js",

@@ -30,29 +30,34 @@ import {
 } from "react-icons/tb";
 import data from "../../utils/languages.json";
 import useHotkeys from "@/utils/hooks/useHotkeys";
+import { useRouter } from "next/navigation";
 
 type Toolbar = {
   language: string;
-  setLanguage: (newLanguage: string) => void;
-  lineNumbers: boolean;
-  setLineNumbers: Dispatch<SetStateAction<boolean>>;
-  wrap: boolean;
-  setWrap: Dispatch<SetStateAction<boolean>>;
+  slug: string;
+  content: string;
 };
 
-export enum Expiry {
-  never = "Never",
-  afterRead = "After Read",
-  h12 = "12 Hours",
-  h24 = "24 Hours",
-}
+export default (({ language, slug, content }) => {
+  const router = useRouter();
 
-export enum Indentation {
-  spaces = "Spaces",
-  tabs = "Tabs",
-}
+  const [copied, setCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
-export default (({ language }) => {
+  useEffect(() => {
+    if (copied) {
+      const timer = setTimeout(() => setCopied(false), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [copied]);
+
+  useEffect(() => {
+    if (linkCopied) {
+      const timer = setTimeout(() => setLinkCopied(false), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [linkCopied]);
+
   useHotkeys([{ metaKey: true, key: "s" }], (e) => {
     e.preventDefault();
   });
@@ -66,13 +71,25 @@ export default (({ language }) => {
         </div>
         <div className="mb-1.5 h-px w-full bg-neutral-800 xs:mb-0 xs:ml-1.5 xs:mr-2 xs:h-12 xs:w-px" />
         <Tooltip title="Copy Link">
-          <button className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5">
-            <TbLink />
+          <button
+            className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
+            onClick={() => {
+              setLinkCopied((c) => !c);
+              navigator.clipboard.writeText(`https://snip.tf/${slug}`);
+            }}
+          >
+            {linkCopied ? <TbCheck /> : <TbLink />}
           </button>
         </Tooltip>
         <Tooltip title="Copy Content">
-          <button className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5">
-            <TbCopy />
+          <button
+            className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
+            onClick={() => {
+              setCopied((c) => !c);
+              navigator.clipboard.writeText(content);
+            }}
+          >
+            {copied ? <TbCheck /> : <TbCopy />}
           </button>
         </Tooltip>
         <Tooltip title="Download">
@@ -81,12 +98,18 @@ export default (({ language }) => {
           </button>
         </Tooltip>
         <Tooltip title="View Raw">
-          <button className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5">
+          <button
+            className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
+            onClick={() => router.push(`/raw/${slug}`)}
+          >
             <TbFile />
           </button>
         </Tooltip>
         <Tooltip title="Fork">
-          <button className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5">
+          <button
+            className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
+            onClick={() => router.push(`/fork/${slug}`)}
+          >
             <TbGitFork />
           </button>
         </Tooltip>
