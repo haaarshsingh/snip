@@ -12,19 +12,16 @@ use snip::SnipObject;
 const DB_NAME: &str = "snipdb";
 const COLL_NAME: &str = "snips";
 
-#[get("/snips/get/{slug}")]
-async fn get_snip(client: web::Data<Client>, slug: web::Path<String>) -> HttpResponse {
-    let snip_object_slug = slug.into_inner();
+#[get("/snips/get/{id}")]
+async fn get_snip(client: web::Data<Client>, id: web::Path<String>) -> HttpResponse {
+    let snip_object_id = id.into_inner();
 
     let collection: Collection<SnipObject> = client.database(DB_NAME).collection(COLL_NAME);
 
-    match collection.find_one(doc! { "slug": &snip_object_slug }).await {
+    match collection.find_one(doc! { "id": &snip_object_id }).await {
         Ok(Some(snip)) => HttpResponse::Ok().json(snip),
         Ok(None) => HttpResponse::NotFound()
-            .json(json!({
-                "status": "error",
-                "error": format!("no snip found with slug: {}", snip_object_slug) 
-            })),
+            .json(json!({ "error": format!("no snip found with id: {}", snip_object_id) })),
         Err(err) => HttpResponse::InternalServerError().json(json!({ "error": err.to_string() })),
     }
 }
@@ -36,27 +33,15 @@ async fn create_snip(
 ) -> HttpResponse {
     let collection: Collection<SnipObject> = client.database(DB_NAME).collection(COLL_NAME);
 
-    if new_snip.slug.is_none() {
-        new_snip.slug = Some(nanoid!(3));
+    if new_snip.id.is_none() {
+        new_snip.id = Some(nanoid!(3));
     }
-    
-    let result = collection.insert_one(new_snip.clone()).await;
-    
+
+    let result = collection.insert_one(new_snip.into_inner()).await;
+
     match result {
-        Ok(_) => HttpResponse::Ok().json(json!({
-            "status": "success",
-            "data": {
-                "message": "Snip created successfully",
-                "slug": new_snip.slug 
-            }
-        })),
-        Err(err) => HttpResponse::InternalServerError().json(json!({
-            "status": "error",
-            "error": {
-                "message": "Failed to create snip",
-                "details": err.to_string()
-            }
-        })),
+        Ok(_) => HttpResponse::Ok().json(json!({ "message": "snip added successfully" })),
+        Err(err) => HttpResponse::InternalServerError().json(json!({ "error": err.to_string() })),
     }
 }
 
