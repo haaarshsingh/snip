@@ -1,4 +1,3 @@
-
 "use client";
 
 import theme from "@/utils/theme";
@@ -149,8 +148,17 @@ const Tabs: FC<{
 
   const removeTab = (id: number) => {
     if (tabs.length === 1) return;
-    setTabs(tabs.filter((tab) => tab.id !== id));
-    if (selectedTab === id && tabs.length > 1) setSelectedTab(tabs[0].id);
+
+    const tabIndex = tabs.findIndex((tab) => tab.id === id);
+
+    setTabs((prevTabs) => {
+      const updatedTabs = prevTabs.filter((tab) => tab.id !== id);
+
+      if (tabIndex === 0) setSelectedTab(updatedTabs[0]?.id || 0);
+      else setSelectedTab(updatedTabs[tabIndex - 1]?.id || updatedTabs[0]?.id);
+
+      return updatedTabs;
+    });
   };
 
   return (
