@@ -69,7 +69,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(client.clone()))
-            .service(web::scope("/api").service(get_snip).service(create_snip))
+            .service(get_snip).service(create_snip)
     })
     .bind(("0.0.0.0", 8080))?
     .run()
