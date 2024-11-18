@@ -13,7 +13,7 @@ import useHotkeys from "@/utils/hooks/useHotkeys";
 import Readonly from "./Toolbar/Readonly";
 import { useRouter } from "next/navigation";
 
-export type EditorProps = {
+type EditorProps = {
   title: string;
   snips: Snip[];
   readOnly: boolean;
