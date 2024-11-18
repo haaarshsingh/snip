@@ -168,7 +168,7 @@ const Tabs: FC<{
         setList={setTabs}
         direction="horizontal"
         animation={150}
-        className="flex w-tabs flex-wrap items-center gap-1 overflow-x-scroll"
+        className="flex w-tabs flex-wrap items-center gap-1"
       >
         {tabs.map((tab) => (
           <div
