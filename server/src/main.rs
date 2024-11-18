@@ -2,7 +2,8 @@ mod snip;
 
 use std::env;
 
-use actix_web::{get, post, web, App, HttpResponse, HttpServer};
+use actix_cors::Cors;
+use actix_web::{get, middleware, post, web, App, HttpResponse, HttpServer};
 use dotenv::dotenv;
 use mongodb::{bson::doc, Client, Collection};
 use nanoid::nanoid;
@@ -64,12 +65,23 @@ async fn main() -> std::io::Result<()> {
     let uri = env::var("MONGO_DB_URI")
         .expect("MONGO_DB_URI environment variable not set! Check your .env file.");
 
-    let client = Client::with_uri_str(uri).await.expect("failed to connect");
+    let client = Client::with_uri_str(&uri).await.expect("failed to connect");
 
     HttpServer::new(move || {
+        let cors = Cors::default()
+            .allowed_origin("http://localhost:3000")
+            .allowed_origin("https://snip.tf")
+            .allowed_methods(vec!["GET", "POST"]) 
+            .allowed_headers(vec![actix_web::http::header::CONTENT_TYPE])
+            .supports_credentials()
+            .max_age(3600);
+
         App::new()
             .app_data(web::Data::new(client.clone()))
-            .service(get_snip).service(create_snip)
+            .wrap(cors)
+            .wrap(middleware::Logger::default())
+            .service(get_snip)
+            .service(create_snip)
     })
     .bind(("0.0.0.0", 8080))?
     .run()
