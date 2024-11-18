@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-neutral-950 text-neutral-50;
+  font-family: var(--font-display);
+}
+
+input {
+  caret-color: #a855f7;
+}
+
+input::placeholder {
+  @apply text-neutral-500;
+  opacity: 1;
+}
+
+.cm-content {
+  @apply !p-0;
+}
+
+.cm-gutters {
+  @apply ml-1;
+}
+
+.cm-line {
+  @apply mr-1 !p-1 text-xs;
+  font-family: var(--font-mono);
+}
+
+.cm-focused {
+  @apply !outline-none;
+}
+
+.cm-activeLineGutter {
+  @apply !bg-transparent;
+}
+
+.cm-activeLine {
+  @apply rounded;
+}
+
+.cm-gutterElement {
+  @apply select-none !px-1 !pt-[3.5px];
+}
+
+.cm-gutterElement:first-of-type {
+  @apply hidden;
+}
+
+.cm-foldPlaceholder {
+  @apply !border-neutral-600 !bg-neutral-700;
+}
+
+.sortable-drag {
+  @apply opacity-0;
+}
+
+.readonly .cm-cursorLayer {
+  @apply !hidden;
+}
+
+.readonly .cm-activeLine {
+  @apply bg-transparent;
+}
