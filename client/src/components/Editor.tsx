@@ -6,10 +6,11 @@ import Textarea from "@uiw/react-codemirror";
 import clsx from "clsx";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import { TbPlus, TbX } from "react-icons/tb";
-import Toolbar from "./Toolbar";
+import Toolbar from "./Toolbar/Toolbar";
 import { EditorView } from "codemirror";
 import { ReactSortable } from "react-sortablejs";
 import useHotkeys from "@/utils/hooks/useHotkeys";
+import Readonly from "./Toolbar/Readonly";
 
 export type EditorProps = {
   title: string;
@@ -112,16 +113,20 @@ export default (({ readOnly, title, snips }) => {
         data-gramm_editor="false"
         data-enable-grammarly="false"
       />
-      <Toolbar
-        language={getSelectedTabLanguage()}
-        setLanguage={(newLanguage) =>
-          updateTabLanguage(selectedTab, newLanguage)
-        }
-        lineNumbers={lineNumbers}
-        setLineNumbers={setLineNumbers}
-        wrap={wrap}
-        setWrap={setWrap}
-      />
+      {readOnly ? (
+        <Readonly language={getSelectedTabLanguage()} />
+      ) : (
+        <Toolbar
+          language={getSelectedTabLanguage()}
+          setLanguage={(newLanguage) =>
+            updateTabLanguage(selectedTab, newLanguage)
+          }
+          lineNumbers={lineNumbers}
+          setLineNumbers={setLineNumbers}
+          wrap={wrap}
+          setWrap={setWrap}
+        />
+      )}
     </main>
   );
 }) as FC<Partial<EditorProps>>;

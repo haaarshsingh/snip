@@ -22,7 +22,7 @@ import {
   TbSearch,
   TbTextWrap,
 } from "react-icons/tb";
-import data from "../utils/languages.json";
+import data from "../../utils/languages.json";
 import useHotkeys from "@/utils/hooks/useHotkeys";
 
 type Toolbar = {
@@ -144,7 +144,7 @@ export default (({
   }, []);
 
   return (
-    <div className="xs:flex-row fixed bottom-0 left-1/2 mb-10 flex -translate-x-1/2 flex-col items-center rounded-lg border border-neutral-800 bg-neutral-900 px-2 shadow-2xl">
+    <div className="fixed bottom-0 left-1/2 mb-10 flex -translate-x-1/2 flex-col items-center rounded-lg border border-neutral-800 bg-neutral-900 px-2 shadow-2xl xs:flex-row">
       <div className="flex items-center">
         <Tooltip
           title="Languages"
@@ -294,7 +294,7 @@ export default (({
           )}
         </Tooltip>
       </div>
-      <div className="xs:h-12 xs:w-px xs:ml-1.5 xs:mr-2 xs:mb-0 mb-1.5 h-px w-full bg-neutral-800" />
+      <div className="mb-1.5 h-px w-full bg-neutral-800 xs:mb-0 xs:ml-1.5 xs:mr-2 xs:h-12 xs:w-px" />
       <button className="group my-2 flex items-center whitespace-nowrap rounded-md bg-sky-600 px-2.5 py-2 text-sm transition-colors hover:bg-sky-700 active:bg-sky-800">
         Create Snip
         <div className="ml-2 flex items-center tracking-tighter text-sky-400">
