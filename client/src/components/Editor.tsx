@@ -28,6 +28,8 @@ type Snip = {
 type Tab = { id: number; title: string; content: string; language: string };
 
 export default (({ readOnly, title, snips, slug }) => {
+  const [snipTitle, setTitle] = useState(title);
+
   const [lineNumbers, setLineNumbers] = useState(true);
   const [wrap, setWrap] = useState(false);
 
@@ -73,13 +75,39 @@ export default (({ readOnly, title, snips, slug }) => {
     return currentTab ? currentTab.language : "Autodetect";
   };
 
+  const createSnip = () => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      title: snipTitle,
+      snips: tabs.map((tab) => ({
+        title: tab.title,
+        content: tab.content,
+        language: tab.language,
+      })),
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+    };
+
+    fetch("https://api.snip.tf/snips/create", requestOptions)
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
+  };
+
   return (
     <main className={readOnly ? "readonly" : ""}>
       <input
         placeholder="New Snip..."
-        value={title}
+        value={snipTitle}
         className="w-full bg-transparent px-4 py-4 outline-none"
         readOnly={readOnly}
+        onChange={(e) => setTitle(e.target.value)}
       />
       <Tabs
         tabs={tabs}
@@ -122,6 +150,7 @@ export default (({ readOnly, title, snips, slug }) => {
         />
       ) : (
         <Toolbar
+          createSnip={createSnip}
           language={getSelectedTabLanguage()}
           setLanguage={(newLanguage) =>
             updateTabLanguage(selectedTab, newLanguage)
