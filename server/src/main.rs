@@ -38,6 +38,10 @@ async fn create_snip(
         new_snip.slug = Some(nanoid!(3));
     }
 
+    for snip in &mut new_snip.snips {
+        snip.id = nanoid!(10);
+    }
+
     let result = collection.insert_one(new_snip.clone()).await;
 
     match result {

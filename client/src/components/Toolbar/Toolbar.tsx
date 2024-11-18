@@ -27,6 +27,7 @@ import useHotkeys from "@/utils/hooks/useHotkeys";
 
 type Toolbar = {
   createSnip: () => void;
+  disabled: boolean;
   language: string;
   setLanguage: (newLanguage: string) => void;
   lineNumbers: boolean;
@@ -49,6 +50,7 @@ export enum Indentation {
 
 export default (({
   createSnip,
+  disabled,
   language,
   setLanguage,
   lineNumbers,
@@ -76,6 +78,7 @@ export default (({
 
   useHotkeys([{ metaKey: true, key: "s" }], (e) => {
     e.preventDefault();
+    createSnip();
   });
 
   const [languagesOpen, setLanguagesOpen] = useState(false);
@@ -298,8 +301,9 @@ export default (({
       </div>
       <div className="mb-1.5 h-px w-full bg-neutral-800 xs:mb-0 xs:ml-1.5 xs:mr-2 xs:h-12 xs:w-px" />
       <button
-        className="group my-2 flex items-center whitespace-nowrap rounded-md bg-sky-600 px-2.5 py-2 text-sm transition-colors hover:bg-sky-700 active:bg-sky-800"
+        className="group my-2 flex items-center whitespace-nowrap rounded-md bg-sky-600 px-2.5 py-2 text-sm transition-colors hover:bg-sky-700 active:bg-sky-800 disabled:cursor-not-allowed disabled:text-sky-400 disabled:hover:bg-sky-600 disabled:active:bg-sky-600"
         onClick={createSnip}
+        disabled={disabled}
       >
         Create Snip
         <div className="ml-2 flex items-center tracking-tighter text-sky-400">

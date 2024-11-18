@@ -31,6 +31,7 @@ import {
 import data from "../../utils/languages.json";
 import useHotkeys from "@/utils/hooks/useHotkeys";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Toolbar = {
   language: string;
@@ -65,8 +66,8 @@ export default (({ language, slug, content }) => {
   return (
     <div className="fixed bottom-0 left-1/2 mb-10 flex -translate-x-1/2 flex-col items-center rounded-lg border border-neutral-800 bg-neutral-900 px-2 shadow-2xl xs:flex-row">
       <div className="flex items-center">
-        <div className="group my-2 flex cursor-default items-center rounded-md py-2 pl-2 pr-1.5 text-sm">
-          <TbCode className="mr-1 mt-px text-xs" />
+        <div className="group my-2 flex cursor-default items-center rounded-md py-2 pl-2 pr-1.5">
+          <TbCode className="mr-1.5 mt-px text-xs" />
           {language}
         </div>
         <div className="mb-1.5 h-px w-full bg-neutral-800 xs:mb-0 xs:ml-1.5 xs:mr-2 xs:h-12 xs:w-px" />
@@ -115,12 +116,15 @@ export default (({ language, slug, content }) => {
         </Tooltip>
       </div>
       <div className="mb-1.5 h-px w-full bg-neutral-800 xs:mb-0 xs:ml-1.5 xs:mr-2 xs:h-12 xs:w-px" />
-      <button className="group my-2 flex items-center whitespace-nowrap rounded-md bg-sky-600 px-2.5 py-2 text-sm transition-colors hover:bg-sky-700 active:bg-sky-800">
+      <Link
+        className="group my-2 flex items-center whitespace-nowrap rounded-md bg-sky-600 px-2.5 py-2 text-sm transition-colors hover:bg-sky-700 active:bg-sky-800"
+        href="/"
+      >
         New Snip
         <div className="ml-2 flex items-center tracking-tighter text-sky-400">
           ⌘⌥N
         </div>
-      </button>
+      </Link>
     </div>
   );
 }) as FC<Toolbar>;

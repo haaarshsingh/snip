@@ -30,9 +30,10 @@ type Tab = { id: number; title: string; content: string; language: string };
 
 export default (({ readOnly, title, snips, slug }) => {
   const [snipTitle, setTitle] = useState(title || "");
-
   const [lineNumbers, setLineNumbers] = useState(true);
   const [wrap, setWrap] = useState(false);
+
+  const [disabled, setDisabled] = useState(false);
 
   const starterTabs =
     typeof snips === "undefined"
@@ -78,7 +79,8 @@ export default (({ readOnly, title, snips, slug }) => {
     return currentTab ? currentTab.language : "Autodetect";
   };
 
-  const createSnip = () => {
+  const createSnip = async () => {
+    setDisabled(true);
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
@@ -97,10 +99,17 @@ export default (({ readOnly, title, snips, slug }) => {
       body: raw,
     };
 
-    fetch("https://api.snip.tf/snips/create", requestOptions)
-      .then((response) => response.json())
-      .then((result) => router.push(`/${result.data.slug}`))
-      .catch((error) => console.error(error));
+    try {
+      const response = await fetch(
+        "https://api.snip.tf/snips/create",
+        requestOptions,
+      );
+      const result = await response.json();
+      router.push(`/${result.data.slug}`);
+    } catch (error) {
+      console.error(error);
+      setDisabled(false);
+    }
   };
 
   return (
@@ -154,6 +163,7 @@ export default (({ readOnly, title, snips, slug }) => {
       ) : (
         <Toolbar
           createSnip={createSnip}
+          disabled={disabled}
           language={getSelectedTabLanguage()}
           setLanguage={(newLanguage) =>
             updateTabLanguage(selectedTab, newLanguage)
@@ -240,7 +250,7 @@ const Tabs: FC<{
           <div
             key={tab.id}
             className={clsx(
-              "flex flex-tab cursor-pointer flex-row items-center rounded-md border px-2 py-1.5",
+              "flex h-9 flex-tab cursor-pointer flex-row items-center rounded-md border px-2",
               selectedTab === tab.id
                 ? "border-neutral-800 bg-neutral-900"
                 : "border-neutral-900 hover:bg-neutral-900/75",
