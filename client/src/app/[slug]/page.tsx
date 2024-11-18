@@ -11,7 +11,7 @@ const example: EditorProps = {
     },
     {
       title: "example.ts",
-      content: `console.log("Hello, World!");`,
+      content: `console.log("Hello, World!");\nconsole.log("Error");`,
       language: "TypeScript",
     },
   ],
