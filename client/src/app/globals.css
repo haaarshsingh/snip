@@ -64,3 +64,7 @@ input::placeholder {
 .readonly .cm-activeLine {
   @apply bg-transparent;
 }
+
+li[data-sonner-toast] {
+  @apply select-none;
+}

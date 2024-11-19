@@ -14,6 +14,7 @@ import {
 import useHotkeys from "@/utils/hooks/useHotkeys";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
 
 type Toolbar = {
   _id: string;
@@ -50,7 +51,7 @@ export default (({ language, _id, content, selectedTabSlug, downloadZip }) => {
   return (
     <div className="fixed bottom-0 left-1/2 mb-10 flex -translate-x-1/2 flex-col items-center rounded-lg border border-neutral-800 bg-neutral-900 px-2 shadow-2xl xs:flex-row">
       <div className="flex items-center">
-        <div className="group my-2 flex cursor-default items-center rounded-md py-2 pl-2 pr-1.5">
+        <div className="group my-2 flex cursor-default items-center rounded-md py-2 pl-2 pr-1.5 text-sm">
           <TbCode className="mr-1.5 mt-px text-xs" />
           {language}
         </div>
@@ -61,6 +62,7 @@ export default (({ language, _id, content, selectedTabSlug, downloadZip }) => {
             onClick={() => {
               setLinkCopied((c) => !c);
               navigator.clipboard.writeText(`https://snip.tf/${_id}`);
+              toast.success("Copied Link");
             }}
           >
             {linkCopied ? <TbCheck /> : <TbLink />}
@@ -72,6 +74,7 @@ export default (({ language, _id, content, selectedTabSlug, downloadZip }) => {
             onClick={() => {
               setCopied((c) => !c);
               navigator.clipboard.writeText(content);
+              toast.success("Copied Code");
             }}
           >
             {copied ? <TbCheck /> : <TbCopy />}
