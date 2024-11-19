@@ -8,15 +8,17 @@ async fn snip(ctx: &Context, msg: &Message) -> CommandResult {
     let codeblocks = extract_codeblocks(&msg.content);
 
     if codeblocks.is_empty() {
-        msg.reply(ctx, "No codeblocks found!").await?;
+        msg.reply(ctx, "No codeblock(s) found.").await?;
     } else {
         let mut response = String::new();
+
         for codeblock in codeblocks {
             response.push_str(&format!(
-                "Language: {}\nContent: {}",
-                codeblock.language, codeblock.content
+                "Language: {}\nContent: {}Title: {}\n\n",
+                codeblock.language, codeblock.content, codeblock.title
             ));
         }
+
         msg.channel_id.say(ctx, response).await?;
     }
     Ok(())
@@ -25,8 +27,11 @@ async fn snip(ctx: &Context, msg: &Message) -> CommandResult {
 fn extract_codeblocks(message: &str) -> Vec<CodeBlock> {
     let mut codeblocks = Vec::new();
     let mut in_codeblock = false;
+
     let mut language = String::new();
     let mut content = String::new();
+
+    let mut index = 1;
 
     for line in message.lines() {
         if line.starts_with("```") {
@@ -34,10 +39,14 @@ fn extract_codeblocks(message: &str) -> Vec<CodeBlock> {
                 codeblocks.push(CodeBlock {
                     language: extension_to_language(language.clone().as_str()),
                     content: content.clone(),
+                    title: format!("File{}.{}", index, language.clone()),
                 });
+
                 in_codeblock = false;
                 language.clear();
                 content.clear();
+
+                index += 1;
             } else {
                 in_codeblock = true;
                 language = line.trim_start_matches("```").to_string();
@@ -174,4 +183,5 @@ fn extension_to_language(extension: &str) -> String {
 struct CodeBlock {
     language: String,
     content: String,
+    title: String,
 }
