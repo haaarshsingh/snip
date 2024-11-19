@@ -1,27 +1,30 @@
 "use client";
 
+import { Dispatch, FC, SetStateAction, useState } from "react";
+import { useRouter } from "next/navigation";
 import theme from "@/utils/theme";
 import languages from "@/utils/languages";
 import Textarea from "@uiw/react-codemirror";
 import clsx from "clsx";
-import { Dispatch, FC, SetStateAction, useState } from "react";
 import { TbPlus, TbX } from "react-icons/tb";
 import Toolbar from "./Toolbar/Toolbar";
 import { EditorView } from "codemirror";
 import { ReactSortable } from "react-sortablejs";
 import useHotkeys from "@/utils/hooks/useHotkeys";
 import Readonly from "./Toolbar/Readonly";
-import { useRouter } from "next/navigation";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+import { toast } from "sonner";
 
 type EditorProps = {
   title: string;
   snips: Snip[];
   readOnly: boolean;
-  slug: string;
+  _id: string;
 };
 
 export type Snip = {
-  id: string;
+  _id: string;
   title: string;
   content: string;
   language: string;
@@ -32,10 +35,10 @@ type Tab = {
   title: string;
   content: string;
   language: string;
-  slug?: string;
+  _id?: string;
 };
 
-export default (({ readOnly, title, snips, slug }) => {
+export default (({ readOnly, title, snips, _id }) => {
   const [snipTitle, setTitle] = useState(title || "");
   const [lineNumbers, setLineNumbers] = useState(true);
   const [wrap, setWrap] = useState(false);
@@ -52,7 +55,7 @@ export default (({ readOnly, title, snips, slug }) => {
               title: snip.title,
               content: snip.content,
               language: snip.language,
-              slug: snip.id,
+              _id: snip._id,
             }) as Tab,
         );
 
@@ -97,7 +100,7 @@ export default (({ readOnly, title, snips, slug }) => {
 
   const getSelectedTabSlug = () => {
     const currentTab = tabs.find((tab) => tab.id === selectedTab);
-    return currentTab ? currentTab.slug : "";
+    return currentTab ? currentTab._id : "";
   };
 
   const createSnip = async () => {
@@ -120,21 +123,44 @@ export default (({ readOnly, title, snips, slug }) => {
       body: raw,
     };
 
-    try {
-      const response = await fetch(
-        "https://api.snip.tf/snips/create",
-        requestOptions,
-      );
-      const result = await response.json();
-      router.push(`/${result.data.slug}`);
-    } catch (error) {
-      console.error(error);
-      setDisabled(false);
-    }
+    toast.promise(
+      (async () => {
+        const response = await fetch(
+          "https://api.snip.tf/snips/create",
+          requestOptions,
+        );
+
+        if (!response.ok) {
+          setDisabled(false);
+          throw new Error("Failed to create snip");
+        }
+
+        const result = await response.json();
+        router.push(`/${result.data._id}`);
+
+        return result;
+      })(),
+      {
+        loading: "Creating snip...",
+        success: () => "Snip created",
+        error: "Failed to create snip, please try again",
+      },
+    );
+  };
+
+  const downloadZip = () => {
+    const zip = new JSZip();
+    snips?.forEach((snip) => {
+      zip.file(snip.title, snip.content);
+    });
+
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(content, `${title || "Untitled"}.zip`);
+    });
   };
 
   return (
-    <main className={readOnly ? "readonly" : ""}>
+    <div className={readOnly ? "readonly" : ""}>
       <input
         placeholder="New Snip..."
         value={snipTitle}
@@ -178,9 +204,10 @@ export default (({ readOnly, title, snips, slug }) => {
       {readOnly ? (
         <Readonly
           language={getSelectedTabLanguage()}
-          slug={slug!}
+          _id={_id!}
           selectedTabSlug={getSelectedTabSlug()}
           content={getSelectedTabContent()}
+          downloadZip={downloadZip}
         />
       ) : (
         <Toolbar
@@ -196,7 +223,7 @@ export default (({ readOnly, title, snips, slug }) => {
           setWrap={setWrap}
         />
       )}
-    </main>
+    </div>
   );
 }) as FC<Partial<EditorProps>>;
 

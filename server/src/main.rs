@@ -13,16 +13,16 @@ use snip::SnipObject;
 const DB_NAME: &str = "snipdb";
 const COLL_NAME: &str = "snips";
 
-#[get("/snips/get/{slug}")]
-async fn get_snip(client: web::Data<Client>, slug: web::Path<String>) -> HttpResponse {
-    let snip_object_slug = slug.into_inner();
+#[get("/snips/get/{_id}")]
+async fn get_snip(client: web::Data<Client>, _id: web::Path<String>) -> HttpResponse {
+    let snip_object_id = _id.into_inner();
 
     let collection: Collection<SnipObject> = client.database(DB_NAME).collection(COLL_NAME);
 
-    match collection.find_one(doc! { "slug": &snip_object_slug }).await {
+    match collection.find_one(doc! { "_id": &snip_object_id }).await {
         Ok(Some(snip)) => HttpResponse::Ok().json(snip),
         Ok(None) => HttpResponse::NotFound()
-            .json(json!({ "error": format!("no snip found with slug: {}", snip_object_slug) })),
+            .json(json!({ "error": format!("no snip found with _id: {}", snip_object_id) })),
         Err(err) => HttpResponse::InternalServerError().json(json!({ "error": err.to_string() })),
     }
 }
@@ -34,15 +34,15 @@ async fn create_snip(
 ) -> HttpResponse {
     let collection: Collection<SnipObject> = client.database(DB_NAME).collection(COLL_NAME);
 
-    if new_snip.slug.is_none() {
-        new_snip.slug = Some(nanoid!(3));
+    if new_snip._id.is_none() {
+        new_snip._id = Some(nanoid!(3));
     }
 
     for snip in &mut new_snip.snips {
-        if snip.id.is_none() {
-            snip.id = Some(nanoid!(10));
+        if snip._id.is_none() {
+            snip._id = Some(nanoid!(10));
         }
-    }    
+    }
 
     let result = collection.insert_one(new_snip.clone()).await;
 
@@ -51,7 +51,7 @@ async fn create_snip(
             "status": "success",
             "data": {
                 "message": "Snip created successfully",
-                "slug": new_snip.slug 
+                "_id": new_snip._id
             }
         })),
         Err(err) => HttpResponse::InternalServerError().json(json!({
@@ -77,7 +77,7 @@ async fn main() -> std::io::Result<()> {
         let cors = Cors::default()
             .allowed_origin("http://localhost:3000")
             .allowed_origin("https://snip.tf")
-            .allowed_methods(vec!["GET", "POST"]) 
+            .allowed_methods(vec!["GET", "POST"])
             .allowed_headers(vec![actix_web::http::header::CONTENT_TYPE])
             .supports_credentials()
             .max_age(3600);

@@ -1,50 +1,48 @@
 "use client";
 
 import clsx from "clsx";
-import {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-  type FC,
-  type ReactNode,
-} from "react";
+import { useEffect, useState, type FC, type ReactNode } from "react";
 import {
   TbCheck,
-  TbChevronDown,
-  TbClock12,
-  TbClock24,
-  TbClockPlus,
-  TbClockX,
   TbCode,
   TbCopy,
   TbDownload,
   TbFile,
   TbGitFork,
-  TbHash,
-  TbIndentIncrease,
   TbLink,
-  TbSearch,
-  TbTextWrap,
 } from "react-icons/tb";
-import data from "../../utils/languages.json";
 import useHotkeys from "@/utils/hooks/useHotkeys";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
 
 type Toolbar = {
+  _id: string;
   language: string;
-  slug: string;
   content: string;
   selectedTabSlug?: string;
+  downloadZip?: () => void;
 };
 
-export default (({ language, slug, content, selectedTabSlug }) => {
+export default (({ language, _id, content, selectedTabSlug, downloadZip }) => {
   const router = useRouter();
 
   const [copied, setCopied] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+
+  const fork = () => router.push(`/fork/${_id}`);
+
+  const copyLink = () => {
+    setLinkCopied((c) => !c);
+    navigator.clipboard.writeText(`https://snip.tf/${_id}`);
+    toast.success("Copied Link");
+  };
+
+  const copyContent = () => {
+    setCopied((c) => !c);
+    navigator.clipboard.writeText(content);
+    toast.success("Copied Content");
+  };
 
   useEffect(() => {
     if (copied) {
@@ -60,57 +58,70 @@ export default (({ language, slug, content, selectedTabSlug }) => {
     }
   }, [linkCopied]);
 
-  useHotkeys([{ metaKey: true, key: "s" }], (e) => {
+  useHotkeys([{ key: "n" }], (e) => {
     e.preventDefault();
+    router.push("/");
+  });
+
+  useHotkeys([{ key: "c" }], (e) => {
+    e.preventDefault();
+    copyLink();
+  });
+
+  useHotkeys([{ key: "x" }], (e) => {
+    e.preventDefault();
+    copyContent();
+  });
+
+  useHotkeys([{ key: "F" }], (e) => {
+    e.preventDefault();
+    fork();
   });
 
   return (
     <div className="fixed bottom-0 left-1/2 mb-10 flex -translate-x-1/2 flex-col items-center rounded-lg border border-neutral-800 bg-neutral-900 px-2 shadow-2xl xs:flex-row">
       <div className="flex items-center">
-        <div className="group my-2 flex cursor-default items-center rounded-md py-2 pl-2 pr-1.5">
+        <div className="group my-2 flex cursor-default items-center rounded-md py-2 pl-2 pr-1.5 text-sm">
           <TbCode className="mr-1.5 mt-px text-xs" />
           {language}
         </div>
         <div className="mb-1.5 h-px w-full bg-neutral-800 xs:mb-0 xs:ml-1.5 xs:mr-2 xs:h-12 xs:w-px" />
-        <Tooltip title="Copy Link">
+        <Tooltip title="Copy Link" target="C">
           <button
             className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
-            onClick={() => {
-              setLinkCopied((c) => !c);
-              navigator.clipboard.writeText(`https://snip.tf/${slug}`);
-            }}
+            onClick={copyLink}
           >
             {linkCopied ? <TbCheck /> : <TbLink />}
           </button>
         </Tooltip>
-        <Tooltip title="Copy Content">
+        <Tooltip title="Copy Content" target="X">
           <button
             className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
-            onClick={() => {
-              setCopied((c) => !c);
-              navigator.clipboard.writeText(content);
-            }}
+            onClick={copyContent}
           >
             {copied ? <TbCheck /> : <TbCopy />}
           </button>
         </Tooltip>
         <Tooltip title="Download">
-          <button className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5">
+          <button
+            className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
+            onClick={downloadZip}
+          >
             <TbDownload />
           </button>
         </Tooltip>
         <Tooltip title="View Raw">
           <button
             className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
-            onClick={() => router.push(`/raw/${slug}/${selectedTabSlug}`)}
+            onClick={() => router.push(`/raw/${_id}/${selectedTabSlug}`)}
           >
             <TbFile />
           </button>
         </Tooltip>
-        <Tooltip title="Fork" target="⌥F">
+        <Tooltip title="Fork" target="↑ F">
           <button
             className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
-            onClick={() => router.push(`/fork/${slug}`)}
+            onClick={fork}
           >
             <TbGitFork />
           </button>
@@ -123,7 +134,7 @@ export default (({ language, slug, content, selectedTabSlug }) => {
       >
         New Snip
         <div className="ml-2 flex items-center tracking-tighter text-sky-400">
-          ⌘⌥N
+          N
         </div>
       </Link>
     </div>

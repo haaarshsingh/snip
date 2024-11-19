@@ -1,8 +1,7 @@
-import { Snip } from "@/components/Editor";
-import { FC } from "react";
+import Editor from "@/components/Editor";
 
-export default (async ({ params }) => {
-  const { slug, id } = params;
+export default async ({ params }: { params: Promise<{ slug: string }> }) => {
+  const slug = (await params).slug;
 
   const requestOptions = { method: "GET" };
   const result = await fetch(
@@ -18,6 +17,9 @@ export default (async ({ params }) => {
       return null;
     });
 
-  const raw = result?.snips.find((snip: Snip) => snip._id === id)?.content;
-  return <pre className="text-xs">{raw}</pre>;
-}) as FC<{ params: { slug: string; id: string } }>;
+  return (
+    <main>
+      <Editor {...result} />
+    </main>
+  );
+};
