@@ -2,3 +2,7 @@ target
 .env
 Secrets*.toml
 .shuttle*
+
+.nx/installation
+.nx/cache
+.nx/workspace-data

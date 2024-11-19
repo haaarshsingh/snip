@@ -16,10 +16,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 type Toolbar = {
-  language: string;
   _id: string;
+  language: string;
   content: string;
   selectedTabSlug?: string;
+  downloadZip?: () => void;
 };
 
 export default (({ language, _id, content, selectedTabSlug }) => {

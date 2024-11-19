@@ -1,17 +1,19 @@
 "use client";
 
+import { Dispatch, FC, SetStateAction, useState } from "react";
+import { useRouter } from "next/navigation";
 import theme from "@/utils/theme";
 import languages from "@/utils/languages";
 import Textarea from "@uiw/react-codemirror";
 import clsx from "clsx";
-import { Dispatch, FC, SetStateAction, useState } from "react";
 import { TbPlus, TbX } from "react-icons/tb";
 import Toolbar from "./Toolbar/Toolbar";
 import { EditorView } from "codemirror";
 import { ReactSortable } from "react-sortablejs";
 import useHotkeys from "@/utils/hooks/useHotkeys";
 import Readonly from "./Toolbar/Readonly";
-import { useRouter } from "next/navigation";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 type EditorProps = {
   title: string;
@@ -133,6 +135,17 @@ export default (({ readOnly, title, snips, _id }) => {
     }
   };
 
+  const downloadZip = () => {
+    const zip = new JSZip();
+    snips?.forEach((snip) => {
+      zip.file(snip.title, snip.content);
+    });
+
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(content, `${title || "Untitled"}.zip`);
+    });
+  };
+
   return (
     <main className={readOnly ? "readonly" : ""}>
       <input
@@ -181,6 +194,7 @@ export default (({ readOnly, title, snips, _id }) => {
           _id={_id!}
           selectedTabSlug={getSelectedTabSlug()}
           content={getSelectedTabContent()}
+          downloadZip={downloadZip}
         />
       ) : (
         <Toolbar
