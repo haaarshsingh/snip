@@ -1,4 +1,4 @@
 target
-server/.env
+.env
 Secrets*.toml
 .shuttle*
