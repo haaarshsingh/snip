@@ -15,14 +15,14 @@ const COLL_NAME: &str = "snips";
 
 #[get("/snips/get/{_id}")]
 async fn get_snip(client: web::Data<Client>, _id: web::Path<String>) -> HttpResponse {
-    let snip_object__id = _id.into_inner();
+    let snip_object_id = _id.into_inner();
 
     let collection: Collection<SnipObject> = client.database(DB_NAME).collection(COLL_NAME);
 
-    match collection.find_one(doc! { "_id": &snip_object__id }).await {
+    match collection.find_one(doc! { "_id": &snip_object_id }).await {
         Ok(Some(snip)) => HttpResponse::Ok().json(snip),
         Ok(None) => HttpResponse::NotFound()
-            .json(json!({ "error": format!("no snip found with _id: {}", snip_object__id) })),
+            .json(json!({ "error": format!("no snip found with _id: {}", snip_object_id) })),
         Err(err) => HttpResponse::InternalServerError().json(json!({ "error": err.to_string() })),
     }
 }

@@ -10,9 +10,9 @@ The endpoint for creating and fetching snips.
 
 #### Get a Snip
 
-`GET https://api.snip.tf/snips/{_id}`
+`GET https://api.snip.tf/snips/get/{_id}`
 
-This returns a full snip object.
+This returns a [full snip object](#full-snip-object).
 
 #### Create a Snip
 

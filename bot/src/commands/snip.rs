@@ -44,7 +44,7 @@ async fn snip(ctx: &Context, msg: &Message, args: Args) -> CommandResult {
                     match resp.json::<SnipResponse>().await {
                         Ok(parsed_body) => {
                             msg.channel_id
-                                .say(ctx, format!("https://snip.tf/{}", parsed_body.data.slug))
+                                .say(ctx, format!("https://snip.tf/{}", parsed_body.data._id))
                                 .await?;
                         }
                         Err(err) => {
@@ -266,5 +266,5 @@ struct SnipResponse {
 
 #[derive(Deserialize)]
 struct SnipData {
-    slug: String,
+    _id: String,
 }
