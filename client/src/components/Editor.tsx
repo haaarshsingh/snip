@@ -160,7 +160,7 @@ export default (({ readOnly, title, snips, _id }) => {
   };
 
   return (
-    <main className={readOnly ? "readonly" : ""}>
+    <div className={readOnly ? "readonly" : ""}>
       <input
         placeholder="New Snip..."
         value={snipTitle}
@@ -223,7 +223,7 @@ export default (({ readOnly, title, snips, _id }) => {
           setWrap={setWrap}
         />
       )}
-    </main>
+    </div>
   );
 }) as FC<Partial<EditorProps>>;
 
