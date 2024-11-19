@@ -14,6 +14,7 @@ import useHotkeys from "@/utils/hooks/useHotkeys";
 import Readonly from "./Toolbar/Readonly";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { toast } from "sonner";
 
 type EditorProps = {
   title: string;
@@ -122,17 +123,29 @@ export default (({ readOnly, title, snips, _id }) => {
       body: raw,
     };
 
-    try {
-      const response = await fetch(
-        "https://api.snip.tf/snips/create",
-        requestOptions,
-      );
-      const result = await response.json();
-      router.push(`/${result.data._id}`);
-    } catch (error) {
-      console.error(error);
-      setDisabled(false);
-    }
+    toast.promise(
+      (async () => {
+        const response = await fetch(
+          "https://api.snip.tf/snips/create",
+          requestOptions,
+        );
+
+        if (!response.ok) {
+          setDisabled(false);
+          throw new Error("Failed to create snip");
+        }
+
+        const result = await response.json();
+        router.push(`/${result.data._id}`);
+
+        return result;
+      })(),
+      {
+        loading: "Creating snip...",
+        success: () => "Snip created",
+        error: "Failed to create snip, please try again",
+      },
+    );
   };
 
   const downloadZip = () => {

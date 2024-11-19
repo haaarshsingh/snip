@@ -23,7 +23,7 @@ type Toolbar = {
   downloadZip?: () => void;
 };
 
-export default (({ language, _id, content, selectedTabSlug }) => {
+export default (({ language, _id, content, selectedTabSlug, downloadZip }) => {
   const router = useRouter();
 
   const [copied, setCopied] = useState(false);
@@ -78,7 +78,10 @@ export default (({ language, _id, content, selectedTabSlug }) => {
           </button>
         </Tooltip>
         <Tooltip title="Download">
-          <button className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5">
+          <button
+            className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
+            onClick={downloadZip}
+          >
             <TbDownload />
           </button>
         </Tooltip>

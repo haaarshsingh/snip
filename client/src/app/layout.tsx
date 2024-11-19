@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const display = localFont({
@@ -100,6 +101,7 @@ export default ({
   return (
     <html lang="en">
       <body className={`${display.variable} ${mono.variable} antialiased`}>
+        <Toaster theme="dark" richColors />
         {children}
       </body>
     </html>
