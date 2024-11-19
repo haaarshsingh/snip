@@ -17,11 +17,11 @@ type EditorProps = {
   title: string;
   snips: Snip[];
   readOnly: boolean;
-  slug: string;
+  _id: string;
 };
 
 export type Snip = {
-  id: string;
+  _id: string;
   title: string;
   content: string;
   language: string;
@@ -32,10 +32,10 @@ type Tab = {
   title: string;
   content: string;
   language: string;
-  slug?: string;
+  _id?: string;
 };
 
-export default (({ readOnly, title, snips, slug }) => {
+export default (({ readOnly, title, snips, _id }) => {
   const [snipTitle, setTitle] = useState(title || "");
   const [lineNumbers, setLineNumbers] = useState(true);
   const [wrap, setWrap] = useState(false);
@@ -52,7 +52,7 @@ export default (({ readOnly, title, snips, slug }) => {
               title: snip.title,
               content: snip.content,
               language: snip.language,
-              slug: snip.id,
+              _id: snip._id,
             }) as Tab,
         );
 
@@ -97,7 +97,7 @@ export default (({ readOnly, title, snips, slug }) => {
 
   const getSelectedTabSlug = () => {
     const currentTab = tabs.find((tab) => tab.id === selectedTab);
-    return currentTab ? currentTab.slug : "";
+    return currentTab ? currentTab._id : "";
   };
 
   const createSnip = async () => {
@@ -126,7 +126,7 @@ export default (({ readOnly, title, snips, slug }) => {
         requestOptions,
       );
       const result = await response.json();
-      router.push(`/${result.data.slug}`);
+      router.push(`/${result.data._id}`);
     } catch (error) {
       console.error(error);
       setDisabled(false);
@@ -178,7 +178,7 @@ export default (({ readOnly, title, snips, slug }) => {
       {readOnly ? (
         <Readonly
           language={getSelectedTabLanguage()}
-          slug={slug!}
+          _id={_id!}
           selectedTabSlug={getSelectedTabSlug()}
           content={getSelectedTabContent()}
         />

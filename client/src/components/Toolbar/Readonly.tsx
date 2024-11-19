@@ -1,46 +1,28 @@
 "use client";
 
 import clsx from "clsx";
-import {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-  type FC,
-  type ReactNode,
-} from "react";
+import { useEffect, useState, type FC, type ReactNode } from "react";
 import {
   TbCheck,
-  TbChevronDown,
-  TbClock12,
-  TbClock24,
-  TbClockPlus,
-  TbClockX,
   TbCode,
   TbCopy,
   TbDownload,
   TbFile,
   TbGitFork,
-  TbHash,
-  TbIndentIncrease,
   TbLink,
-  TbSearch,
-  TbTextWrap,
 } from "react-icons/tb";
-import data from "../../utils/languages.json";
 import useHotkeys from "@/utils/hooks/useHotkeys";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 type Toolbar = {
   language: string;
-  slug: string;
+  _id: string;
   content: string;
   selectedTabSlug?: string;
 };
 
-export default (({ language, slug, content, selectedTabSlug }) => {
+export default (({ language, _id, content, selectedTabSlug }) => {
   const router = useRouter();
 
   const [copied, setCopied] = useState(false);
@@ -77,7 +59,7 @@ export default (({ language, slug, content, selectedTabSlug }) => {
             className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
             onClick={() => {
               setLinkCopied((c) => !c);
-              navigator.clipboard.writeText(`https://snip.tf/${slug}`);
+              navigator.clipboard.writeText(`https://snip.tf/${_id}`);
             }}
           >
             {linkCopied ? <TbCheck /> : <TbLink />}
@@ -102,7 +84,7 @@ export default (({ language, slug, content, selectedTabSlug }) => {
         <Tooltip title="View Raw">
           <button
             className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
-            onClick={() => router.push(`/raw/${slug}/${selectedTabSlug}`)}
+            onClick={() => router.push(`/raw/${_id}/${selectedTabSlug}`)}
           >
             <TbFile />
           </button>
@@ -110,7 +92,7 @@ export default (({ language, slug, content, selectedTabSlug }) => {
         <Tooltip title="Fork" target="⌥F">
           <button
             className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
-            onClick={() => router.push(`/fork/${slug}`)}
+            onClick={() => router.push(`/fork/${_id}`)}
           >
             <TbGitFork />
           </button>

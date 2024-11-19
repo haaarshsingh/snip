@@ -1,26 +1,93 @@
-use serenity::framework::standard::{macros::command, CommandResult};
+use reqwest::Client;
+use serde::{Deserialize, Serialize};
+use serenity::framework::standard::{macros::command, Args, CommandResult};
 use serenity::model::prelude::*;
 use serenity::prelude::*;
 use std::collections::HashMap;
 
 #[command]
-async fn snip(ctx: &Context, msg: &Message) -> CommandResult {
+async fn snip(ctx: &Context, msg: &Message, args: Args) -> CommandResult {
+    let mut snip_title = None;
+    let mut args_iter = args.raw();
+
+    let mut error_msg = None;
+
+    while let Some(arg) = args_iter.next() {
+        if arg == "-t" {
+            if let Some(title) = args_iter.next() {
+                snip_title = Some(title.to_string());
+            }
+        }
+    }
+
     let codeblocks = extract_codeblocks(&msg.content);
 
     if codeblocks.is_empty() {
-        msg.reply(ctx, "No codeblock(s) found.").await?;
+        error_msg = Some("No codeblock(s) found.");
     } else {
-        let mut response = String::new();
+        let request_payload = SnipPayload {
+            title: snip_title.unwrap_or_else(|| "".to_string()),
+            snips: codeblocks,
+        };
 
-        for codeblock in codeblocks {
-            response.push_str(&format!(
-                "Language: {}\nContent: {}Title: {}\n\n",
-                codeblock.language, codeblock.content, codeblock.title
-            ));
+        let client = Client::new();
+        let response = client
+            .post("https://api.snip.tf/snips/create")
+            .json(&request_payload)
+            .send()
+            .await;
+
+        match response {
+            Ok(resp) => {
+                let status = resp.status();
+                if status.is_success() {
+                    match resp.json::<SnipResponse>().await {
+                        Ok(parsed_body) => {
+                            msg.channel_id
+                                .say(ctx, format!("https://snip.tf/{}", parsed_body.data.slug))
+                                .await?;
+                        }
+                        Err(err) => {
+                            error_msg = Some(format!("Failed to parse response: {}", err).as_str());
+                        }
+                    }
+                } else {
+                    let body = resp
+                        .text()
+                        .await
+                        .unwrap_or_else(|_| "Unknown error".to_string());
+
+                    let err_msg = format!("Request failed. Status: {}, Body: {}", status, body);
+                    error_msg = Some(err_msg.as_str());
+                }
+            }
+            Err(err) => {
+                error_msg = Some(format!("Failed to send request: {}", err).as_str());
+            }
         }
-
-        msg.channel_id.say(ctx, response).await?;
     }
+
+    let _ = msg
+        .channel_id
+        .send_message(&ctx.http, |m| {
+            if let Some(error_message) = error_msg {
+                m.embed(|e| {
+                    e.title("Error ❌")
+                        .description(error_message)
+                        .color(serenity::utils::Color::from_rgb(255, 0, 0))
+                        .field(
+                            "Problems?",
+                            "Open a new [issue](https://github.com/haaarshsingh/snip/issues/new), email yo@harshsingh.xyz, \nor reach out to [@haaarshsingh](https://twitter.com/haaarshsingh).",
+                            false,
+                        )
+                        .footer(|f| f.text("snip.tf"))
+                        .timestamp(chrono::Utc::now())
+                });
+            }
+            m
+        })
+        .await;
+
     Ok(())
 }
 
@@ -179,9 +246,25 @@ fn extension_to_language(extension: &str) -> String {
         .to_string()
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 struct CodeBlock {
     language: String,
     content: String,
     title: String,
+}
+
+#[derive(Serialize, Debug)]
+struct SnipPayload {
+    title: String,
+    snips: Vec<CodeBlock>,
+}
+
+#[derive(Deserialize)]
+struct SnipResponse {
+    data: SnipData,
+}
+
+#[derive(Deserialize)]
+struct SnipData {
+    slug: String,
 }

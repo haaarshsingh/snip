@@ -18,6 +18,6 @@ export default (async ({ params }) => {
       return null;
     });
 
-  const raw = result?.snips.find((snip: Snip) => snip.id === id)?.content;
+  const raw = result?.snips.find((snip: Snip) => snip._id === id)?.content;
   return <pre className="text-xs">{raw}</pre>;
 }) as FC<{ params: { slug: string; id: string } }>;
