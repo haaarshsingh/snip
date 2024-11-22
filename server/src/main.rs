@@ -179,17 +179,17 @@ async fn create_snip(
         new_snip._id = Some(nanoid!(3));
     }
 
-    for snip in &mut new_snip.snips {
-        if snip._id.is_none() {
-            snip._id = Some(nanoid!(10));
-        }
-        if snip.language.as_deref() == Some("Autodetect") {
-            if let Some(title) = &new_snip.title {
-                snip.language = Some(detect_language(&Some(title.clone())));
+    // todo: check Snip title instead of SnipObject title
+    if let Some(title) = &new_snip.title {
+        let detected_language = detect_language(&Some(title.clone()));
+    
+        for snip in &mut new_snip.snips {
+            if snip.language.as_deref() == Some("Autodetect") {
+                snip.language = Some(detected_language.clone());
             }
         }
     }
-
+    
     let result = collection.insert_one(new_snip.clone()).await;
 
     match result {
