@@ -68,14 +68,18 @@ async fn detect_snip_languages(client: web::Data<Client>, _id: web::Path<String>
                 .snips
                 .iter_mut()
                 .map(|snip| {
-                    if snip.language.as_deref() == Some("Autodetect") {
+                    if snip.language.as_deref() == Some("Autodetect") && !snip.content.is_empty() {
                         detect_from_text(&snip.content)
                             .map(|detection| detection.language().to_string())
                             .unwrap_or_else(|| "Unknown".to_string())
                     } else {
-                        snip.language
-                            .clone()
-                            .unwrap_or_else(|| "Unknown".to_string())
+                        if snip.language.as_deref() == Some("Autodetect") {
+                            "Unknown".to_string()
+                        } else {
+                            snip.language
+                                .clone()
+                                .unwrap_or_else(|| "Unknown".to_string())
+                        }
                     }
                 })
                 .collect();
