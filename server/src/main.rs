@@ -14,8 +14,6 @@ use snip::SnipObject;
 const DB_NAME: &str = "snipdb";
 const COLL_NAME: &str = "snips";
 
-const AUTODETECT_NAME: &str = "Autodetect";
-
 #[get("/snips/get/{_id}")]
 async fn get_snip(client: web::Data<Client>, _id: web::Path<String>) -> HttpResponse {
     let snip_object_id = _id.into_inner();
@@ -45,14 +43,14 @@ async fn create_snip(client: web::Data<Client>, snip_json: web::Json<SnipObject>
         Ok(_) => HttpResponse::Ok().json(json!({
             "status": "success",
             "data": {
-                "message": "Snip created successfully",
+                "message": "snip created successfully",
                 "_id": &new_snip._id
             }
         })),
         Err(err) => HttpResponse::InternalServerError().json(json!({
             "status": "error",
             "error": {
-                "message": "Failed to create snip",
+                "message": "failed to create snip",
                 "details": err.to_string()
             }
         })),
@@ -60,24 +58,27 @@ async fn create_snip(client: web::Data<Client>, snip_json: web::Json<SnipObject>
 }
 
 #[patch("/snips/detect/{_id}")]
-async fn detect_snip_language(client: web::Data<Client>, _id: web::Path<String>) -> HttpResponse {
+async fn detect_snip_languages(client: web::Data<Client>, _id: web::Path<String>) -> HttpResponse {
     let snip_object_id = _id.into_inner();
     let collection: Collection<SnipObject> = client.database(DB_NAME).collection(COLL_NAME);
 
     match collection.find_one(doc! { "_id": &snip_object_id }).await {
         Ok(Some(mut snip_obj)) => {
-            if let Some(first_snip) = snip_obj.snips.first_mut() {
-                if first_snip.language.is_none() {
-                    first_snip.language = Some(
-                        detect_from_text(&first_snip.content)
-                            .map(|detection| detection.language().to_string())
-                            .unwrap_or_else(|| "Unknown".to_string()),
-                    );
-                }
-                HttpResponse::Ok().json(json!({ "language": first_snip.language }))
-            } else {
-                HttpResponse::BadRequest().json(json!({ "error": "No snips found in object" }))
-            }
+            let languages: Vec<String> = snip_obj
+                .snips
+                .iter_mut()
+                .map(|snip| {
+                    snip.language
+                        .get_or_insert_with(|| {
+                            detect_from_text(&snip.content)
+                                .map(|detection| detection.language().to_string())
+                                .unwrap_or_else(|| "Unknown".to_string())
+                        })
+                        .clone()
+                })
+                .collect();
+
+            HttpResponse::Ok().json(json!({ "languages": languages }))
         }
         Ok(None) => HttpResponse::NotFound()
             .json(json!({ "error": format!("no snip found with _id: {}", snip_object_id) })),
