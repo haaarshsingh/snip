@@ -7,9 +7,17 @@ pub struct SnipObject {
     pub snips: Vec<Snip>,
     pub _id: Option<String>,
     pub title: Option<String>,
-    #[serde(with = "ts_seconds_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        with = "ts_seconds_option",
+        skip_serializing_if = "Option::is_none",
+        default
+    )]
     created_at: Option<chrono::DateTime<chrono::Utc>>,
-    #[serde(with = "ts_seconds_option", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        with = "ts_seconds_option",
+        skip_serializing_if = "Option::is_none",
+        default
+    )]
     expiry_at: Option<chrono::DateTime<chrono::Utc>>,
 }
 

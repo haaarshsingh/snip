@@ -3,7 +3,7 @@ mod snip;
 use std::env;
 
 use actix_cors::Cors;
-use actix_web::{get, middleware, patch, post, web, App, HttpResponse, HttpServer};
+use actix_web::{get, middleware, post, web, App, HttpResponse, HttpServer};
 use dotenv::dotenv;
 use hyperpolyglot::{self, detect_from_text};
 use mongodb::{bson::doc, Client, Collection};
@@ -57,7 +57,7 @@ async fn create_snip(client: web::Data<Client>, snip_json: web::Json<SnipObject>
     }
 }
 
-#[patch("/snips/detect/{_id}")]
+#[get("/snips/detect/{_id}")]
 async fn detect_snip_languages(client: web::Data<Client>, _id: web::Path<String>) -> HttpResponse {
     let snip_object_id = _id.into_inner();
     let collection: Collection<SnipObject> = client.database(DB_NAME).collection(COLL_NAME);
@@ -110,6 +110,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::Logger::default())
             .service(get_snip)
             .service(create_snip)
+            .service(detect_snip_languages)
     })
     .bind(("0.0.0.0", 8080))?
     .run()
