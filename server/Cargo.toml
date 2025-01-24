@@ -12,3 +12,4 @@ nanoid = "0.4.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 chrono = { version="0.4.38", features =["serde"] }
+hyperpolyglot = { git = "https://github.com/ibra/hyperpolyglot" }

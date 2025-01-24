@@ -1,16 +1,16 @@
-use serde::{Deserialize, Serialize};
 use chrono;
 use chrono::serde::ts_seconds_option;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub struct SnipObject {
     pub snips: Vec<Snip>,
     pub _id: Option<String>,
     pub title: Option<String>,
-    #[serde(with = "ts_seconds_option")]
-    pub created_at: Option<chrono::DateTime<chrono::Utc>>,
-    #[serde(with = "ts_seconds_option")]
-    pub expiry_at: Option<chrono::DateTime<chrono::Utc>>, 
+    #[serde(with = "ts_seconds_option", skip_serializing_if = "Option::is_none")]
+    created_at: Option<chrono::DateTime<chrono::Utc>>,
+    #[serde(with = "ts_seconds_option", skip_serializing_if = "Option::is_none")]
+    expiry_at: Option<chrono::DateTime<chrono::Utc>>,
 }
 
 impl SnipObject {
