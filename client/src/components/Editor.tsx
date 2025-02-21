@@ -7,7 +7,7 @@ import languages from "@/utils/languages";
 import Textarea from "@uiw/react-codemirror";
 import clsx from "clsx";
 import { TbPlus, TbX } from "react-icons/tb";
-import Toolbar from "./Toolbar/Toolbar";
+import Toolbar, { Expiry } from "./Toolbar/Toolbar";
 import { EditorView } from "codemirror";
 import { ReactSortable } from "react-sortablejs";
 import useHotkeys from "@/utils/hooks/useHotkeys";
@@ -42,6 +42,7 @@ export default (({ readOnly, title, snips, _id }) => {
   const [snipTitle, setTitle] = useState(title || "");
   const [lineNumbers, setLineNumbers] = useState(true);
   const [wrap, setWrap] = useState(false);
+  const [expiry, setExpiry] = useState<Expiry>(Expiry.never);
 
   const [disabled, setDisabled] = useState(false);
 
@@ -103,13 +104,26 @@ export default (({ readOnly, title, snips, _id }) => {
     return currentTab ? currentTab._id : "";
   };
 
+  const getExpiryDate = () => {
+    switch (expiry) {
+      case Expiry.h12:
+        return 12;
+      case Expiry.h24:
+        return 24;
+    }
+  };
+
   const createSnip = async () => {
     setDisabled(true);
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
+    const expiryAt = new Date();
+    expiryAt.setUTCDate(expiryAt.getUTCHours() + 24);
+
     const raw = JSON.stringify({
       title: snipTitle,
+      ...(expiry !== Expiry.never && { expiry_at: expiryAt.toISOString() }),
       snips: tabs.map((tab) => ({
         title: tab.title,
         content: tab.content,
@@ -221,6 +235,8 @@ export default (({ readOnly, title, snips, _id }) => {
           setLineNumbers={setLineNumbers}
           wrap={wrap}
           setWrap={setWrap}
+          expiry={expiry}
+          setExpiry={setExpiry}
         />
       )}
     </div>

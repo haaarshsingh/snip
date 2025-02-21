@@ -34,6 +34,8 @@ type Toolbar = {
   setLineNumbers: Dispatch<SetStateAction<boolean>>;
   wrap: boolean;
   setWrap: Dispatch<SetStateAction<boolean>>;
+  expiry: Expiry;
+  setExpiry: Dispatch<SetStateAction<Expiry>>;
 };
 
 export enum Expiry {
@@ -57,6 +59,8 @@ export default (({
   setLineNumbers,
   wrap,
   setWrap,
+  expiry,
+  setExpiry,
 }) => {
   useHotkeys(
     [
@@ -86,7 +90,6 @@ export default (({
   const languageDropdownRef = useRef<HTMLDivElement>(null);
   const languageButtonRef = useRef<HTMLButtonElement>(null);
 
-  const [expiry, setExpiry] = useState<Expiry>(Expiry.never);
   const [expiryOpen, setExpiryOpen] = useState(false);
   const expiryDropdownRef = useRef<HTMLUListElement>(null);
   const expiryButtonRef = useRef<HTMLButtonElement>(null);
