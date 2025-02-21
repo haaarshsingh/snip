@@ -1,5 +1,6 @@
 use chrono;
 use chrono::serde::ts_seconds_option;
+use nanoid::nanoid;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
@@ -22,13 +23,16 @@ pub struct SnipObject {
 }
 
 impl SnipObject {
-    pub fn set_expiry(mut self, days: i64) -> Self {
+    pub fn with_creation_time(mut self) -> Self {
         if self.created_at.is_none() {
             self.created_at = Some(chrono::Utc::now());
         }
+        self
+    }
 
-        if days > 0 {
-            self.expiry_at = Some(self.created_at.unwrap() + chrono::Duration::days(days));
+    pub fn with_id(mut self) -> Self {
+        if self._id.is_none() {
+            self._id = Some(nanoid!(3));
         }
         self
     }
