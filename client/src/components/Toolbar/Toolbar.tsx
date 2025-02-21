@@ -227,7 +227,7 @@ export default (({
           {expiryOpen && (
             <ul
               ref={expiryDropdownRef}
-              className="absolute left-1/2 w-32 -translate-x-1/2 -translate-y-[193px] rounded-md border border-neutral-800 bg-neutral-900 p-1 text-xs"
+              className="absolute left-1/2 w-32 -translate-x-1/2 -translate-y-[161px] rounded-md border border-neutral-800 bg-neutral-900 p-1 text-xs"
             >
               {Object.values(Expiry).map((item, index) => (
                 <li key={index}>
