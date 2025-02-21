@@ -40,7 +40,6 @@ type Toolbar = {
 
 export enum Expiry {
   never = "Never",
-  afterRead = "After Read",
   h12 = "12 Hours",
   h24 = "24 Hours",
 }
@@ -111,8 +110,6 @@ export default (({
     switch (expiry) {
       case Expiry.never:
         return <TbClockPlus />;
-      case Expiry.afterRead:
-        return <TbClockX />;
       case Expiry.h12:
         return <TbClock12 />;
       case Expiry.h24:
