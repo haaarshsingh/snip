@@ -1,13 +1,12 @@
 [package]
-name = "bot"
+name = "discord-snippet-bot"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+serenity = { version = "0.11", features = ["client", "framework", "gateway"] }
 reqwest = { version = "0.11", features = ["json"] }
-serenity = { version = "0.11", features = ["framework", "client"] }
 tokio = { version = "1", features = ["full"] }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-dotenv = "0.15"
-chrono = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+clap = { version = "4", features = ["derive"] }
