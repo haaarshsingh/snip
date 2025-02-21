@@ -1,5 +1,7 @@
 import Editor from "@/components/Editor";
 
+export const runtime = "edge";
+
 export default async ({ params }: { params: Promise<{ slug: string }> }) => {
   const slug = (await params).slug;
 

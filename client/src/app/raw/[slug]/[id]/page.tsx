@@ -1,6 +1,8 @@
 import { Snip } from "@/components/Editor";
 import { FC } from "react";
 
+export const runtime = "edge";
+
 export default (async ({ params }) => {
   const { slug, id } = params;
 
