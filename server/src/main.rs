@@ -31,7 +31,7 @@ async fn get_snip(client: web::Data<Client>, _id: web::Path<String>) -> HttpResp
 #[post("/snips/create")]
 async fn create_snip(client: web::Data<Client>, snip_json: web::Json<SnipObject>) -> HttpResponse {
     let collection: Collection<SnipObject> = client.database(DB_NAME).collection(COLL_NAME);
-    let mut new_snip = snip_json.into_inner().set_expiry(7);
+    let mut new_snip = snip_json.into_inner().set_expiry(0);
 
     if new_snip._id.is_none() {
         new_snip._id = Some(nanoid!(3));

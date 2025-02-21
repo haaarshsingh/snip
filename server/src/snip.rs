@@ -26,7 +26,10 @@ impl SnipObject {
         if self.created_at.is_none() {
             self.created_at = Some(chrono::Utc::now());
         }
-        self.expiry_at = Some(self.created_at.unwrap() + chrono::Duration::days(days));
+
+        if days > 0 {
+            self.expiry_at = Some(self.created_at.unwrap() + chrono::Duration::days(days));
+        }
         self
     }
 }
