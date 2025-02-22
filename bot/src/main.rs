@@ -10,7 +10,7 @@ use serenity::{
 use std::{env, fs};
 
 mod commands;
-use commands::snip::*;
+use commands::{help::*, snip::*};
 
 #[group]
 #[commands(snip)]

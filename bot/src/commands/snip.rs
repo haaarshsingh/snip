@@ -9,7 +9,6 @@ use std::collections::HashMap;
 async fn snip(ctx: &Context, msg: &Message, args: Args) -> CommandResult {
     let mut snip_title = None;
     let mut args_iter = args.raw();
-
     let mut error_msg = None;
 
     while let Some(arg) = args_iter.next() {
