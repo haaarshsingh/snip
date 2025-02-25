@@ -20,7 +20,7 @@ First, clone the repository:
 
 ```
 git clone https://github.com/haaarshsingh/snip
-cd snip
+cd snip/bot
 ```
 
 Configure your environment variables:
