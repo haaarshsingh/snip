@@ -2,7 +2,7 @@
 
 The base endpoint for the api is `https://api.snip.tf/`.
 
-The API has no headers/authentication and is rate limited to 5 requests per second. After exceeding the rate limit your requests will get a 429 (too many requests) response code. If you need to do more requests than that [contact me](mailto:yo@harshsingh.xyz).
+The API has no headers/authentication and is rate limited to 5 requests per second. After exceeding the rate limit your requests will get a 429 (too many requests) response code. If you need to do more requests than that [contact me](mailto:h@harshsingh.me).
 
 ### /snips/
 
