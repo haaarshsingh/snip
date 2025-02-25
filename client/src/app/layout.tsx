@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     "bpaste",
   ],
   authors: [
-    { name: "Harsh Singh", url: "https://harshsingh.xyz" },
+    { name: "Harsh Singh", url: "https://harshsingh.me" },
     { name: "Ibrahim Hisham", url: "https://ibra.pk" },
   ],
   openGraph: {
