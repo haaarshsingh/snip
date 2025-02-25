@@ -1,0 +1,272 @@
+{
+  "db": "PostgreSQL",
+  "00aa827aedb51be01f2ceb1073b95f63d97680e1272c23ecf428c7326a93959c": {
+    "query": "\n            SELECT count(*) AS count \n            FROM recent_thanked\n            WHERE user_id = $1 \n            AND did_thank = $2\n            AND at_time > $3\n            AND server_id = $4\n            ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "count",
+          "type_info": "Int8"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8",
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": [
+        null
+      ]
+    }
+  },
+  "1be7434ceccceb79f993d569916a2afcc2527df7deef1585764c075242962ecc": {
+    "query": "\n            SELECT role_id \n            FROM pinged_roles\n            WHERE message_id = $1\n            AND server_id = $2\n        ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "role_id",
+          "type_info": "Int8"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "2240773121ecfc27a3952bb5da43fcb3d5cdd09aa7d92b33fea2b51d813e4ad6": {
+    "query": "INSERT INTO pinged_roles (role_id,message_id,server_id) VALUES ($1,$2,$3)",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "2660cdbf857af75772a0cd0d17f41a57988acc40bfaed576da01a318fd2d734e": {
+    "query": "\n            SELECT user_id\n            FROM pinged_users\n            WHERE message_id = $1\n            AND server_id = $2\n        ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "user_id",
+          "type_info": "Int8"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "2a79d9ab89a12329cf9a01283a34d01df3c0b86d02882d348e4dce734c31df90": {
+    "query": "INSERT INTO pinged_users (user_id,message_id,server_id) VALUES ($1,$2,$3)",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "390573789acf850dbd00dbaa2ee2a41aa3b8451fd36daf02854f1c50192cba15": {
+    "query": "DELETE FROM message_content\n        CASCADE\n        WHERE at_time < $1",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Int8"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "487dcc03d5aa88d56792ff02d14524d0111d62d1699057fc9c67d4be7621633a": {
+    "query": "SELECT time_between_thanking\n        FROM server_config\n        WHERE server_id=$1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "time_between_thanking",
+          "type_info": "Int8"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int8"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "4ba13acfed20f58ec33a994538421c6472102385e7740f41b963f17524674c79": {
+    "query": "\n            SELECT \n                thanked_users.times,\n                (\n                    SELECT COUNT(*) FROM (\n                        SELECT times,server_id\n                        FROM thanked_users\n                            WHERE times >= (\n                                SELECT times\n                                FROM thanked_users\n                                WHERE server_id = $1\n                                AND user_id = $2\n                            ) AND server_id = $1\n                            GROUP BY times,server_id\n                    ) as rankings\n                ) AS rank\n            FROM thanked_users\n            WHERE thanked_users.user_id = $2\n            AND thanked_users.server_id = $1\n            GROUP BY thanked_users.times\n        ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "times",
+          "type_info": "Int8"
+        },
+        {
+          "ordinal": 1,
+          "name": "rank",
+          "type_info": "Int8"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": [
+        false,
+        null
+      ]
+    }
+  },
+  "73de726bbb307fc07c80f8927befefb283079a7833c56d5b0ca2bfaf81811c21": {
+    "query": "INSERT INTO server_config (server_id, time_between_thanking)\n        VALUES ($1,$2)\n        ON CONFLICT ON CONSTRAINT server_config_pk\n        DO\n        UPDATE SET time_between_thanking=$2",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "7615b1d38f8231692abc957ed8367917ef6623181e418049c7cefcefda2c4cdb": {
+    "query": "\n                    INSERT INTO recent_thanked (user_id, did_thank, server_id, at_time)\n                    VALUES ($1,$2,$3,$4)\n                    ON CONFLICT ON CONSTRAINT recent_thanked_pk \n                    DO\n                    UPDATE SET at_time = $4;\n                ",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8",
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "7cf5fadd0dd7d5b23682f79bfee5b8795edc28957d84b464ede0b3fea6b8523c": {
+    "query": "INSERT INTO message_content (author_id,message_id, server_id, at_time, content) VALUES($1,$2,$3,$4,$5)",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8",
+          "Int8",
+          "Int8",
+          "Text"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "93570c4015abd60865a2246b9c6695b577cfda40498de0edf47f3dcaed4d21f5": {
+    "query": "\n                INSERT INTO thanked_users (user_id,server_id, times)\n                VALUES($1,$2,1) \n                ON CONFLICT ON CONSTRAINT thanked_users_pk \n                DO \n                UPDATE SET times = thanked_users.times + 1;\n                ",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "c1758c21dea0a590ec1aed074ca8db740ac10caca221d508c1be80373acdcf19": {
+    "query": "SELECT user_id, times\n        FROM thanked_users\n        WHERE user_id != $1\n        AND server_id = $2\n        ORDER BY times DESC\n        LIMIT 10",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "user_id",
+          "type_info": "Int8"
+        },
+        {
+          "ordinal": 1,
+          "name": "times",
+          "type_info": "Int8"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "d2309b37b39e2422a0e3a72374c30899c29d816c0ba6b514f77d9c3ab34fa094": {
+    "query": "\n            SELECT \n                author_id,\n                content,\n                count(role_count.role_count) as role_count\n            FROM message_content\n            INNER JOIN (\n                SELECT \n                    COUNT(*) as role_count,\n                    message_id,\n                    server_id\n                FROM pinged_roles\n                GROUP BY message_id, server_id\n            ) AS role_count\n            ON (\n                message_content.message_id = role_count.message_id\n            AND\n                message_content.server_id = role_count.server_id\n            )\n            WHERE message_content.message_id = $1\n            AND message_content.server_id = $2\n            GROUP BY author_id,content,role_count.role_count\n            LIMIT 1\n        ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "author_id",
+          "type_info": "Int8"
+        },
+        {
+          "ordinal": 1,
+          "name": "content",
+          "type_info": "Text"
+        },
+        {
+          "ordinal": 2,
+          "name": "role_count",
+          "type_info": "Int8"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        null
+      ]
+    }
+  }
+}
