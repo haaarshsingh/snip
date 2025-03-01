@@ -110,6 +110,8 @@ export default (({ readOnly, title, snips, _id }) => {
         return 12;
       case Expiry.h24:
         return 24;
+      default:
+        return 0;
     }
   };
 
