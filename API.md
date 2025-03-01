@@ -20,10 +20,11 @@ This returns a [full snip object](#full-snip-object).
 
 JSON body:
 
-| Field | Type   | Optional | Description        |
-| ----- | ------ | -------- | ------------------ |
-| title | string | ✅       | Title of the snip. |
-| snips | Snip[] | ❌       | Code files.        |
+| Field     | Type          | Optional | Description        |
+| --------- | ------------- | -------- | ------------------ |
+| title     | string        | ✅       | Title of the snip. |
+| expiry_at | UTC Timestamp | ✅       | Title of the snip. |
+| snips     | Snip[]        | ❌       | Code files.        |
 
 Check out the [snip object](#partial-snip-object).
 
