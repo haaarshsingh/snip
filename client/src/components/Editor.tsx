@@ -125,7 +125,7 @@ export default (({ readOnly, title, snips, _id }) => {
 
     const raw = JSON.stringify({
       title: snipTitle,
-      expiry_at: expiry === Expiry.never ? null : expiryAt,
+      expiry_at: expiry === Expiry.never ? null : expiryAt.getTime(),
       snips: tabs.map((tab) => ({
         title: tab.title,
         content: tab.content,
