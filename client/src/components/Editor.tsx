@@ -119,11 +119,11 @@ export default (({ readOnly, title, snips, _id }) => {
     headers.append("Content-Type", "application/json");
 
     const expiryAt = new Date();
-    expiryAt.setUTCDate(expiryAt.getUTCHours() + 24);
+    expiryAt.setUTCHours(expiryAt.getUTCHours() + getExpiryDate());
 
     const raw = JSON.stringify({
       title: snipTitle,
-      ...(expiry !== Expiry.never && { expiry_at: expiryAt }),
+      expiry_at: expiry === Expiry.never ? null : expiryAt,
       snips: tabs.map((tab) => ({
         title: tab.title,
         content: tab.content,
