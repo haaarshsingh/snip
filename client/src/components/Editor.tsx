@@ -123,7 +123,7 @@ export default (({ readOnly, title, snips, _id }) => {
 
     const raw = JSON.stringify({
       title: snipTitle,
-      ...(expiry !== Expiry.never && { expiry_at: expiryAt.toISOString() }),
+      ...(expiry !== Expiry.never && { expiry_at: expiryAt }),
       snips: tabs.map((tab) => ({
         title: tab.title,
         content: tab.content,
