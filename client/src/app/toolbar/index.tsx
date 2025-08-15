@@ -1,6 +1,8 @@
 "use client";
 
 import clsx from "clsx";
+import { Command } from "cmdk";
+import * as Select from "@radix-ui/react-select";
 import {
   Dispatch,
   SetStateAction,
@@ -16,14 +18,13 @@ import {
   TbClock12,
   TbClock24,
   TbClockPlus,
-  TbClockX,
   TbHash,
   TbIndentIncrease,
   TbSearch,
   TbTextWrap,
 } from "react-icons/tb";
 import data from "../../utils/languages.json";
-import useHotkeys from "@/utils/hooks/useHotkeys";
+import useHotkeys from "@/utils/hooks/use-hotkeys";
 
 type Toolbar = {
   createSnip: () => void;
@@ -85,13 +86,10 @@ export default (({
   });
 
   const [languagesOpen, setLanguagesOpen] = useState(false);
-  const [query, setQuery] = useState("");
   const languageDropdownRef = useRef<HTMLDivElement>(null);
   const languageButtonRef = useRef<HTMLButtonElement>(null);
 
   const [expiryOpen, setExpiryOpen] = useState(false);
-  const expiryDropdownRef = useRef<HTMLUListElement>(null);
-  const expiryButtonRef = useRef<HTMLButtonElement>(null);
 
   const [indentation, setIndentation] = useState<Indentation>(
     Indentation.spaces,
@@ -99,12 +97,6 @@ export default (({
   const [indentOpen, setIndentOpen] = useState(false);
   const indentDropdownRef = useRef<HTMLUListElement>(null);
   const indentButtonRef = useRef<HTMLButtonElement>(null);
-
-  const filteredLanguages = data.languages.filter(
-    (language) =>
-      language.name.toLowerCase().includes(query.toLowerCase()) ||
-      language.extension.toLowerCase().includes(query.toLowerCase()),
-  );
 
   const getExpiryIcon = () => {
     switch (expiry) {
@@ -126,14 +118,6 @@ export default (({
         !languageButtonRef.current.contains(event.target as Node)
       )
         setLanguagesOpen(false);
-
-      if (
-        expiryDropdownRef.current &&
-        !expiryDropdownRef.current.contains(event.target as Node) &&
-        expiryButtonRef.current &&
-        !expiryButtonRef.current.contains(event.target as Node)
-      )
-        setExpiryOpen(false);
 
       if (
         indentDropdownRef.current &&
@@ -159,92 +143,131 @@ export default (({
         >
           <button
             className="group my-2 flex items-center rounded-md py-2 pl-2 pr-1.5 text-sm hover:bg-neutral-50/5 active:bg-neutral-50/10"
-            onClick={() => setLanguagesOpen((l) => !l)}
+            onClick={() => {
+              setLanguagesOpen((l) => !l);
+              setExpiryOpen(false);
+            }}
             ref={languageButtonRef}
           >
             {language}
             {languagesOpen ? (
-              <TbChevronDown className="ml-1 text-xs" />
+              <TbChevronDown className="ml-2 text-xs" />
             ) : (
-              <TbChevronDown className="ml-1 text-xs" />
+              <TbChevronDown className="ml-2 text-xs" />
             )}
           </button>
           {languagesOpen && (
             <div
-              className="absolute left-1/2 w-56 -translate-x-1/2 -translate-y-[300px] rounded-md border border-neutral-800 bg-neutral-900 text-xs"
+              className="absolute left-1/2 z-50 w-56 -translate-x-1/2 -translate-y-[300px] rounded-md border border-neutral-800 bg-neutral-900 text-xs"
               ref={languageDropdownRef}
             >
-              <div className="flex items-center justify-between px-3 py-2">
-                <div className="flex items-center">
-                  <TbSearch />
-                  <input
-                    placeholder="Search language..."
-                    className="ml-2 w-32 bg-transparent outline-none"
-                    autoFocus
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                  />
+              <Command
+                className="bg-transparent"
+                filter={(value, search) => {
+                  const lang = data.languages.find((l) => l.name === value);
+                  if (!lang) return 0;
+                  if (
+                    lang.name.toLowerCase().includes(search.toLowerCase()) ||
+                    lang.extension.toLowerCase().includes(search.toLowerCase())
+                  ) {
+                    return 1;
+                  }
+                  return 0;
+                }}
+              >
+                <div className="flex items-center justify-between px-3 py-2">
+                  <div className="flex flex-1 items-center">
+                    <TbSearch className="text-sm" />
+                    <Command.Input
+                      placeholder="Search languages..."
+                      className="ml-2 w-full bg-transparent text-sm outline-none"
+                      autoFocus
+                    />
+                  </div>
+                  <button
+                    className="rounded border border-neutral-800 px-1.5 py-1 hover:bg-neutral-500/5 active:bg-neutral-500/10"
+                    onClick={() => setLanguagesOpen(false)}
+                  >
+                    Esc
+                  </button>
                 </div>
-                <button
-                  className="rounded border border-neutral-800 px-1.5 py-1 hover:bg-neutral-500/5 active:bg-neutral-500/10"
-                  onClick={() => setLanguagesOpen(false)}
-                >
-                  Esc
-                </button>
-              </div>
-              <hr className="border-neutral-800" />
-              <ul className="h-48 overflow-y-auto p-1">
-                {filteredLanguages.length > 0 ? (
-                  filteredLanguages.map((language, index) => (
-                    <li key={index}>
-                      <button
-                        className="flex w-full justify-start rounded p-2 hover:bg-neutral-50/5"
-                        onClick={() => {
-                          setLanguage(language.name);
-                          setQuery("");
-                          setLanguagesOpen(false);
-                        }}
-                      >
-                        {language.name}
-                      </button>
-                    </li>
-                  ))
-                ) : (
-                  <li className="mt-2 w-full text-center">No results found</li>
-                )}
-              </ul>
+                <hr className="border-neutral-800" />
+                <Command.List className="h-48 overflow-y-auto p-1">
+                  <Command.Empty className="mt-2 w-full text-center text-neutral-400">
+                    No results found
+                  </Command.Empty>
+                  {data.languages.map((lang, index) => (
+                    <Command.Item
+                      key={index}
+                      value={lang.name}
+                      onSelect={() => {
+                        setLanguage(lang.name);
+                        setLanguagesOpen(false);
+                      }}
+                      className="relative flex w-full cursor-pointer justify-between rounded p-2 hover:bg-neutral-50/5 data-[selected=true]:bg-neutral-50/5"
+                    >
+                      <span>{lang.name}</span>
+                      <div className="flex items-center gap-2">
+                        {lang.name === "Autodetect" && (
+                          <span className="absolute right-2 scale-95 rounded bg-neutral-600 px-1.5 py-0.5 text-xs">
+                            AI
+                          </span>
+                        )}
+                        {language === lang.name && (
+                          <TbCheck
+                            className={clsx(
+                              "text-sm",
+                              lang.name === "Autodetect" && "mr-8",
+                            )}
+                          />
+                        )}
+                      </div>
+                    </Command.Item>
+                  ))}
+                </Command.List>
+              </Command>
             </div>
           )}
         </Tooltip>
         <Tooltip title="Expiry" condition={expiryOpen}>
-          <button
-            className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5"
-            ref={expiryButtonRef}
-            onClick={() => setExpiryOpen((e) => !e)}
+          <Select.Root
+            value={expiry}
+            open={expiryOpen}
+            onOpenChange={(open) => {
+              setExpiryOpen(open);
+              if (open) setLanguagesOpen(false);
+            }}
+            onValueChange={(value) => setExpiry(value as Expiry)}
           >
-            {getExpiryIcon()}
-          </button>
-          {expiryOpen && (
-            <ul
-              ref={expiryDropdownRef}
-              className="absolute left-1/2 w-32 -translate-x-1/2 -translate-y-[161px] rounded-md border border-neutral-800 bg-neutral-900 p-1 text-xs"
-            >
-              {Object.values(Expiry).map((item, index) => (
-                <li key={index}>
-                  <button
-                    className="flex w-full items-center justify-between rounded p-2 hover:bg-neutral-50/5"
-                    onClick={() => {
-                      setExpiry(item as Expiry);
-                      setExpiryOpen(false);
-                    }}
-                  >
-                    {item}
-                    {expiry === (item as Expiry) && <TbCheck />}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
+            <Select.Trigger asChild>
+              <button className="flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-50/5">
+                {getExpiryIcon()}
+              </button>
+            </Select.Trigger>
+            <Select.Portal>
+              <Select.Content
+                className="z-50 mb-3.5 w-32 rounded-md border border-neutral-800 bg-neutral-900 p-1 text-xs shadow-lg"
+                position="popper"
+                align="center"
+                sideOffset={5}
+              >
+                <Select.Viewport>
+                  {Object.values(Expiry).map((item, index) => (
+                    <Select.Item
+                      key={index}
+                      value={item}
+                      className="flex w-full cursor-pointer items-center justify-between rounded px-2.5 py-1.5 outline-none hover:bg-neutral-50/5 focus:bg-neutral-50/5"
+                    >
+                      <Select.ItemText>{item}</Select.ItemText>
+                      <Select.ItemIndicator>
+                        <TbCheck />
+                      </Select.ItemIndicator>
+                    </Select.Item>
+                  ))}
+                </Select.Viewport>
+              </Select.Content>
+            </Select.Portal>
+          </Select.Root>
         </Tooltip>
         <Tooltip title="Line Wrap">
           <button
@@ -345,7 +368,7 @@ const Tooltip: FC<{
       {displayTooltip && (
         <div
           className={clsx(
-            "absolute left-1/2 -mt-[72px] -translate-x-1/2 select-none whitespace-nowrap rounded-md bg-neutral-800 p-2 text-xs transition-opacity duration-300 ease-in-out",
+            "absolute left-1/2 z-[60] -mt-[72px] -translate-x-1/2 select-none whitespace-nowrap rounded-md bg-neutral-800 p-2 text-xs transition-opacity duration-300 ease-in-out",
             className,
             isVisible ? "opacity-100" : "opacity-0",
           )}

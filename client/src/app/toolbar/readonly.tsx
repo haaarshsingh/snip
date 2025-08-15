@@ -11,7 +11,7 @@ import {
   TbGitFork,
   TbLink,
 } from "react-icons/tb";
-import useHotkeys from "@/utils/hooks/useHotkeys";
+import useHotkeys from "@/utils/hooks/use-hotkeys";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";

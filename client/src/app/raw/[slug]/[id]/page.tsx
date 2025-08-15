@@ -1,4 +1,4 @@
-import { Snip } from "@/components/Editor";
+import { Snip } from "@/app/editor";
 import { FC } from "react";
 
 export const runtime = "edge";

@@ -14,9 +14,11 @@
   "dependencies": {
     "@codemirror/language-data": "^6.5.1",
     "@lezer/highlight": "^1.2.1",
+    "@radix-ui/react-select": "^2.2.6",
     "@uiw/codemirror-themes": "^4.23.3",
     "@uiw/react-codemirror": "^4.23.3",
     "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
     "codemirror": "^6.0.1",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",

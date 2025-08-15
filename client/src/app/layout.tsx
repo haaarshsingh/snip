@@ -4,7 +4,7 @@ import { Toaster } from "sonner";
 import "./globals.css";
 
 const display = localFont({
-  src: "./fonts/söhne.woff2",
+  src: "./fonts/sohne.woff2",
   variable: "--font-display",
   weight: "400",
 });
