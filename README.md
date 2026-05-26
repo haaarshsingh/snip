@@ -47,3 +47,7 @@ Welcome to the snip monorepo. It consists of the following:
 - [`cli`](https://github.com/haaarshsingh/snip/tree/main/cli) — the CLI written in plain ol' Rust.
 
 Refer to the README within each individual project on how to build and run the project.
+
+***
+
+Built by [Harsh Singh](https://harshsingh.me)
