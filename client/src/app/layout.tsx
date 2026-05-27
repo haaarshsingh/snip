@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -103,6 +104,11 @@ export default ({
       <body className={`${display.variable} ${mono.variable} antialiased`}>
         <Toaster theme="dark" richColors />
         {children}
+        <Script
+          defer
+          src="https://stats.harshsingh.me/script.js"
+          data-website-id="b6d57f01-5dda-4b7e-8587-e222b8be940e"
+        />
       </body>
     </html>
   );
