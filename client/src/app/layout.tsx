@@ -106,8 +106,8 @@ export default ({
         {children}
         <Script
           defer
-          src="https://stats.harshsingh.me/script.js"
-          data-website-id="b6d57f01-5dda-4b7e-8587-e222b8be940e"
+          src="https://admin.harshsingh.me/script.js"
+          data-website-id="5a8fc89d-d736-49fc-8dc9-a1fa96a1d468"
         />
       </body>
     </html>
