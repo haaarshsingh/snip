@@ -50,4 +50,4 @@ Refer to the README within each individual project on how to build and run the p
 
 ***
 
-Built by [Harsh Singh](https://harshsingh.me)
+Built by [Harsh Singh](https://harshsingh.me) and [Ibrahim Hisham](https://github.com/ibra).
